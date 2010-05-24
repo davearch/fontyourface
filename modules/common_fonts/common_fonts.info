@@ -1,0 +1,6 @@
+; $Id$
+name = Common fonts
+description = @font-your-face provider of fonts usually already available in browsers, with fallbacks.
+dependencies[] = fontyourface
+package = @font-your-face
+core = 6.x

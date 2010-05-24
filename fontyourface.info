@@ -1,0 +1,5 @@
+; $Id$
+name = @font-your-face
+description = Administrative interface for managing fonts.
+package = @font-your-face
+core = 6.x

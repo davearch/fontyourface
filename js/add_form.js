@@ -1,5 +1,3 @@
-// $Id$
-
 var fontyourfaceSampleText = '';
 
 Drupal.behaviors.fontyourfaceAddForm = function(context) {

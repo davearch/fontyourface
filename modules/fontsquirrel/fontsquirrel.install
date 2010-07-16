@@ -13,7 +13,23 @@ function fontsquirrel_install() {
 
   drupal_install_schema('fontsquirrel');
 
+  $results = db_query("SELECT weight FROM {system} WHERE name = 'admin'");
+
+  if ($result = db_fetch_object($results)) {
+    db_query("UPDATE {system} SET weight = %d WHERE name = 'admin'", $result->weight + 1);
+  } // if
+
 } // fontsquirrel_install
+
+/**
+ * Implements hook_uninstall().
+ */
+function fontsquirrel_uninstall() {
+
+  drupal_uninstall_schema('fontsquirrel');
+  variable_del('fontsquirrel_last_api_update');
+
+} // fontsquirrel_uninstall
 
 /**
  * Implements hook_schema.
@@ -67,6 +83,13 @@ function fontsquirrel_schema() {
         'description' => 'The classification.',
       ),
       'filename' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The font file.',
+      ),
+      'font_family' => array(
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,

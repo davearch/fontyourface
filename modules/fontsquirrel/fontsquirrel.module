@@ -2,6 +2,34 @@
 // $Id$
 
 /**
+ * Implements hook_menu()
+ */
+function fontsquirrel_menu() {
+
+  $items = array();
+
+  $items['admin/build/themes/fontyourface/fontsquirrel/import'] = array(
+    'title' => 'Font Squirrel Import',
+    'page callback' => 'fontsquirrel_import',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+
+} // fontsquirrel_menu
+
+/**
+ * Callback for import.
+ */
+function fontsquirrel_import() {
+
+  fontsquirrel_cron();
+  drupal_goto($_GET['destination']);
+
+} // kernest_import
+
+/**
  * Implements hook_cron().
  */
 function fontsquirrel_cron() {
@@ -15,15 +43,15 @@ function fontsquirrel_cron() {
     if ($api_result->code == '200') {
 
       $decoded = json_decode($api_result->data);
-      
+
       foreach ($decoded as $font_group) {
 
         $select_results = db_query('SELECT * FROM {fontsquirrel_group} g WHERE gid = %d', $font_group->id);
-        
+
         if ($select_result = db_fetch_object($select_results)) {
 
           $changed = FALSE;
-          
+
           if ($select_result->gid != $font_group->id) {
             $select_result->gid = $font_group->id;
             $changed = TRUE;
@@ -70,7 +98,7 @@ function fontsquirrel_cron() {
         } // else
 
       } // foreach
-  
+
     } // if
 
     variable_set('fontsquirrel_last_api_update', time());
@@ -114,7 +142,6 @@ function fontsquirrel_fontyourface_view($font, $text) {
 
   $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeSolotypeSample.php?font=' . $font['id'] . '/' . $font['filename'] . '&case=all" /></div>';
 
-
   return $output;
 
 } // fontsquirrel_fontyourface_preview
@@ -124,21 +151,26 @@ function fontsquirrel_fontyourface_view($font, $text) {
  */
 function fontsquirrel_preprocess_page(&$vars) {
 
-  if (!empty($vars['fontyourface'])) {
+  if (!empty($vars['fontyourface']) && $_GET['q'] != 'admin/build/themes/fontyourface/add') {
 
     $paths = array();
     $fonts = fontsquirrel_list();
 
     foreach ($vars['fontyourface'] as $used_font) {
-    
+
       if ($used_font->provider == 'fontsquirrel') {
         $paths[] = $fonts[$used_font->group_name]['fonts'][$used_font->name]['path'];
       } // if
+
     } // foreach
 
     if (count($paths) > 0) {
 
-      $vars['styles'] = '' . $vars['styles'];
+      foreach ($paths as $path) {
+
+        $vars['styles'] = '<link href="' . base_path() . file_directory_path() . '/fontyourface/fontsquirrel/' . $path . '-fontfacekit/stylesheet.css" rel="stylesheet" type="text/css" />' . $vars['styles'];
+
+      } // foreach
 
     } // if
 
@@ -156,14 +188,40 @@ function fontsquirrel_fontyourface_css($used_font) {
     'font-family' => '',
   );
 
-  $list = fontsquirrel_list();
+  $list = fontsquirrel_list(FALSE);
   $font = $list[$used_font->group_name]['fonts'][$used_font->name];
+
+  if ($font['family'] == '') {
+    fontsquirrel_update_font_family($font);
+  } // if
 
   $css['font-family'] = "'" . $font['family'] . "'";
 
   return $css;
 
 } // fontsquirrel_fontyourface_css
+
+/**
+ * Gets font family details from API.
+ */
+function fontsquirrel_update_font_family(&$font) {
+
+  $api_result = drupal_http_request('http://www.fontsquirrel.com/api/familyinfo/' . $font['path']);
+
+  if ($api_result->code == '200') {
+
+    $decoded = json_decode($api_result->data);
+
+    if (is_array($decoded) && is_object($decoded[0])) {
+
+      $font['family'] = $decoded[0]->{'fontface_name'};
+      db_query("UPDATE {fontsquirrel_group} g SET font_family = '%s' WHERE gid = %d", $font['family'], $font['id']);
+
+    } // if
+
+  } // if
+
+} // fontsquirrel_update_font_family
 
 /**
  * Implements hook_fontyourface_license().
@@ -185,39 +243,102 @@ function fontsquirrel_fontyourface_license($used_font) {
  */
 function fontsquirrel_fontyourface_enable($used_font) {
 
+  $success = TRUE;
   $list = fontsquirrel_list();
   $font = $list[$used_font->group_name]['fonts'][$used_font->name];
+  $directory_location = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_directory_path() . '/fontyourface/fontsquirrel/' . $font['path'] . '-fontfacekit';
 
-  $kit_url = 'http://www.fontsquirrel.com/fontfacekit/' . $font['path'];
-  $kit_url = 'http://www.google.com/';
+  if (
+    (!file_check_directory($directory_location))
+  ) {
 
-  $kit_head = drupal_http_request($kit_url, array(), 'HEAD');
-  
-  if ($kit_head->code == 200) {
-    
-    // Need to find a way to copy large font kits to Drupal's files directory
+    $zip_location = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_directory_path() . '/fontyourface/fontsquirrel/' . $font['path'] . '-fontfacekit.zip';
 
-    // $kit_result = drupal_http_request($kit_url, array('Range' => 'bytes=20-22'));
-  
+    // Download file .zip file
+
+    if (!file_exists($zip_location)) {
+
+      $kit_url = 'http://www.fontsquirrel.com/fontfacekit/' . $font['path'];
+
+      $kit_result = drupal_http_request($kit_url);
+
+      if ($kit_result->code == 200) {
+
+        // Save the .zip file
+
+        if (file_check_directory(dirname($zip_location),  FILE_CREATE_DIRECTORY)) {
+
+          file_save_data($kit_result->data, $zip_location, FILE_EXISTS_REPLACE);
+
+        } // if
+        else {
+
+          drupal_set_message(t('There was an error saving font') . ' <i>' . $used_font->name .'</i> ' . t('from') . ' Font Squirrel.', 'error');
+          $success = FALSE;
+
+        } // else
+
+      } // if
+      else {
+
+        drupal_set_message(t('There was an error downloading font' ) . ' <i>' . $used_font->name .'</i> ' . t('from') . ' Font Squirrel.', 'error');
+        $success = FALSE;
+
+      } // else
+
+    } // if
+
+    if ($success) {
+
+      // Unzip the .zip file
+
+      if (function_exists('zip_open') && $zip = zip_open($zip_location)) {
+
+        file_check_directory($directory_location,  FILE_CREATE_DIRECTORY);
+
+        while ($entry = zip_read($zip)) {
+
+          if (zip_entry_open($zip, $entry, 'r') && ($zip_entry_filesize = zip_entry_filesize($entry))) {
+
+            $entry_name = zip_entry_name($entry);
+            $data = zip_entry_read($entry, $zip_entry_filesize);
+            file_save_data($data, $directory_location .'/'. $entry_name);
+
+          } // if
+
+          zip_entry_close($entry);
+
+        } // while
+
+        zip_close($zip);
+
+        drupal_set_message(t('Unzipped!'));
+
+      } // if
+      else {
+
+        drupal_set_message(t('Unable to unzip font') . ' <i>' . $used_font->name .'</i> ' . t('at') . ' <code>' . check_plain($zip_location) . '</code>. ' . t('See !zipdocs to enable unzipping, or unzip the file manually and re-enable this font.', array('!zipdocs' => l('PHP documentation on zip', 'http://www.php.net/manual/en/zip.installation.php'))), 'error');
+        $success = FALSE;
+
+      } // else
+
+    } // if
+
+    if (! $success) {
+      fontyourface_delete_font($used_font);
+    } // if
+
   } // if
 
-/*
-  if (something bad) {
-    drupal_set_message('There was an error downloading font <i>' . $font->name .'</i> from Font Squirrel.', 'error'); 
-    fontyourface_delete_font($used_font);
-    return FALSE;
-  } // if
-*/
-
-  return TRUE;
+  return $success;
 
 } // fontsquirrel_fontyourface_enable
 
-function fontsquirrel_list() {
+function fontsquirrel_list($show_error = TRUE) {
 
-  static $fonts = false;
+  static $fonts = FALSE;
 
-  if (!$fonts) {
+  if ($fonts === FALSE) {
 
     $fonts = array();
     $font_fid_to_name = array();
@@ -232,15 +353,22 @@ function fontsquirrel_list() {
         'foundry_path' => $result->foundry_path,
         'fonts' => array(),
       );
-      
+
       $fonts[$result->name]['fonts'][$result->name] = array(
         'id' => $result->gid,
         'path' => $result->path,
         'filename' => $result->filename,
-        'family' => $result->name,
+        'family' => $result->font_family,
+        'local' => $result->local,
       );
 
     } // while
+
+    if (count($fonts) == 0 && $show_error) {
+
+      drupal_set_message(t('The Font Squirrel font list has not yet been imported. !importlink or wait until the next cron run.', array('!importlink' => l('Import now', 'admin/build/themes/fontyourface/fontsquirrel/import', array('query' => drupal_get_destination())))));
+
+    } // if
 
   } // if
 

@@ -4,3 +4,86 @@
  * @file
  * Provides general API for managing information about web fonts.
  */
+
+use Drupal\fontyourface\Plugin\Core\Entity\Font;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_permission().
+ */
+function fontyourface_permission() {
+
+  return array(
+    'administer fonts' => array(
+      'title' => t('Administer fonts'),
+      'description' => t('Change which fonts are enabled and other font settings.'),
+    ),
+  );
+
+} // fontyourface_permission
+
+/**
+ * Implements hook_menu().
+ */
+function fontyourface_menu() {
+
+  $items = array();
+
+  // Add 'Fonts' section just under UI.
+
+  $items['admin/config/fontyourface'] = array(
+    'title' => 'Fonts',
+    'description' => 'Font management.',
+    'position' => 'right',
+    'weight' => -14,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  // Add general settings form.
+
+  $items['admin/config/fontyourface/settings'] = array(
+    'title' => 'Font Settings',
+    'description' => 'General font settings.',
+    'access arguments' => array('administer fonts'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fontyourface_general_settings'),
+    'file' => 'fontyourface.admin.inc',
+  );
+
+  return $items;
+
+} // fontyourface_menu
+
+/**
+ * Returns the font entity matching a font ID.
+ *
+ * @param $fid
+ *   A font's ID
+ *
+ * @return Drupal\fontyourface\Plugin\Core\Entity\Font|false
+ *   A font entity, or FALSE if the font was not found. Results are
+ *   statically cached.
+ */
+function fontyourface_font_load($fid) {
+
+  if (!is_numeric($fid)) {
+    return FALSE;
+  } // if
+
+  return entity_load('fontyourface_font', $fid);
+
+} // fontyourface_font_load
+
+/**
+ * Returns entity URI callback info.
+ */
+function fontyourface_font_uri($font) {
+
+  return array(
+    'path' => 'admin/config/fontyourface/font/' . $font->tid,
+  );
+
+} // fontyourface_font_uri

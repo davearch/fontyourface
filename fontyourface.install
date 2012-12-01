@@ -5,3 +5,144 @@
  * Install, update and uninstall functions for the @font-your-face module.
  */
  
+/**
+ * Implements hook_schema().
+ */
+function fontyourface_schema() {
+
+  $schema = array();
+
+  $schema['fontyourface_font'] = array(
+    'description' => 'Font information.',
+    'fields' => array(
+      'fid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique font ID.',
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The font name.',
+      ),
+      'enabled' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+        'description' => 'Whether or not the font is enabled. (0 = disabled, 1 = enabled)',
+      ),
+      'url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'A URL for the font.',
+      ),
+      'provider' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The module providing the font.',
+      ),
+      'css_selector' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'description' => 'CSS selector for applying the font.',
+      ),
+      'css_family' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'CSS family for the font.',
+      ),
+      'css_style' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'CSS style for the font.',
+      ),
+      'css_weight' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'CSS weight for the font.',
+      ),
+      'css_fallbacks' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'CSS fallbacks for the font.',
+      ),
+      'foundry' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Foundry for the font.',
+      ),
+      'foundry_url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'URL for foundry for the font.',
+      ),
+      'license' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'License for the font.',
+      ),
+      'license_url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'URL for license for the font.',
+      ),
+      'designer' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Designer for the font.',
+      ),
+      'designer_url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'URL for designer for the font.',
+      ),
+      'metadata' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'description' => 'Additional serialized metadata about the font.',
+      ),
+    ),
+    'indexes' => array(
+      'enabled' => array('enabled'),
+      'provider' => array('provider'),
+    ),
+    'unique keys' => array(
+      'url' => array('url'),
+    ),
+    'primary key' => array('fid'),
+  );
+
+  return $schema;
+
+} // fontyourface_schema

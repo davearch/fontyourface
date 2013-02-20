@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the fontyourface_local module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function fontyourface_local_install() {
+
+  $provider = entity_create('fontyourface_provider', array(
+    'pid' => 'local',
+    'name' => st('Local Fonts'),
+    'url' => 'http://drupal.org/project/fontyourface#local',
+    'base_path' => 'public://fontyourface/local_fonts/',
+  ));
+  fontyourface_provider_save($provider);
+  
+} // fontyourface_local_install
+
+/**
+ * Implements hook_uninstall().
+ */
+function fontyourface_local_uninstall() {
+
+  entity_delete_multiple('fontyourface_provider', array('local'));
+  field_attach_delete_bundle('font', 'local');
+
+} // fontyourface_local_uninstall

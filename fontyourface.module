@@ -6,6 +6,7 @@
  */
 
 use Drupal\fontyourface\Plugin\Core\Entity\Font;
+use Drupal\fontyourface\Plugin\Core\Entity\Provider;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
@@ -78,12 +79,20 @@ function fontyourface_font_load($fid) {
 } // fontyourface_font_load
 
 /**
- * Returns entity URI callback info.
+ * Returns array of providers.
  */
-function fontyourface_font_uri($font) {
+function fontyourface_get_providers() {
 
-  return array(
-    'path' => 'admin/config/fontyourface/font/' . $font->tid,
-  );
 
-} // fontyourface_font_uri
+  
+} // fontyourface_get_providers
+
+/**
+ * Saves a provider.
+ *
+ * @param Drupal\fontyourface\Plugin\Core\Entity\Provider $provider
+ *   The font provider entity to be saved.
+ */
+function fontyourface_provider_save(Provider $provider) {
+  return $provider->save();
+} // fontyourface_provider_save

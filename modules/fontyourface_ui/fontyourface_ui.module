@@ -4,3 +4,33 @@
  * @file
  * Provides UI for managing information about web fonts.
  */
+
+/**
+ * Implements hook_menu().
+ */
+function fontyourface_ui_menu() {
+
+  $items = array();
+  
+  $items['admin/config/fontyourface/provider'] = array(
+    'title' => 'Providers',
+    'description' => 'Manage font providers.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fontyourface_ui_provider_overview'),
+    'access arguments' => array('administer fonts'),
+  );
+
+  return $items;
+
+} // fontyourface_ui_menu
+
+/**
+ * Form builder to list and manage providers.
+ *
+ * @ingroup forms
+ */
+function fontyourface_ui_provider_overview($form) {
+
+  return $form;
+
+} // fontyourface_ui_provider_overview

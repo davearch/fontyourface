@@ -1,0 +1,5 @@
+name = @font-your-face Local
+description = Fonts uploaded and hosted directly in Drupal.
+package = @font-your-face
+core = 8.x
+dependencies[] = fontyourface

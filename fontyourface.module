@@ -79,13 +79,36 @@ function fontyourface_font_load($fid) {
 } // fontyourface_font_load
 
 /**
- * Returns array of providers.
+ * Return the font provider entity matching a provider ID.
+ *
+ * @param int $pid
+ *   The provider's ID.
+ *
+ * @return Drupal\fontyourface\Plugin\Core\Entity\provider|false
+ *   The font provider entity, if exists, FALSE otherwise. Results are
+ *   statically cached.
  */
-function fontyourface_get_providers() {
+function fontyourface_provider_load($pid) {
+  return entity_load('fontyourface_provider', $pid);
+} // fontyourface_provider_load
 
-
-  
-} // fontyourface_get_providers
+/**
+ * Loads multiple font providers based on certain conditions.
+ *
+ * This function should be used whenever you need to load more than one
+ * provider.
+ *
+ * @see entity_load_multiple()
+ *
+ * @param array $pids
+ *   (optional) An array of entity IDs. If omitted, all entities are loaded.
+ *
+ * @return array
+ *  An array of provider objects, indexed by pid.
+ */
+function fontyourface_provider_load_multiple(array $pids = NULL) {
+  return entity_load_multiple('fontyourface_provider', $pids);
+} // fontyourface_provider_load_multiple
 
 /**
  * Saves a provider.
@@ -93,6 +116,61 @@ function fontyourface_get_providers() {
  * @param Drupal\fontyourface\Plugin\Core\Entity\Provider $provider
  *   The font provider entity to be saved.
  */
-function fontyourface_provider_save(Provider $provider) {
+function fontyourface_provider_save(Drupal\fontyourface\Plugin\Core\Entity\Provider $provider) {
   return $provider->save();
 } // fontyourface_provider_save
+
+
+/**
+ * Get names for all font providers.
+ *
+ * @return array
+ *   A list of existing vocabulary IDs.
+ */
+function fontyourface_provider_get_names() {
+
+  $names = &drupal_static(__FUNCTION__);
+
+  if (!isset($names)) {
+
+    $names = array();
+    $config_names = config_get_storage_names_with_prefix('fontyourface.provider.');
+
+    foreach ($config_names as $config_name) {
+      $id = substr($config_name, strlen('fontyourface.provider.'));
+      $names[$id] = $id;
+    } // foreach
+
+  } // if
+
+  return $names;
+
+} // fontyourface_provider_get_names
+
+/**
+ * Implements hook_entity_bundle_info().
+ */
+function fontyourface_entity_bundle_info() {
+
+  $bundles = array();
+
+  $provider_names = fontyourface_provider_get_names();
+
+  foreach ($provider_names as $provider_name) {
+  
+    $config = config('fontyourface.provider.' . $provider_name);
+
+    $bundles['fontyourface_font'][$config->get('pid')] = array(
+      'label' => $config->get('name'),
+      'admin' => array(
+        'path' => 'admin/config/fontyourface/provider/%fontyourface_provider',
+        'real path' => 'admin/config/fontyourface/provider/' . $config->get('pid'),
+        'bundle argument' => 4,
+      ),
+    );
+
+  } // foreach
+
+  return $bundles;
+
+} // fontyourface_entity_bundle_info

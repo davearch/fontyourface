@@ -29,12 +29,12 @@ use Drupal\Core\Annotation\Translation;
  *   fieldable = TRUE,
  *   entity_keys = {
  *     "id" = "fid",
- *     "bundle" = "provider",
+ *     "bundle" = "pid",
  *     "label" = "name",
  *     "uuid" = "url"
  *   },
  *   bundle_keys = {
- *     "bundle" = "provider"
+ *     "bundle" = "pid"
  *   },
  *   view_modes = {
  *     "full" = {
@@ -81,11 +81,11 @@ class Font extends Entity implements ContentEntityInterface {
   public $url;
 
   /**
-   * The font provider.
+   * The font povider id.
    *
    * @var string
    */
-  public $provider;
+  public $pid;
 
   /**
    * The CSS selector.
@@ -182,7 +182,7 @@ class Font extends Entity implements ContentEntityInterface {
    * Implements Drupal\Core\Entity\EntityInterface::bundle().
    */
   public function bundle() {
-    return $this->provider;
+    return $this->pid;
   } // bundle
 
 } // Font

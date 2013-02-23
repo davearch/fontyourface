@@ -15,4 +15,5 @@ use Drupal\Core\Entity\DatabaseStorageController;
  * Defines a Controller class for fonts.
  */
 class FontStorageController extends DatabaseStorageController {
+
 } // FontStorageController

@@ -6,9 +6,12 @@
  */
 
 /**
- * Implements hook_install().
+ * Implements hook_enable().
+ * Creates 'local' font provider bundle, with fields.
  */
-function fontyourface_local_install() {
+function fontyourface_local_enable() {
+
+  // Create provider bundle, with fiels.
 
   $provider = entity_create('fontyourface_provider', array(
     'pid' => 'local',
@@ -17,15 +20,17 @@ function fontyourface_local_install() {
     'base_path' => 'public://fontyourface/local_fonts/',
   ));
   fontyourface_provider_save($provider);
-  
-} // fontyourface_local_install
+  fontyourface_provider_add_default_fields('local');
+
+} // fontyourface_local_enable
 
 /**
- * Implements hook_uninstall().
+ * Implements hook_disable().
+ * Deletes 'local' font provider bundle, and fields.
  */
-function fontyourface_local_uninstall() {
+function fontyourface_local_disable() {
 
   entity_delete_multiple('fontyourface_provider', array('local'));
   field_attach_delete_bundle('font', 'local');
 
-} // fontyourface_local_uninstall
+} // fontyourface_local_disable

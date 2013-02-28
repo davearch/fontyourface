@@ -21,14 +21,21 @@ function fontyourface_schema() {
         'not null' => TRUE,
         'description' => 'Primary Key: Unique font ID.',
       ),
-      'name' => array(
+      'pid' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The provider ID.',
+      ),
+      'name' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
         'default' => '',
         'description' => 'The font name.',
       ),
-      'enabled' => array(
+      'enabled' => array( // Maybe this should be in a FontConfig entity, with optional theme?
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
@@ -36,101 +43,75 @@ function fontyourface_schema() {
         'size' => 'tiny',
         'description' => 'Whether or not the font is enabled. (0 = disabled, 1 = enabled)',
       ),
-      'url' => array(
+      'url' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
         'default' => '',
         'description' => 'A URL for the font.',
       ),
-      'provider' => array(
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'default' => '',
-        'description' => 'The module providing the font.',
-      ),
-      'css_selector' => array(
+
+      'css_selector' => array( // Maybe this should be in a FontConfig entity, with optional theme?
         'type' => 'text',
         'not null' => FALSE,
         'size' => 'big',
         'description' => 'CSS selector for applying the font.',
       ),
-      'css_family' => array(
+      'css_family' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'CSS family for the font.',
       ),
-      'css_style' => array(
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'CSS style for the font.',
-      ),
-      'css_weight' => array(
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'CSS weight for the font.',
-      ),
-      'css_fallbacks' => array(
+      'css_fallbacks' => array( // Maybe this should be in a FontConfig entity, with optional theme?
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'CSS fallbacks for the font.',
       ),
-      'foundry' => array(
+      'foundry' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'Foundry for the font.',
       ),
-      'foundry_url' => array(
+      'foundry_url' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'URL for foundry for the font.',
       ),
-      'license' => array(
+      'license' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'License for the font.',
       ),
-      'license_url' => array(
+      'license_url' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'URL for license for the font.',
       ),
-      'designer' => array(
+      'designer' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'Designer for the font.',
       ),
-      'designer_url' => array(
+      'designer_url' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'URL for designer for the font.',
-      ),
-      'metadata' => array(
-        'type' => 'text',
-        'not null' => FALSE,
-        'size' => 'big',
-        'description' => 'Additional serialized metadata about the font.',
       ),
     ),
     'indexes' => array(

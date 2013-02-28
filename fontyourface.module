@@ -120,7 +120,6 @@ function fontyourface_provider_save(Drupal\fontyourface\Plugin\Core\Entity\Provi
   return $provider->save();
 } // fontyourface_provider_save
 
-
 /**
  * Get names for all font providers.
  *
@@ -157,7 +156,7 @@ function fontyourface_entity_bundle_info() {
   $provider_names = fontyourface_provider_get_names();
 
   foreach ($provider_names as $provider_name) {
-  
+
     $config = config('fontyourface.provider.' . $provider_name);
 
     $bundles['fontyourface_font'][$config->get('pid')] = array(
@@ -174,3 +173,15 @@ function fontyourface_entity_bundle_info() {
   return $bundles;
 
 } // fontyourface_entity_bundle_info
+
+/**
+ * Adds default fields to a provider.
+ */
+function fontyourface_provider_add_default_fields($pid) {
+
+  module_load_include('inc', 'fontyourface', 'fontyourface.field');
+
+  fontyourface_provider_add_css_style_field($pid);
+  fontyourface_provider_add_css_weight_field($pid);
+
+} // fontyourface_provider_add_default_fields

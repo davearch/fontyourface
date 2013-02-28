@@ -116,7 +116,7 @@ function fontyourface_schema() {
     ),
     'indexes' => array(
       'enabled' => array('enabled'),
-      'provider' => array('provider'),
+      'provider' => array('pid'),
     ),
     'unique keys' => array(
       'url' => array('url'),
@@ -127,3 +127,19 @@ function fontyourface_schema() {
   return $schema;
 
 } // fontyourface_schema
+
+/**
+ * Implements hook_install().
+ */
+function fontyourface_install() {
+
+  $t = get_t();
+
+  $vocabulary = entity_create('taxonomy_vocabulary', array(
+    'name' => $t('Font Tags'),
+    'vid' => 'font_tags',
+    'langcode' => language_default()->langcode,
+  ));
+  taxonomy_vocabulary_save($vocabulary);
+
+} // fontyourface_install

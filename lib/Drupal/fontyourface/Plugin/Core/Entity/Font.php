@@ -20,9 +20,9 @@ use Drupal\Core\Annotation\Translation;
  *   label = @Translation("@font-your-face Font"),
  *   module = "fontyourface",
  *   controller_class = "Drupal\fontyourface\FontStorageController",
- *   render_controller_class = "Drupal\fontyourface\FontRenderController",
+ *   render_controller_class = "Drupal\Core\Entity\EntityRenderController",
  *   form_controller_class = {
- *     "default" = "Drupal\Core\Entity\EntityFormController"
+ *     "default" = "Drupal\fontyourface\FontFormController"
  *   },
  *   base_table = "fontyourface_font",
  *   uri_callback = "fontyourface_font_uri",
@@ -35,16 +35,6 @@ use Drupal\Core\Annotation\Translation;
  *   },
  *   bundle_keys = {
  *     "bundle" = "pid"
- *   },
- *   view_modes = {
- *     "full" = {
- *       "label" = "Full font display",
- *       "custom_settings" = FALSE
- *     },
- *     "teaser" = {
- *       "label" = "Teaser for browse lists",
- *       "custom_settings" = FALSE
- *     }
  *   },
  *   menu_base_path = "admin/config/fontyourface/font/%font"
  * )

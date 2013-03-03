@@ -79,6 +79,36 @@ function fontyourface_font_load($fid) {
 } // fontyourface_font_load
 
 /**
+ * Saves a font object to the database.
+ *
+ * @param Drupal\fontyourface\Plugin\Core\Entity\Font $font
+ *   The font entity to be saved.
+ *
+ * @return
+ *   Status constant indicating whether font was inserted (SAVED_NEW) or updated
+ *   (SAVED_UPDATED). When inserting a new font, $font->fid will contain the
+ *   font ID of the newly created font.
+ */
+function fontyourface_font_save(Drupal\fontyourface\Plugin\Core\Entity\Font $font) {
+  return $font->save();
+} // fontyourface_font_save
+
+/**
+ * Generates an array which displays a font detail page.
+ *
+ * @param Drupal\fontyourface\Plugin\Core\Entity\Font $font
+ *   A font object.
+ * @param string $view_mode
+ *   View mode, e.g. 'full', 'teaser'...
+ *
+ * @return array
+ *   A $page element suitable for use by drupal_page_render().
+ */
+function fontyourface_font_view(Drupal\fontyourface\Plugin\Core\Entity\Font $font, $view_mode = 'full') {
+  return entity_view($font, $view_mode);
+} // fontyourface_font_view
+
+/**
  * Return the font provider entity matching a provider ID.
  *
  * @param int $pid
@@ -173,6 +203,22 @@ function fontyourface_entity_bundle_info() {
   return $bundles;
 
 } // fontyourface_entity_bundle_info
+
+/**
+ * Implements hook_entity_view_mode_info().
+ */
+function fontyourface_entity_view_mode_info() {
+
+  $view_modes['fontyourface_font']['full'] = array(
+    'label' => t('Full content'),
+  );
+  $view_modes['fontyourface_font']['teaser'] = array(
+    'label' => t('Teaser'),
+  );
+
+  return $view_modes;
+
+} // fontyourface_entity_view_mode_info
 
 /**
  * Adds default fields to a provider.

@@ -1,0 +1,54 @@
+base_field: fid
+base_table: fontyourface_font
+core: 8.x
+description: ''
+status: '1'
+display:
+  default:
+    display_plugin: default
+    id: default
+    display_title: Master
+    position: ''
+    display_options:
+      access:
+        type: perm
+        options:
+          perm: 'administer fonts'
+      cache:
+        type: none
+      query:
+        type: views_query
+      exposed_form:
+        type: basic
+      pager:
+        type: full
+        options:
+          items_per_page: '12'
+      style:
+        type: default
+      row:
+        type: font
+      fields:
+        fid:
+          table: fontyourface_font
+          field: fid
+          id: fid
+      filters: {  }
+      sorts: {  }
+      title: 'Choose Fonts'
+  page_1:
+    display_plugin: page
+    id: page_1
+    display_title: Page
+    position: ''
+    display_options:
+      path: admin/config/fontyourface/font
+      menu:
+        type: normal
+        title: 'Choose Fonts'
+        name: admin
+human_name: 'Choose Fonts'
+module: views
+id: fontyourface_choose
+tag: ''
+uuid: 36faf10b-3b2a-457f-9500-e54b1f8ee90d

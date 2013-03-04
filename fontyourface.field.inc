@@ -95,3 +95,65 @@ function fontyourface_provider_add_css_weight_field($pid) {
 
 } // fontyourface_provider_add_css_weight_field
 
+/**
+ * Adds Foundry URL field.
+ */
+function fontyourface_provider_add_foundry_url_field($pid) {
+
+  return fontyourface_provider_add_url_field($pid, 'font_foundry_url', 'Foundry URL');
+  
+} // fontyourface_provider_add_foundry_url_field
+
+/**
+ * Adds License URL field.
+ */
+function fontyourface_provider_add_license_url_field($pid) {
+
+  return fontyourface_provider_add_url_field($pid, 'font_license_url', 'License URL');
+
+} // fontyourface_provider_add_license_url_field
+
+/**
+ * Adds Designer URL field.
+ */
+function fontyourface_provider_add_designer_url_field($pid) {
+
+  return fontyourface_provider_add_url_field($pid, 'font_designer_url', 'Designer URL');
+
+} // fontyourface_provider_add_designer_url_field
+
+/**
+ * Adds License URL field.
+ */
+function fontyourface_provider_add_url_field($pid, $field_name, $field_label) {
+
+  $t = get_t();
+
+  $field = field_info_field($field_name);
+  $instance = field_info_instance('fontyourface_font', $field_name, $pid);
+
+  if (empty($field)) {
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'link',
+      'locked' => TRUE,
+      'entity_types' => array('fontyourface_font'),
+    );
+    $field = field_create_field($field);
+  } // if
+
+  if (empty($instance)) {
+    $instance = array(
+      'field_name' => $field_name,
+      'entity_type' => 'fontyourface_font',
+      'bundle' => $pid,
+      'label' => $field_label,
+      'widget' => array('type' => 'link_default'),
+      'settings' => array('title' => 0),
+    );
+    $instance = field_create_instance($instance);
+  } // if
+
+  return $instance;
+
+} // fontyourface_provider_add_url_field

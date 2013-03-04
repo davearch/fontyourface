@@ -229,5 +229,8 @@ function fontyourface_provider_add_default_fields($pid) {
 
   fontyourface_provider_add_css_style_field($pid);
   fontyourface_provider_add_css_weight_field($pid);
+  fontyourface_provider_add_foundry_url_field($pid);
+  fontyourface_provider_add_license_url_field($pid);
+  fontyourface_provider_add_designer_url_field($pid);
 
 } // fontyourface_provider_add_default_fields

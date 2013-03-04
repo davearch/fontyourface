@@ -35,6 +35,13 @@ function fontyourface_schema() {
         'default' => '',
         'description' => 'The font name.',
       ),
+      'url' => array( // Field
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'A URL for the font.',
+      ),
       'enabled' => array( // Maybe this should be in a FontConfig entity, with optional theme?
         'type' => 'int',
         'unsigned' => TRUE,
@@ -43,26 +50,11 @@ function fontyourface_schema() {
         'size' => 'tiny',
         'description' => 'Whether or not the font is enabled. (0 = disabled, 1 = enabled)',
       ),
-      'url' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'default' => '',
-        'description' => 'A URL for the font.',
-      ),
-
       'css_selector' => array( // Maybe this should be in a FontConfig entity, with optional theme?
         'type' => 'text',
         'not null' => FALSE,
         'size' => 'big',
         'description' => 'CSS selector for applying the font.',
-      ),
-      'css_family' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'CSS family for the font.',
       ),
       'css_fallbacks' => array( // Maybe this should be in a FontConfig entity, with optional theme?
         'type' => 'varchar',
@@ -71,19 +63,19 @@ function fontyourface_schema() {
         'default' => '',
         'description' => 'CSS fallbacks for the font.',
       ),
+      'css_family' => array( // Field
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'CSS family for the font.',
+      ),
       'foundry' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'Foundry for the font.',
-      ),
-      'foundry_url' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'URL for foundry for the font.',
       ),
       'license' => array( // Field
         'type' => 'varchar',
@@ -92,26 +84,12 @@ function fontyourface_schema() {
         'default' => '',
         'description' => 'License for the font.',
       ),
-      'license_url' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'URL for license for the font.',
-      ),
       'designer' => array( // Field
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'Designer for the font.',
-      ),
-      'designer_url' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'URL for designer for the font.',
       ),
     ),
     'indexes' => array(

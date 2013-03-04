@@ -20,7 +20,7 @@ use Drupal\Core\Annotation\Translation;
  *   label = @Translation("@font-your-face Font"),
  *   module = "fontyourface",
  *   controller_class = "Drupal\fontyourface\FontStorageController",
- *   render_controller_class = "Drupal\Core\Entity\EntityRenderController",
+ *   render_controller_class = "Drupal\fontyourface\FontRenderController",
  *   form_controller_class = {
  *     "default" = "Drupal\fontyourface\FontFormController"
  *   },

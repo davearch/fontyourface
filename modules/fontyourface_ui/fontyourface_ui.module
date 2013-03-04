@@ -137,3 +137,25 @@ function fontyourface_ui_font_add(Drupal\fontyourface\Plugin\Core\Entity\Provide
   return entity_get_form($font);
 
 } // fontyourface_ui_font_add
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function fontyourface_ui_field_extra_fields() {
+
+  $extra = array();
+
+  foreach (fontyourface_provider_get_names() as $bundle) {
+
+    $extra['fontyourface_font'][$bundle]['display']['preview'] = array(
+      'label' => t('Short Preview'),
+      'description' => t('Short preview for font'),
+      'weight' => 0,
+      'visible' => TRUE,
+    );
+
+  } // foreach
+
+  return $extra;
+
+} // fontyourface_ui_field_extra_fields

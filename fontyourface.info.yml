@@ -1,0 +1,7 @@
+name: @font-your-face
+description: 'Web font management tools.'
+package: @font-your-face
+dependencies:
+  - options
+configure: admin/config/fontyourface
+core: 8.x

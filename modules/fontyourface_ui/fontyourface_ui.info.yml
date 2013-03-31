@@ -1,0 +1,7 @@
+name: @font-your-face UI
+description: 'User interface for @font-your-face.'
+package: @font-your-face
+dependencies:
+  - fontyourface
+  - views
+core: 8.x

@@ -1,6 +1,0 @@
-name = @font-your-face UI
-description = User interface for @font-your-face.
-package = @font-your-face
-core = 8.x
-dependencies[] = fontyourface
-dependencies[] = views

@@ -96,7 +96,7 @@ function fontyourface_provider_add_css_weight_field($pid) {
 } // fontyourface_provider_add_css_weight_field
 
 /**
- * Adds Foundry URL field.
+ * Adds foundry URL field.
  */
 function fontyourface_provider_add_foundry_url_field($pid) {
 
@@ -105,7 +105,17 @@ function fontyourface_provider_add_foundry_url_field($pid) {
 } // fontyourface_provider_add_foundry_url_field
 
 /**
- * Adds License URL field.
+ * Adds foundry name field.
+ */
+function fontyourface_provider_add_foundry_name_field($pid) {
+
+  return fontyourface_provider_add_text_field($pid, 'font_foundry_name', 'Foundry Name');
+
+} // fontyourface_provider_add_foundry_name_field
+
+
+/**
+ * Adds license URL field.
  */
 function fontyourface_provider_add_license_url_field($pid) {
 
@@ -114,7 +124,16 @@ function fontyourface_provider_add_license_url_field($pid) {
 } // fontyourface_provider_add_license_url_field
 
 /**
- * Adds Designer URL field.
+ * Adds license name field.
+ */
+function fontyourface_provider_add_license_name_field($pid) {
+
+  return fontyourface_provider_add_text_field($pid, 'font_licsense_name', 'License Name');
+
+} // fontyourface_provider_add_license_name_field
+
+/**
+ * Adds designer URL field.
  */
 function fontyourface_provider_add_designer_url_field($pid) {
 
@@ -123,7 +142,16 @@ function fontyourface_provider_add_designer_url_field($pid) {
 } // fontyourface_provider_add_designer_url_field
 
 /**
- * Adds License URL field.
+ * Adds designer name field.
+ */
+function fontyourface_provider_add_designer_name_field($pid) {
+
+  return fontyourface_provider_add_text_field($pid, 'font_designer_name', 'Designer Name');
+
+} // fontyourface_provider_add_designer_name_field
+
+/**
+ * Adds URL field.
  */
 function fontyourface_provider_add_url_field($pid, $field_name, $field_label) {
 
@@ -157,3 +185,40 @@ function fontyourface_provider_add_url_field($pid, $field_name, $field_label) {
   return $instance;
 
 } // fontyourface_provider_add_url_field
+
+/**
+ * Adds text field.
+ */
+function fontyourface_provider_add_text_field($pid, $field_name, $field_label) {
+
+  $t = get_t();
+
+  $field = field_info_field($field_name);
+  $instance = field_info_instance('fontyourface_font', $field_name, $pid);
+
+  if (empty($field)) {
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'text',
+      'locked' => TRUE,
+      'entity_types' => array('fontyourface_font'),
+      'settings' => array('max_length' => 255),
+    );
+    $field = field_create_field($field);
+  } // if
+
+  if (empty($instance)) {
+    $instance = array(
+      'field_name' => $field_name,
+      'entity_type' => 'fontyourface_font',
+      'bundle' => $pid,
+      'label' => $field_label,
+      'widget' => array('settings' => array('size' => 60)),
+      'settings' => array('text_processing' => 0),
+    );
+    $instance = field_create_instance($instance);
+  } // if
+
+  return $instance;
+
+} // fontyourface_provider_add_text_field

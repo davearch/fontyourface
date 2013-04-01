@@ -70,27 +70,6 @@ function fontyourface_schema() {
         'default' => '',
         'description' => 'CSS family for the font.',
       ),
-      'foundry' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'Foundry for the font.',
-      ),
-      'license' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'License for the font.',
-      ),
-      'designer' => array( // Field
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => FALSE,
-        'default' => '',
-        'description' => 'Designer for the font.',
-      ),
     ),
     'indexes' => array(
       'enabled' => array('enabled'),

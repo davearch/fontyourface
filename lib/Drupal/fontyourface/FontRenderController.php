@@ -21,11 +21,9 @@ class FontRenderController extends EntityRenderController {
    */
   public function buildContent(array $entities, array $displays, $view_mode, $langcode = NULL) {
 
-    $return = array();
-
     if (empty($entities)) {
-      return $return;
-    }
+      return;
+    } // if
 
     parent::buildContent($entities, $displays, $view_mode, $langcode);
 
@@ -36,18 +34,39 @@ class FontRenderController extends EntityRenderController {
       $display = $displays[$bundle];
 
       // Add short preview field element to font render array.
-      
+
       if ($display->getComponent('preview')) {
-  
+
         $entity->content['preview'] = array(
           '#type' => 'item',
-          '#title' => t('Short Preview'),
+          // '#title' => t('Short Preview'),
           '#markup' => 'TEST',
           '#prefix' => '<div class="field-preview-display">',
           '#suffix' => '</div>'
         );
-      }
-    }
+
+      } // if
+
+      if ($display->getComponent('enable')) {
+
+        if ($entity->enabled) {
+          $link = l('Disable', 'admin/config/fontyourface/font/' . $entity->fid);
+        } // if
+        else {
+          $link = l('Enable', 'admin/config/fontyourface/font/' . $entity->fid);
+        } // else
+
+        $entity->content['enable'] = array(
+          '#type' => 'item',
+          // '#title' => t('Enable Link'),
+          '#markup' => $link,
+          '#prefix' => '<div class="field-enable-display">',
+          '#suffix' => '</div>'
+        );
+
+      } // if
+
+    } // foreach
 
   } // buildContent
 

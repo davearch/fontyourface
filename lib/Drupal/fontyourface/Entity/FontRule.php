@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\fontyourface\Plugin\Core\Entity\Provider.
+ * Definition of Drupal\fontyourface\Plugin\Core\Entity\FontRule.
  */
 
 namespace Drupal\fontyourface\Plugin\Core\Entity;
@@ -15,57 +15,50 @@ use Drupal\Core\Annotation\Translation;
  * Defines the font provider entity.
  *
  * @Plugin(
- *   id = "fontyourface_provider",
- *   label = @Translation("Font Provider"),
+ *   id = "fontyourface_rule",
+ *   label = @Translation("Font Rule"),
  *   module = "fontyourface",
  *   controller_class = "Drupal\fontyourface\ProviderStorageController",
- *   access_controller_class = "Drupal\fontyourface\ProviderAccessController",
+ *   access_controller_class = "Drupal\fontyourface\FontRuleAccessController",
  *   form_controller_class = {
  *     "default" = "Drupal\Core\Entity\EntityFormController"
  *   },
- *   config_prefix = "fontyourface.provider",
+ *   config_prefix = "fontyourface.rule",
  *   entity_keys = {
- *     "id" = "pid",
- *     "label" = "name"
+ *     "id" = "rid",
+ *     "label" = "selector"
  *   }
  * )
  */
 
-class Provider extends ConfigEntityBase {
+class FontRule extends ConfigEntityBase {
 
   /**
-   * The font provider id.
+   * The font rule id.
    *
    * @var string
    */
-  public $pid;
+  public $rid;
 
   /**
-   * The font provider URL.
+   * The font id.
    *
    * @var string
    */
-  public $url;
+  public $fid;
 
   /**
-   * Name of the provider.
+   * CSS selector.
    *
    * @var string
    */
-  public $name;
-
-  /**
-   * Base path of the provider.
-   *
-   * @var string
-   */
-  public $base_path;
+  public $selector;
 
   /**
    * Implements Drupal\Core\Entity\EntityInterface::id().
    */
   public function id() {
-    return $this->pid;
+    return $this->rid;
   } // id
 
-} // Provider
+} // FontRule

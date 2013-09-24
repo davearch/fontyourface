@@ -15,9 +15,7 @@ function fontyourface_ui_menu() {
   $items['admin/config/fontyourface/provider'] = array(
     'title' => 'Providers',
     'description' => 'Manage font providers.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('fontyourface_ui_provider_overview'),
-    'access arguments' => array('administer fonts'),
+    'route_name' => 'fontyourface_ui.provider_list',
   );
   
   $items['admin/config/fontyourface/provider/%fontyourface_provider'] = array(
@@ -28,7 +26,7 @@ function fontyourface_ui_menu() {
     'access callback' => 'entity_page_access',
     'access arguments' => array(4, 'view'),
   );
-  
+
   $items['admin/config/fontyourface/font/%fontyourface_provider/add'] = array(
     'title' => 'Add Font',
     'page callback' => 'fontyourface_ui_font_add',
@@ -126,9 +124,9 @@ function theme_fontyourface_ui_provider_overview($variables) {
 } // theme_fontyourface_ui_provider_overview
 
 function fontyourface_ui_provider_view(Drupal\fontyourface\Plugin\Core\Entity\Provider $provider) {
-  
+
   return $provider->name;
-  
+
 } // fontyourface_ui_provider_view
 
 function fontyourface_ui_font_add(Drupal\fontyourface\Plugin\Core\Entity\Provider $provider) {
@@ -150,6 +148,13 @@ function fontyourface_ui_field_extra_fields() {
     $extra['fontyourface_font'][$bundle]['display']['preview'] = array(
       'label' => t('Short Preview'),
       'description' => t('Short preview for font'),
+      'weight' => 0,
+      'visible' => TRUE,
+    );
+
+    $extra['fontyourface_font'][$bundle]['display']['enable'] = array(
+      'label' => t('Enable Link'),
+      'description' => t('Link to enable/disable font'),
       'weight' => 0,
       'visible' => TRUE,
     );

@@ -2,31 +2,39 @@
 
 /**
  * @file
- * Definition of Drupal\fontyourface\Plugin\Core\Entity\Font.
+ * Definition of Drupal\fontyourface\Entity\Font.
  */
 
-namespace Drupal\fontyourface\Plugin\Core\Entity;
+namespace Drupal\fontyourface\Entity;
 
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\Entity;
-use Drupal\Component\Annotation\Plugin;
+use Drupal\Core\Entity\EntityNG;
+use Drupal\Core\Entity\Annotation\EntityType;
+use Drupal\Core\Entity\EntityStorageControllerInterface;
 use Drupal\Core\Annotation\Translation;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Defines the font entity.
  *
- * @Plugin(
+ * @EntityType(
  *   id = "fontyourface_font",
  *   label = @Translation("@font-your-face Font"),
+ *   bundle_label = @Translation("Provider"),
  *   module = "fontyourface",
- *   controller_class = "Drupal\fontyourface\FontStorageController",
- *   render_controller_class = "Drupal\fontyourface\FontRenderController",
- *   form_controller_class = {
- *     "default" = "Drupal\fontyourface\FontFormController"
+ *   controllers = {
+ *     "storage" = "Drupal\fontyourface\FontStorageController",
+ *     "render" = "Drupal\fontyourface\FontRenderController",
+ *     "access" = "Drupal\fontyourface\FontAccessController",
+ *     "form" = {
+ *       "default" = "Drupal\fontyourface\FontFormController",
+ *       "delete" = "Drupal\fontyourface\Form\FontDeleteForm"
+ *     },
+*     "translation" = "Drupal\content_translation\ContentTranslationControllerNG"
  *   },
  *   base_table = "fontyourface_font",
  *   uri_callback = "fontyourface_font_uri",
  *   fieldable = TRUE,
+ *   translatable = FALSE,
  *   entity_keys = {
  *     "id" = "fid",
  *     "bundle" = "pid",
@@ -36,11 +44,17 @@ use Drupal\Core\Annotation\Translation;
  *   bundle_keys = {
  *     "bundle" = "pid"
  *   },
- *   menu_base_path = "admin/config/fontyourface/font/%font"
+ *   links = {
+ *     "canonical" = "/admin/config/fontyourface/font/{fontyourface_font}",
+ *     "edit-form" = "/admin/config/fontyourface/font/{fontyourface_font}/edit"
+ *   },
+ *   menu_base_path = "admin/config/fontyourface/font/%fontyourface_font",
+ *   route_base_path = "admin/config/fontyourface/provider/{bundle}",
+ *   permission_granularity = "bundle"
  * )
  */
 
-class Font extends Entity implements ContentEntityInterface {
+class Font extends EntityNG implements ContentEntityInterface {
 
   /**
    * The font ID.
@@ -165,14 +179,36 @@ class Font extends Entity implements ContentEntityInterface {
    * Implements Drupal\Core\Entity\EntityInterface::id().
    */
   public function id() {
-    return $this->fid;
+    return $this->get('fid')->value;
   } // id
 
   /**
    * Implements Drupal\Core\Entity\EntityInterface::bundle().
    */
   public function bundle() {
-    return $this->pid;
+    return $this->get('pid')->value;
   } // bundle
+  
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions($entity_type) {
+
+    $properties['fid'] = array(
+      'label' => t('Font ID'),
+      'description' => t('The font ID.'),
+      'type' => 'integer_field',
+      'read-only' => TRUE,
+    );
+    $properties['name'] = array(
+      'label' => t('Name'),
+      'description' => t('The font name.'),
+      'type' => 'string_field',
+      'read-only' => TRUE,
+    );
+
+    return $properties;
+
+  } // baseFieldDefinitions
 
 } // Font

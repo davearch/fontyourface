@@ -5,9 +5,10 @@
  * Provides general API for managing information about web fonts.
  */
 
-use Drupal\fontyourface\Plugin\Core\Entity\Font;
-use Drupal\fontyourface\Plugin\Core\Entity\Provider;
+use Drupal\Core\Entity\DatabaseStorageController;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\fontyourface\Entity\Font;
+use Drupal\fontyourface\Entity\Provider;
 
 /**
  * Implements hook_permission().
@@ -225,6 +226,7 @@ function fontyourface_entity_view_mode_info() {
  */
 function fontyourface_provider_add_default_fields($pid) {
 
+/*
   module_load_include('inc', 'fontyourface', 'fontyourface.field');
 
   fontyourface_provider_add_css_style_field($pid);
@@ -235,5 +237,6 @@ function fontyourface_provider_add_default_fields($pid) {
   fontyourface_provider_add_license_url_field($pid);
   fontyourface_provider_add_designer_name_field($pid);
   fontyourface_provider_add_designer_url_field($pid);
+*/
 
 } // fontyourface_provider_add_default_fields

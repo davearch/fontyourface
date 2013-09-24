@@ -13,20 +13,24 @@ function fontyourface_local_enable() {
 
   module_load_include('inc', 'fontyourface_local', 'fontyourface_local.field');
 
-  // Create provider bundle, with fiels.
+  // Create provider bundle, with fields.
 
   $provider = entity_create('fontyourface_provider', array(
     'pid' => 'local',
-    'name' => st('Local Fonts'),
+    'name' => t('Local Fonts'),
     'url' => 'http://drupal.org/project/fontyourface#local',
     'base_path' => 'public://fontyourface/local_fonts/',
   ));
+  
   fontyourface_provider_save($provider);
+
+/*
   fontyourface_provider_add_default_fields('local');
   fontyourface_local_add_eot_field('local');
   fontyourface_local_add_ttf_field('local');
   fontyourface_local_add_woff_field('local');
   fontyourface_local_add_svg_field('local');
+*/
 
 } // fontyourface_local_enable
 

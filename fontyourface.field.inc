@@ -10,8 +10,6 @@
  */
 function fontyourface_provider_add_css_style_field($pid) {
 
-  $t = get_t();
-
   $field = field_info_field('font_css_style');
   $instance = field_info_instance('fontyourface_font', 'font_css_style', $pid);
 
@@ -22,9 +20,9 @@ function fontyourface_provider_add_css_style_field($pid) {
       'locked' => TRUE,
       'entity_types' => array('fontyourface_font'),
       'settings' => array('allowed_values' => array(
-        'normal' => $t('Normal'),
-        'italic' => $t('Italic'),
-        'oblique' => $t('Oblique'),
+        'normal' => t('Normal'),
+        'italic' => t('Italic'),
+        'oblique' => t('Oblique'),
       )),
     );
     $field = field_create_field($field);
@@ -50,8 +48,6 @@ function fontyourface_provider_add_css_style_field($pid) {
  */
 function fontyourface_provider_add_css_weight_field($pid) {
 
-  $t = get_t();
-
   $field = field_info_field('font_css_weight');
   $instance = field_info_instance('fontyourface_font', 'font_css_weight', $pid);
 
@@ -62,10 +58,10 @@ function fontyourface_provider_add_css_weight_field($pid) {
       'locked' => TRUE,
       'entity_types' => array('fontyourface_font'),
       'settings' => array('allowed_values' => array(
-        'normal' => $t('Normal'),
-        'bold' => $t('Bold'),
-        'bolder' => $t('Bolder'),
-        'lighter' => $t('Lighter'),
+        'normal' => t('Normal'),
+        'bold' => t('Bold'),
+        'bolder' => t('Bolder'),
+        'lighter' => t('Lighter'),
         '100' => '100',
         '200' => '200',
         '300' => '300',
@@ -155,8 +151,6 @@ function fontyourface_provider_add_designer_name_field($pid) {
  */
 function fontyourface_provider_add_url_field($pid, $field_name, $field_label) {
 
-  $t = get_t();
-
   $field = field_info_field($field_name);
   $instance = field_info_instance('fontyourface_font', $field_name, $pid);
 
@@ -190,8 +184,6 @@ function fontyourface_provider_add_url_field($pid, $field_name, $field_label) {
  * Adds text field.
  */
 function fontyourface_provider_add_text_field($pid, $field_name, $field_label) {
-
-  $t = get_t();
 
   $field = field_info_field($field_name);
   $instance = field_info_instance('fontyourface_font', $field_name, $pid);

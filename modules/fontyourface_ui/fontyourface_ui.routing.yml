@@ -1,0 +1,6 @@
+fontyourface_ui.provider_list:
+  path: '/admin/config/fontyourface/provider'
+  defaults:
+    _entity_list: 'fontyourface_provider'
+  requirements:
+    _permission: 'administer fonts'

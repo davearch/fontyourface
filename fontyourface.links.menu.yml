@@ -6,8 +6,8 @@ entity.font.collection:
   parent: system.admin_structure
   weight: 100
 
-font.admin.structure.settings:
-  title: Font settings
-  description: 'Configure Font entities'
+font.admin.appearance.settings:
+  title: @font-your-face settings
+  description: '@font-your-face settings'
   route_name: font.settings
-  parent: system.admin_structure
+  parent: system.themes_page

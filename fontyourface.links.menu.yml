@@ -1,0 +1,13 @@
+# Font menu items definition
+entity.font.collection:
+  title: 'Font list'
+  route_name: entity.font.collection
+  description: 'List Font entities'
+  parent: system.admin_structure
+  weight: 100
+
+font.admin.structure.settings:
+  title: Font settings
+  description: 'Configure Font entities'
+  route_name: font.settings
+  parent: system.admin_structure

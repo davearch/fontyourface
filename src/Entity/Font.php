@@ -50,11 +50,11 @@ use Drupal\user\UserInterface;
  *     "status" = "status",
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/font/{font}",
- *     "add-form" = "/admin/structure/font/add",
- *     "edit-form" = "/admin/structure/font/{font}/edit",
- *     "delete-form" = "/admin/structure/font/{font}/delete",
- *     "collection" = "/admin/structure/font",
+ *     "canonical" = "/admin/appearance/font/{font}",
+ *     "add-form" = "/admin/appearance/font/add",
+ *     "edit-form" = "/admin/appearance/font/{font}/edit",
+ *     "delete-form" = "/admin/appearance/font/{font}/delete",
+ *     "collection" = "/admin/appearance/font",
  *   },
  *   field_ui_base_route = "font.settings"
  * )

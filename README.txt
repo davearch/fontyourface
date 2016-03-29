@@ -1,3 +1,7 @@
+* Note that this module is not ready for D8. This is going to be a rewrite and work will happen in the 8.x-3.x-rewrite branch.
+* Right now...it does nothing other than have capability of being enabled.
+
+
 Installing @font-your-face:
 ===========================
 

@@ -30,9 +30,7 @@ use Drupal\user\UserInterface;
  *
  *     "form" = {
  *       "default" = "Drupal\fontyourface\Form\FontForm",
- *       "add" = "Drupal\fontyourface\Form\FontForm",
  *       "edit" = "Drupal\fontyourface\Form\FontForm",
- *       "delete" = "Drupal\fontyourface\Form\FontDeleteForm",
  *     },
  *     "access" = "Drupal\fontyourface\FontAccessControlHandler",
  *     "route_provider" = {
@@ -50,9 +48,7 @@ use Drupal\user\UserInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/appearance/font/{font}",
- *     "add-form" = "/admin/appearance/font/add",
  *     "edit-form" = "/admin/appearance/font/{font}/edit",
- *     "delete-form" = "/admin/appearance/font/{font}/delete",
  *     "collection" = "/admin/appearance/font",
  *   },
  *   field_ui_base_route = "font.settings"

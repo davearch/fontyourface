@@ -5,6 +5,7 @@
  * Contains fontyourface.module..
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\fontyourface\Entity\Font;
 
@@ -21,6 +22,37 @@ function fontyourface_help($route_name, RouteMatchInterface $route_match) {
       return $output;
 
     default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function fontyourface_theme() {
+  return [
+    'font' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for Font templates.
+ *
+ * Default template: font.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_font(array &$variables) {
+  // Fetch Font Entity Object.
+  $font = $variables['elements']['#font'];
+
+  // Helpful $content variable for templates.
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
   }
 }
 

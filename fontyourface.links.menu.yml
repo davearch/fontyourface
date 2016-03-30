@@ -3,7 +3,7 @@ entity.font.collection:
   title: 'Font list'
   route_name: entity.font.collection
   description: 'List Font entities'
-  parent: system.admin_structure
+  parent: system.themes_page
   weight: 100
 
 font.admin.appearance.settings:

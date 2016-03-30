@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\fontyourface\Entity\Font;
 
 /**
  * Implements hook_help().
@@ -21,4 +22,17 @@ function fontyourface_help($route_name, RouteMatchInterface $route_match) {
 
     default:
   }
+}
+
+/**
+ * Saves a font.
+ */
+function fontyourface_save_font($font_data) {
+  $font = Font::create([
+    'pid' => $font_data->provider,
+    'name' => $font_data->name,
+    'css_family' => $font_data->css_family,
+    'url' => $font_data->url,
+  ]);
+  $font->save();
 }

@@ -96,6 +96,36 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
+  public function getPid() {
+    return $this->get('pid')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPid($pid) {
+    $this->set('pid', $pid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUrl() {
+    return $this->get('url')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUrl($url) {
+    $this->set('url', $url);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields['fid'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))

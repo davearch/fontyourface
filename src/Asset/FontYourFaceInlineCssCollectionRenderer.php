@@ -17,8 +17,8 @@ class FontYourFaceInlineCssCollectionRenderer extends CssCollectionRenderer {
   public function render(array $css_assets) {
     // Get the parent assets first.
     $elements = parent::render($css_assets);
-    $fontyourface_font_elements = drupal_alter('fontyourface_fonts');
-    $fontyourface_font_styles = drupal_alter('fontyourface_styles');
+    $fontyourface_font_elements = \Drupal::moduleHandler()->invokeAll('fontyourface_font_families');
+    $fontyourface_font_styles = \Drupal::moduleHandler()->invokeAll('fontyourface_font_styles');
     return $elements;
   }
 }

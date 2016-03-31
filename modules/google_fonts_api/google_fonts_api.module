@@ -10,6 +10,14 @@ function google_fonts_api_fontyourface_api() {
 }
 
 /**
+ * Implements hook_fontyourface_font_families().
+ */
+function google_fonts_api_fontyourface_font_families() {
+  $css = [];
+  var_dump($_GET['q']);
+}
+
+/**
  * Implements hook_fontyourface_import().
  */
 function google_fonts_api_fontyourface_import() {

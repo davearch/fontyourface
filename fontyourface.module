@@ -49,6 +49,8 @@ function fontyourface_theme() {
 function template_preprocess_font(array &$variables) {
   // Fetch Font Entity Object.
   $font = $variables['elements']['#font'];
+  $fonts = &drupal_static('fontyourface_dynamic_preview_fonts');
+  $fonts[$font->getUrl()] = $font;
 
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
@@ -62,9 +64,18 @@ function template_preprocess_font(array &$variables) {
 function fontyourface_save_font($font_data) {
   $font = Font::create([
     'pid' => $font_data->provider,
+    'url' => $font_data->url,
     'name' => $font_data->name,
     'css_family' => $font_data->css_family,
-    'url' => $font_data->url,
+    'css_style' => $font_data->css_style,
+    'css_weight' => $font_data->css_weight,
+    'foundry' => $font_data->foundry,
+    'foundry_url' => $font_data->foundry_url,
+    'license' => $font_data->license,
+    'license_url' => $font_data->license_url,
+    'designer' => $font_data->designer,
+    'designer_url' => $font_data->designer_url,
+    'metadata' => $font_data->metadata,
   ]);
   $font->save();
 }

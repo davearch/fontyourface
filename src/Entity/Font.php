@@ -82,6 +82,21 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
+  public function getProvider() {
+    return $this->get('pid')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setProvider($provider) {
+    $this->set('pid', $provider);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getUrl() {
     return $this->get('url')->value;
   }

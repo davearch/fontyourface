@@ -39,6 +39,25 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
   public function setPid($pid);
 
   /**
+   * Gets the Font provider ID.
+   *
+   * @return string
+   *   Font provider ID.
+   */
+  public function getProvider();
+
+  /**
+   * Sets the Font provider ID.
+   *
+   * @param string $provider
+   *   The Font provider ID.
+   *
+   * @return \Drupal\fontyourface\FontInterface
+   *   The called Font entity.
+   */
+  public function setProvider($provider);
+
+  /**
    * Gets the Font URL.
    *
    * @return string

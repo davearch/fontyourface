@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\fontyourface\Entity\Font;
+
 /**
  * Implements hook_fontyourface_api()
  */
@@ -10,11 +12,52 @@ function google_fonts_api_fontyourface_api() {
 }
 
 /**
- * Implements hook_fontyourface_font_families().
+ * Implements hook_fontyourface_generate_font_family_css.
  */
-function google_fonts_api_fontyourface_font_families() {
-  $css = [];
-  var_dump($_GET['q']);
+function google_fonts_api_fontyourface_generate_font_family_css(Font $font) {
+  $metadata = $font->getMetadata();
+  $path_parts = explode(':', $metadata['path']);
+
+  $subsets[$path_parts[0]][$metadata['subset']] = $metadata['subset'];
+  $all_subsets[$metadata['subset']] = $metadata['subset'];
+
+  if (!isset($paths[$path_parts[0]])) {
+    $paths[$path_parts[0]] = array();
+  } // if
+
+  if (count($path_parts) > 1) {
+    $paths[$path_parts[0]][$path_parts[1]] = $path_parts[1];
+  } // if
+  else {
+    $paths[$path_parts[0]]['regular'] = 'regular';
+  } // else
+
+  if (count($paths) > 0) {
+
+    $families = array();
+
+    foreach ($paths as $family => $variants) {
+      $families[$family] = urlencode($family) . ':' . implode(',', $variants);
+    } // foreach
+
+    $base = 'http://fonts.googleapis.com/css?family=';
+
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+      $base = 'https://fonts.googleapis.com/css?family=';
+    } // if
+
+    $url = $base . implode('|', $families) . '&subset=' . implode(',', $all_subsets);
+
+    return [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'stylesheet',
+        'href' => $url,
+        'media' => 'all',
+      ],
+    ];
+  } // if
 }
 
 /**

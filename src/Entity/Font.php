@@ -24,6 +24,7 @@ use Drupal\user\UserInterface;
  *   id = "font",
  *   label = @Translation("Font"),
  *   handlers = {
+ *     "storage_schema" = "Drupal\fontyourface\FontStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\fontyourface\FontListBuilder",
  *     "views_data" = "Drupal\fontyourface\Entity\FontViewsData",
@@ -159,7 +160,7 @@ class Font extends ContentEntityBase implements FontInterface {
       ->setLabel(t('Font URL'))
       ->setDescription(t('A URL for the font.'))
       ->setSettings(array(
-        'max_length' => 255,
+        'max_length' => 191,
         'text_processing' => 0,
       ))
       ->setDefaultValue('')

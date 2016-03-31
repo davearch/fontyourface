@@ -67,36 +67,6 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
-  public function getName() {
-    return $this->get('name')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setName($name) {
-    $this->set('name', $name);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCreatedTime() {
-    return $this->get('created')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setCreatedTime($timestamp) {
-    $this->set('created', $timestamp);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getPid() {
     return $this->get('pid')->value;
   }
@@ -121,6 +91,201 @@ class Font extends ContentEntityBase implements FontInterface {
    */
   public function setUrl($url) {
     $this->set('url', $url);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return $this->get('name')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setName($name) {
+    $this->set('name', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCssFamily() {
+    return $this->get('css_family')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCssFamily($family) {
+    $this->set('css_family', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCssStyle() {
+    return $this->get('css_style')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCssStyle($style) {
+    $this->set('css_style', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCssWeight() {
+    return $this->get('css_weight')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCssWeight($weight) {
+    $this->set('css_weight', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFoundry() {
+    return $this->get('foundry')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFoundry($foundry) {
+    $this->set('foundry', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFoundryUrl() {
+    return $this->get('foundry_url')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFoundryUrl($foundry_url) {
+    $this->set('foundry_url', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLicense() {
+    return $this->get('license')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLicense($license) {
+    $this->set('license', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLicenseUrl() {
+    return $this->get('license_url')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLicenseUrl($license_url) {
+    $this->set('license_url', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDesigner() {
+    return $this->get('designer')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDesigner($designer) {
+    $this->set('designer', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDesignerUrl() {
+    return $this->get('designer_url')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDesignerUrl($designer_url) {
+    $this->set('designer_url', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMetadata() {
+    return unserialize($this->get('metadata')->value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setMetadata($metadata) {
+    $this->set('metadata', serialize($metadata));
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreatedTime() {
+    return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCreatedTime($timestamp) {
+    $this->set('created', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getChangedTime() {
+    return $this->get('changed')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setChangedTime($timestamp) {
+    $this->set('changed', $timestamp);
     return $this;
   }
 
@@ -199,6 +364,186 @@ class Font extends ContentEntityBase implements FontInterface {
     $fields['css_family'] = BaseFieldDefinition::create('string')
       ->setLabel(t('CSS Family'))
       ->setDescription(t('CSS family for the font.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['css_style'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('CSS Style'))
+      ->setDescription(t('CSS style for the font.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['css_weight'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('CSS Weight'))
+      ->setDescription(t('CSS weight for the font.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['foundry'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Foundry'))
+      ->setDescription(t('Foundry for the font.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['foundry_url'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Foundry URL'))
+      ->setDescription(t('Foundry URL.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['license'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('License'))
+      ->setDescription(t('Font License.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['license_url'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('License URL'))
+      ->setDescription(t('License URL.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['designer'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Designer'))
+      ->setDescription(t('Font Designer'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['designer_url'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Designer URL'))
+      ->setDescription(t('Designer URL.'))
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['metadata'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Font Metadata'))
+      ->setDescription(t('Additional Font Metadata'))
       ->setSettings(array(
         'max_length' => 255,
         'text_processing' => 0,

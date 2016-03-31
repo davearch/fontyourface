@@ -1,0 +1,5 @@
+services:
+  asset.css.fontyourface_renderer:
+    class: Drupal\fontyourface\Asset\FontYourFaceInlineCssRenderer
+    arguments: [ '@state' ]
+

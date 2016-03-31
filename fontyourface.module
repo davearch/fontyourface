@@ -40,7 +40,6 @@ function fontyourface_theme() {
  * Implements hook_page_attachments().
  */
 function fontyourface_page_attachments(&$page) {
-  drupal_set_message('here!');
   $preview_fonts = &drupal_static('fontyourface_dynamic_preview_fonts');
   if (!empty($preview_fonts)) {
     foreach ($preview_fonts as $preview_font) {

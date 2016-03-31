@@ -37,6 +37,27 @@ function fontyourface_theme() {
 }
 
 /**
+ * Implements hook_page_attachments().
+ */
+function fontyourface_page_attachments(&$page) {
+  drupal_set_message('here!');
+  $preview_fonts = &drupal_static('fontyourface_dynamic_preview_fonts');
+  if (!empty($preview_fonts)) {
+    foreach ($preview_fonts as $preview_font) {
+      $element = \Drupal::moduleHandler()->invoke($preview_font->getProvider(), 'fontyourface_generate_font_family_css', [$preview_font]);
+      if (!empty($element)) {
+        $page['#attached']['html_head'][] = [$element, $preview_font->getCssFamily()];
+        $page['#attached']['html_head'][] = [[
+          '#type' => 'html_tag',
+          '#tag' => 'style',
+          '#value' => '.fontyourface-preview { font-family: "'. $preview_font->getCssFamily() . '";}',
+        ], $preview_font->id() . '-preview'];
+      }
+    }
+  }
+}
+
+/**
  * Prepares variables for Font templates.
  *
  * Default template: font.html.twig.

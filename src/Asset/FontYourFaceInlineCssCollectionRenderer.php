@@ -3,6 +3,8 @@
 /**
  * @file
  * Contains Drupal\fontyourface\Asset\FontYourFaceInlineCssCollectionRenderer.
+ *
+ * While this service is going to be disabled, I may return to it if enough people complain their selectors are not getting the fonts they would like.
  */
 
 namespace Drupal\fontyourface\Asset;

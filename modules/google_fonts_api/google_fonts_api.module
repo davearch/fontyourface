@@ -49,7 +49,6 @@ function google_fonts_api_fontyourface_generate_font_family_css(Font $font) {
     $url = $base . implode('|', $families) . '&subset=' . implode(',', $all_subsets);
 
     return [
-      '#type' => 'html_tag',
       '#tag' => 'link',
       '#attributes' => [
         'rel' => 'stylesheet',

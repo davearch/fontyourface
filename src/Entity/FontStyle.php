@@ -46,6 +46,14 @@ use Drupal\fontyourface\FontStyleInterface;
  *     "edit-form" = "/admin/appearance/font_style/{font_style}/edit",
  *     "delete-form" = "/admin/appearance/font_style/{font_style}/delete",
  *     "collection" = "/admin/appearance/font_style"
+ *   },
+ *   config_export = {
+ *     "font_url",
+ *     "style",
+ *     "weight",
+ *     "fallback",
+ *     "selectors",
+ *     "theme"
  *   }
  * )
  */
@@ -110,7 +118,7 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * {@inheritdoc}
    */
   public function getFontUrl() {
-    return $this->get('font_url')->value;
+    return $this->get('font_url');
   }
 
   /**
@@ -125,7 +133,7 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * {@inheritdoc}
    */
   public function getStyle() {
-    return $this->get('style')->value;
+    return $this->get('style');
   }
 
   /**
@@ -140,7 +148,7 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * {@inheritdoc}
    */
   public function getWeight() {
-    return $this->get('weight')->value;
+    return $this->get('weight');
   }
 
   /**
@@ -155,7 +163,7 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * {@inheritdoc}
    */
   public function getFallback() {
-    return $this->get('fallback')->value;
+    return $this->get('fallback');
   }
 
   /**
@@ -170,7 +178,7 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * {@inheritdoc}
    */
   public function getSelectors() {
-    return $this->get('selectors')->value;
+    return $this->get('selectors');
   }
 
   /**
@@ -185,7 +193,7 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * {@inheritdoc}
    */
   public function getTheme() {
-    return $this->get('theme')->value;
+    return $this->get('theme');
   }
 
   /**

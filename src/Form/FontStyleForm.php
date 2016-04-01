@@ -119,6 +119,7 @@ class FontStyleForm extends EntityForm {
       '#type' => 'textfield',
       '#title' => $this->t('Selectors'),
       '#description' => $this->t('Selects the selected font will apply to.'),
+      '#default_value' => $font_style->getSelectors(),
       '#maxlength' => 300,
       '#required' => TRUE,
     ];
@@ -127,6 +128,7 @@ class FontStyleForm extends EntityForm {
       '#type' => 'select',
       '#title' => $this->t('Theme'),
       '#description' => $this->t('Select theme this display will work for.'),
+      '#default_value' => $font_style->getTheme(),
       '#options' => $themes,
       '#required' => TRUE,
     ];

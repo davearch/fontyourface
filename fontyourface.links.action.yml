@@ -1,6 +1,6 @@
 entity.font_style.add_form:
   route_name: 'entity.font_style.add_form'
-  title: 'Add Font style'
+  title: 'Add Font Display'
   appears_on:
     - entity.font_style.collection
 

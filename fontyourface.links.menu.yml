@@ -13,8 +13,8 @@ font.admin.appearance.settings:
   parent: system.themes_page
 # Font style menu items definition
 entity.font_style.collection:
-  title: 'Font style'
+  title: 'Font display'
   route_name: entity.font_style.collection
-  description: 'List Font style (bundles)'
+  description: 'List Font display (bundles)'
   parent: system.themes_page
   weight: 99

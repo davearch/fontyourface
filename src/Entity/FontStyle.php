@@ -15,7 +15,7 @@ use Drupal\fontyourface\FontStyleInterface;
  *
  * @ConfigEntityType(
  *   id = "font_style",
- *   label = @Translation("Font style"),
+ *   label = @Translation("Font Display"),
  *   handlers = {
  *     "list_builder" = "Drupal\fontyourface\FontStyleListBuilder",
  *     "form" = {
@@ -32,7 +32,13 @@ use Drupal\fontyourface\FontStyleInterface;
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "font_url" = "font_url",
+ *     "style" = "style",
+ *     "weight" = "weight",
+ *     "fallback" = "fallback",
+ *     "selectors" = "selectors",
+ *     "theme" = "theme"
  *   },
  *   links = {
  *     "canonical" = "/admin/appearance/font_style/{font_style}",
@@ -57,5 +63,137 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
    * @var string
    */
   protected $label;
+
+  /**
+   * Font URL - these are unique.
+   *
+   * @var string
+   */
+  protected $font_url;
+
+  /**
+   * Font style.
+   *
+   * @var string
+   */
+  protected $style;
+
+  /**
+   * Font weight.
+   *
+   * @var string
+   */
+  protected $weight;
+
+  /**
+   * Fallback fonts when font fails to load.
+   *
+   * @var string
+   */
+  protected $fallback;
+
+  /**
+   * Selectors where font applies.
+   *
+   * @var string
+   */
+  protected $selectors;
+
+  /**
+   * Theme - where the font + selectors will be used.
+   *
+   * @var string
+   */
+  protected $theme;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFontUrl() {
+    return $this->get('font_url')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFontUrl($font_url) {
+    $this->set('font_url', $font_url);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStyle() {
+    return $this->get('style')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStyle($style) {
+    $this->set('style', $font_url);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWeight() {
+    return $this->get('weight')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWeight($weight) {
+    $this->set('weight', $font_url);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFallback() {
+    return $this->get('fallback')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFallback($fallback) {
+    $this->set('fallback', $fallback);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSelectors() {
+    return $this->get('selectors')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSelectors($selectors) {
+    $this->set('selectors', $selectors);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTheme() {
+    return $this->get('theme')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setTheme($theme) {
+    $this->set('theme', $theme);
+    return $this;
+  }
 
 }

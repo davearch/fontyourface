@@ -18,4 +18,3 @@ entity.font_style.collection:
   description: 'List Font style (bundles)'
   parent: system.themes_page
   weight: 99
-

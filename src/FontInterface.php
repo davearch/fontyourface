@@ -354,4 +354,23 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    *   TRUE is font is disabled. FALSE otherwise.
    */
   public function disable();
+
+  /**
+   * Returns list of enabled fonts.
+   *
+   * @return array
+   *   Array of fonts.
+   */
+  public static function loadEnabledFonts();
+
+  /**
+   * Returns font by url.
+   *
+   * @param string $url
+   *   $The unique font url.
+   *
+   * @return array
+   *   Array of fonts.
+   */
+  public static function loadByUrl($font_url);
 }

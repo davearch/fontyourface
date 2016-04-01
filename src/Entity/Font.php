@@ -324,6 +324,30 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
+  public function enable() {
+    $config = \Drupal::configFactory()->getEditable('fontyourface.settings');
+    $enabled_fonts = $config->get('enabled_fonts');
+    $enabled_fonts = array_merge($enabled_fonts, [$this->getUrl()]);
+    $config->set('enabled_fonts', $enabled_fonts)
+      ->save();
+    return $this->isEnabled();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function disable() {
+    $config = \Drupal::configFactory()->getEditable('fontyourface.settings');
+    $enabled_fonts = $config->get('enabled_fonts');
+    $enabled_fonts = array_diff($enabled_fonts, [$this->getUrl()]);
+    $config->set('enabled_fonts', $enabled_fonts)
+      ->save();
+    return !$this->isDisabled();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields['fid'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))

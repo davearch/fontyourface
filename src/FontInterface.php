@@ -325,12 +325,33 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
 
   /**
    * Checks if the font is enabled.
+   *
+   * @return boolean
+   *   TRUE is font is enabled. FALSE otherwise.
    */
   public function isEnabled();
 
   /**
    * Checks if the font is disabled.
+   *
+   * @return boolean
+   *   TRUE is font is disabled. FALSE otherwise.
    */
   public function isDisabled();
 
+  /**
+   * Enable a font.
+   *
+   * @return boolean
+   *   TRUE is font is enabled. FALSE otherwise.
+   */
+  public function enable();
+
+  /**
+   * Disable a font.
+   *
+   * @return boolean
+   *   TRUE is font is disabled. FALSE otherwise.
+   */
+  public function disable();
 }

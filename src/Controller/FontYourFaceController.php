@@ -27,13 +27,7 @@ class FontYourFaceController extends ControllerBase {
    * {@inheritdoc}
    */
   public function enableFont(Font $font) {
-    $config = \Drupal::configFactory()->getEditable('fontyourface.settings');
-    $enabled_fonts = $config->get('enabled_fonts');
-    if (!in_array($font->getUrl(), $enabled_fonts)) {
-      $enabled_fonts[] = $font->getUrl();
-    }
-    $config->set('enabled_fonts', $enabled_fonts)
-      ->save();
+    $font->enable();
     drupal_set_message(t('Font @font successfully enabled', ['@font' => $font->getName()]));
     return $this->redirect('entity.font.collection');
   }
@@ -42,11 +36,7 @@ class FontYourFaceController extends ControllerBase {
    * {@inheritdoc}
    */
   public function disableFont(Font $font) {
-    $config = \Drupal::configFactory()->getEditable('fontyourface.settings');
-    $enabled_fonts = $config->get('enabled_fonts');
-    $enabled_fonts = array_diff($enabled_fonts, [$font->getUrl()]);
-    $config->set('enabled_fonts', $enabled_fonts)
-      ->save();
+    $font->disable();
     drupal_set_message(t('Font @font successfully disabled', ['@font' => $font->getName()]));
     return $this->redirect('entity.font.collection');
   }

@@ -323,4 +323,14 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    */
   public function setChangedTime($timestamp);
 
+  /**
+   * Checks if the font is enabled.
+   */
+  public function isEnabled();
+
+  /**
+   * Checks if the font is disabled.
+   */
+  public function isDisabled();
+
 }

@@ -41,4 +41,41 @@ class FontListBuilder extends EntityListBuilder {
     return $row + parent::buildRow($entity);
   }
 
+  /**
+   * Gets this list's default operations.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity the operations are for.
+   *
+   * @return array
+   *   The array structure is identical to the return value of
+   *   self::getOperations().
+   */
+  protected function getDefaultOperations(EntityInterface $entity) {
+    $operations = array();
+    if ($entity->access('update') && $entity->hasLinkTemplate('edit-form')) {
+      $operations['edit'] = array(
+        'title' => $this->t('Edit'),
+        'weight' => 10,
+        'url' => $entity->urlInfo('edit-form'),
+      );
+    }
+    if ($entity->isEnabled()) {
+      $operations['disable'] = array(
+        'title' => $this->t('Disable'),
+        'weight' => 100,
+        'url' => $entity->urlInfo('disable')
+      );
+    }
+    if ($entity->isDisabled()) {
+      $operations['enable'] = array(
+        'title' => $this->t('enable'),
+        'weight' => 100,
+        'url' => $entity->urlInfo('enable')
+      );
+    }
+
+    return $operations;
+  }
+
 }

@@ -49,7 +49,8 @@ use Drupal\user\UserInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/appearance/font/{font}",
- *     "edit-form" = "/admin/appearance/font/{font}/edit",
+ *     "enable" = "/admin/appearance/font/{font}/enable",
+ *     "disable" = "/admin/appearance/font/{font}/disable",
  *     "collection" = "/admin/appearance/font",
  *   },
  *   field_ui_base_route = "font.settings"
@@ -302,6 +303,22 @@ class Font extends ContentEntityBase implements FontInterface {
   public function setChangedTime($timestamp) {
     $this->set('changed', $timestamp);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEnabled() {
+    $config = \Drupal::config('fontyourface.settings');
+    $enabled_fonts = $config->get('enabled_fonts');
+    return in_array($this->getUrl(), $enabled_fonts);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isDisabled() {
+    return !$this->isEnabled();
   }
 
   /**

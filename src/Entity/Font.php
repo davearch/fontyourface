@@ -365,8 +365,6 @@ class Font extends ContentEntityBase implements FontInterface {
    * {@inheritdoc}
    */
   public static function loadByUrl($font_url) {
-    $controller = \Drupal::entityManager()->getStorage('font');
-    $fonts = $controller->loadByProperties(['url' => $font_url]);
     $fonts = \Drupal::entityManager()->getStorage('font')->loadByProperties(['url' => $font_url]);
     return reset($fonts);
   }

@@ -8,6 +8,7 @@
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\fontyourface\Entity\Font;
+use Drupal\fontyourface\Entity\FontStyle;
 
 /**
  * Implements hook_help().
@@ -46,11 +47,25 @@ function fontyourface_page_attachments(&$page) {
       $element = \Drupal::moduleHandler()->invoke($preview_font->getProvider(), 'fontyourface_generate_font_family_css', [$preview_font]);
       if (!empty($element)) {
         $page['#attached']['html_head'][] = [$element, $preview_font->getCssFamily()];
-        $page['#attached']['html_head'][] = [[
-          '#type' => 'html_tag',
-          '#tag' => 'style',
-          '#value' => '.fontyourface-preview { font-family: "'. $preview_font->getCssFamily() . '";}',
-        ], $preview_font->id() . '-preview'];
+      }
+      $page['#attached']['html_head'][] = [[
+        '#type' => 'html_tag',
+        '#tag' => 'style',
+        '#value' => '.fontyourface-preview { font-family: "'. $preview_font->getCssFamily() . '";}',
+      ], $preview_font->id() . '-preview'];
+    }
+  }
+  else {
+    // We are dealing with a regular page;
+    $theme = \Drupal::theme()->getActiveTheme()->getName();
+    $styles = FontStyle::loadByTheme($theme);
+    foreach ($styles as $style) {
+      $font = $style->getFont();
+      if (!empty($font) && Drupal::moduleHandler()->moduleExists($font->getProvider())) {
+        $element = \Drupal::moduleHandler()->invoke($font->getProvider(), 'fontyourface_generate_font_family_css', [$font]);
+        if (!empty($element)) {
+          $page['#attached']['html_head'][] = [$element, $font->getCssFamily()];
+        }
       }
     }
   }

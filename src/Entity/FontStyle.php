@@ -9,6 +9,7 @@ namespace Drupal\fontyourface\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\fontyourface\FontStyleInterface;
+use Drupal\fontyourface\Entity\Font;
 
 /**
  * Defines the Font style entity.
@@ -117,6 +118,13 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
   /**
    * {@inheritdoc}
    */
+  public function getFont() {
+    return Font::loadByUrl($this->getFontUrl());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFontUrl() {
     return $this->get('font_url');
   }
@@ -202,6 +210,13 @@ class FontStyle extends ConfigEntityBase implements FontStyleInterface {
   public function setTheme($theme) {
     $this->set('theme', $theme);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function loadByTheme($theme) {
+    return \Drupal::entityManager()->getStorage('font_style')->loadByProperties(['theme' => $theme]);
   }
 
 }

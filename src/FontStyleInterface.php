@@ -16,6 +16,14 @@ interface FontStyleInterface extends ConfigEntityInterface {
   // Add get/set methods for your configuration properties here.
 
   /**
+   * Gets the Font.
+   *
+   * @return Font
+   *   Font from config.
+   */
+  public function getFont();
+
+  /**
    * Gets the Font URL.
    *
    * @return string
@@ -128,5 +136,16 @@ interface FontStyleInterface extends ConfigEntityInterface {
    *   The called Font Style entity.
    */
   public function setTheme($theme);
+
+  /**
+   * Returns FontStyles by theme name.
+   *
+   * @param string $theme
+   *   Name of theme.
+   *
+   * @return array
+   *   List of font style configs for theme.
+   */
+  public static function loadByTheme($theme);
 
 }

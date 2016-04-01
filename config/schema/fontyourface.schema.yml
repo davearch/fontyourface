@@ -1,0 +1,10 @@
+fontyourface.settings:
+  type: config_object
+  label: '@fontyourface settings'
+  mapping:
+    enabled_fonts:
+      type: sequence
+      label: 'Enabled fonts'
+      sequence:
+        type: string
+

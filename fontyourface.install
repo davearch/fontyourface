@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * @font-your-face install/update/uninstall hook implementation.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function fontyourface_install() {
+  module_set_weight('fontyourface', 10);
+}
+
+/**
+ * Give fontyourface a decent weight so it can run.
+ */
+function fontyourface_update_8000() {
+  module_set_weight('fontyourface', 10);
+}

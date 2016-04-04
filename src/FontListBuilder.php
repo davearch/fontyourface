@@ -52,27 +52,27 @@ class FontListBuilder extends EntityListBuilder {
    *   self::getOperations().
    */
   protected function getDefaultOperations(EntityInterface $entity) {
-    $operations = array();
+    $operations = [];
     if ($entity->access('update') && $entity->hasLinkTemplate('edit-form')) {
-      $operations['edit'] = array(
+      $operations['edit'] = [
         'title' => $this->t('Edit'),
         'weight' => 10,
         'url' => $entity->urlInfo('edit-form'),
-      );
+      ];
     }
     if ($entity->isEnabled()) {
-      $operations['disable'] = array(
+      $operations['disable'] = [
         'title' => $this->t('Disable'),
         'weight' => 100,
         'url' => $entity->urlInfo('disable')
-      );
+      ];
     }
     if ($entity->isDisabled()) {
-      $operations['enable'] = array(
+      $operations['enable'] = [
         'title' => $this->t('enable'),
         'weight' => 100,
         'url' => $entity->urlInfo('enable')
-      );
+      ];
     }
 
     return $operations;

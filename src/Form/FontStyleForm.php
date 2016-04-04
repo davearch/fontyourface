@@ -51,7 +51,7 @@ class FontStyleForm extends EntityForm {
     }
     $available_fonts = [];
     foreach ($fonts as $font) {
-      $available_fonts[$font->getUrl()] = $font->getName();
+      $available_fonts[$font->url->value] = $font->name->value;
     }
 
     $drupal_themes = \Drupal::service('theme_handler')->listInfo();

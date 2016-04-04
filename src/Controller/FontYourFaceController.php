@@ -28,7 +28,7 @@ class FontYourFaceController extends ControllerBase {
    */
   public function enableFont(Font $font) {
     $font->enable();
-    drupal_set_message(t('Font @font successfully enabled', ['@font' => $font->getName()]));
+    drupal_set_message(t('Font @font successfully enabled', ['@font' => $font->name->value]));
     return $this->redirect('entity.font.collection');
   }
 
@@ -37,7 +37,7 @@ class FontYourFaceController extends ControllerBase {
    */
   public function disableFont(Font $font) {
     $font->disable();
-    drupal_set_message(t('Font @font successfully disabled', ['@font' => $font->getName()]));
+    drupal_set_message(t('Font @font successfully disabled', ['@font' => $font->name->value]));
     return $this->redirect('entity.font.collection');
   }
 }

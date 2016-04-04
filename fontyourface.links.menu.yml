@@ -11,10 +11,11 @@ font.admin.appearance.settings:
   description: '@font-your-face settings'
   route_name: font.settings
   parent: system.themes_page
-# Font style menu items definition
-entity.font_style.collection:
+# Font display menu items definition
+entity.font_display.collection:
   title: 'Font display'
-  route_name: entity.font_style.collection
+  route_name: entity.font_display.collection
   description: 'List Font display (bundles)'
-  parent: system.themes_page
+  parent: entity.font.collection
   weight: 99
+

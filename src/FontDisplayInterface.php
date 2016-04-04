@@ -37,7 +37,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
    * @param string $font_url
    *   The Font URL.
    *
-   * @return \Drupal\fontyourface\FontStyleInterface
+   * @return \Drupal\fontyourface\FontDisplayInterface
    *   The called Font Style entity.
    */
   public function setFontUrl($font_url);
@@ -56,7 +56,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
    * @param string $style
    *   The Font URL.
    *
-   * @return \Drupal\fontyourface\FontStyleInterface
+   * @return \Drupal\fontyourface\FontDisplayInterface
    *   The called Font Style entity.
    */
   public function setStyle($style);
@@ -75,7 +75,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
    * @param string $weight
    *   The Font weight.
    *
-   * @return \Drupal\fontyourface\FontStyleInterface
+   * @return \Drupal\fontyourface\FontDisplayInterface
    *   The called Font Style entity.
    */
   public function setWeight($weight);
@@ -94,7 +94,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
    * @param string $fallback_fonts
    *   The fallback fonts.
    *
-   * @return \Drupal\fontyourface\FontStyleInterface
+   * @return \Drupal\fontyourface\FontDisplayInterface
    *   The called Font Style entity.
    */
   public function setFallback($fallback);
@@ -113,7 +113,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
    * @param string $selectors
    *   The Font selectors.
    *
-   * @return \Drupal\fontyourface\FontStyleInterface
+   * @return \Drupal\fontyourface\FontDisplayInterface
    *   The called Font Style entity.
    */
   public function setSelectors($selectors);
@@ -132,13 +132,13 @@ interface FontDisplayInterface extends ConfigEntityInterface {
    * @param string $style
    *   Site theme name.
    *
-   * @return \Drupal\fontyourface\FontStyleInterface
+   * @return \Drupal\fontyourface\FontDisplayInterface
    *   The called Font Style entity.
    */
   public function setTheme($theme);
 
   /**
-   * Returns FontStyles by theme name.
+   * Returns FontDisplays by theme name.
    *
    * @param string $theme
    *   Name of theme.

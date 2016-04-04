@@ -8,7 +8,7 @@
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\fontyourface\Entity\Font;
-use Drupal\fontyourface\Entity\FontStyle;
+use Drupal\fontyourface\Entity\FontDisplay;
 
 /**
  * Implements hook_help().
@@ -58,7 +58,7 @@ function fontyourface_page_attachments(&$page) {
   else {
     // We are dealing with a regular page;
     $theme = \Drupal::theme()->getActiveTheme()->getName();
-    $styles = FontStyle::loadByTheme($theme);
+    $styles = FontDisplay::loadByTheme($theme);
     foreach ($styles as $style) {
       $font = $style->getFont();
       if (!empty($font) && Drupal::moduleHandler()->moduleExists($font->getProvider())) {

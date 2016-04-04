@@ -43,44 +43,6 @@ interface FontDisplayInterface extends ConfigEntityInterface {
   public function setFontUrl($font_url);
 
   /**
-   * Gets the Font style.
-   *
-   * @return string
-   *   Font URL.
-   */
-  public function getStyle();
-
-  /**
-   * Sets the Font style.
-   *
-   * @param string $style
-   *   The Font URL.
-   *
-   * @return \Drupal\fontyourface\FontDisplayInterface
-   *   The called Font Style entity.
-   */
-  public function setStyle($style);
-
-  /**
-   * Gets the Font weight.
-   *
-   * @return string
-   *   Font weight.
-   */
-  public function getWeight();
-
-  /**
-   * Sets the Font weight.
-   *
-   * @param string $weight
-   *   The Font weight.
-   *
-   * @return \Drupal\fontyourface\FontDisplayInterface
-   *   The called Font Style entity.
-   */
-  public function setWeight($weight);
-
-  /**
    * Gets the Font fallback fonts.
    *
    * @return string

@@ -132,36 +132,6 @@ class FontDisplay extends ConfigEntityBase implements FontDisplayInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStyle() {
-    return $this->get('style');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setStyle($style) {
-    $this->set('style', $font_url);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getWeight() {
-    return $this->get('weight');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setWeight($weight) {
-    $this->set('weight', $font_url);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFallback() {
     return $this->get('fallback');
   }

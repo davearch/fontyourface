@@ -13,12 +13,6 @@ fontyourface.font_display.*:
     font_url:
       type: string
       label: 'Font'
-    style:
-      type: string
-      label: 'Style'
-    weight:
-      type: string
-      label: 'Weight'
     fallback:
       type: string
       label: 'Fallback'

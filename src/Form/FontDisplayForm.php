@@ -72,42 +72,6 @@ class FontDisplayForm extends EntityForm {
       '#required' => TRUE,
     ];
 
-    $form['style'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Font Style'),
-      '#description' => $this->t('The font style you wish to use'),
-      '#default_value' => $font_display->getStyle(),
-      '#options' => [
-        'normal' => 'Normal',
-        'italic' => 'Italic',
-        'oblique' => 'Oblique',
-      ],
-      '#required' => TRUE,
-    ];
-
-    $form['weight'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Font Weight'),
-      '#description' => $this->t('The font weight you wish to use'),
-      '#default_value' => $font_display->getWeight(),
-      '#options' => [
-        'normal' => 'Normal',
-        'bold' => 'Bold',
-        'bolder' => 'Bolder',
-        'lighter' => 'Lighter',
-        '100' => '100',
-        '200' => '200',
-        '300' => '300',
-        '400' => '400',
-        '500' => '500',
-        '600' => '600',
-        '700' => '700',
-        '800' => '800',
-        '900' => '900',
-      ],
-      '#required' => TRUE,
-    ];
-
     $form['fallback'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Fallback fonts'),
@@ -116,7 +80,7 @@ class FontDisplayForm extends EntityForm {
     ];
 
     $form['selectors'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $this->t('Selectors'),
       '#description' => $this->t('Selects the selected font will apply to. Note that all pages will have a "fontyourface" class on the body tag. You can use that to specify a font.'),
       '#default_value' => $font_display->getSelectors(),

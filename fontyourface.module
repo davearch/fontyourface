@@ -154,10 +154,10 @@ function fontyourface_font_css($font, $font_style = NULL) {
 
   $css[] = 'font-family: ' . $family_list . ';';
 
-  if ($font_style !== NULL) {
-    $css[] = 'font-style: ' . $font_style->getStyle() . ';';
-    $css[] = 'font-weight: ' . $font_style->getWeight() . ';';
-  }
+//  if ($font_style !== NULL) {
+//    $css[] = 'font-style: ' . $font_style->getStyle() . ';';
+//    $css[] = 'font-weight: ' . $font_style->getWeight() . ';';
+//  }
 
   return implode(' ', $css);
 

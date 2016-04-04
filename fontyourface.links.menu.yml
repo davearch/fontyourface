@@ -1,16 +1,15 @@
 # Font menu items definition
 entity.font.collection:
-  title: 'Font list'
+  title: '@font-your-face'
   route_name: entity.font.collection
   description: 'List Font entities'
   parent: system.themes_page
   weight: 100
-
 font.admin.appearance.settings:
   title: @font-your-face settings
   description: '@font-your-face settings'
   route_name: font.settings
-  parent: system.themes_page
+  parent: entity.font.collection
 # Font display menu items definition
 entity.font_display.collection:
   title: 'Font display'
@@ -18,4 +17,3 @@ entity.font_display.collection:
   description: 'List Font display (bundles)'
   parent: entity.font.collection
   weight: 99
-

@@ -3,4 +3,14 @@ entity.font_display.add_form:
   title: 'Add Font display'
   appears_on:
     - entity.font_display.collection
+font.settings_tab:
+  route_name: font.settings
+  title: 'Settings'
+  appears_on:
+    - entity.font.collection
+font.settings_tab:
+  route_name: font.settings
+  title: 'Settings'
+  appears_on:
+    - entity.font.collection
 

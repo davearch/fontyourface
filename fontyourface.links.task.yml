@@ -2,8 +2,12 @@
 font.settings_tab:
   route_name: font.settings
   title: 'Settings'
-  base_route: font.settings
+  base_route: entity.font.collection
 entity.font.canonical:
   route_name: entity.font.canonical
   base_route: entity.font.canonical
   title: 'View'
+entity.font.collection:
+  route_name: entity.font.collection
+  base_route: system.themes_page
+  title: '@font-your-face'

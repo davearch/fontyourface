@@ -51,7 +51,7 @@ function fontyourface_page_attachments(&$page) {
       $page['#attached']['html_head'][] = [[
         '#type' => 'html_tag',
         '#tag' => 'style',
-        '#value' => '.fontyourface-preview { font-family: "'. $preview_font->css_family->value . '";}',
+        '#value' => '.fontyourface-preview { '. fontyourface_font_css($preview_font) . ' }',
       ], $preview_font->id() . '-preview'];
     }
   }
@@ -113,4 +113,45 @@ function fontyourface_save_font($font_data) {
     'metadata' => $font_data->metadata,
   ]);
   $font->save();
+}
+
+/**
+ * Creates CSS with any properties set on font.
+ */
+function fontyourface_font_css($font, $font_style) {
+
+  $css = array();
+
+  if ($font->css_family->value) {
+
+    // Enclose font family definition in single quotes if not already enclosed.
+    if ($font->css_family->value === "'") {
+      $family_list = $font->css_family->value;
+    } // if
+    else {
+      $family_list = "'" . $font->css_family->value . "'";
+    } // else
+
+    /*
+    if ($font->css_fallbacks) {
+      $family_list .= ', ' . $font->css_fallbacks;
+    } // if
+
+    */
+    $css[] = 'font-family: ' . $family_list . ';';
+
+  } // if
+
+  /*
+  if ($font->css_style) {
+    $css[] = 'font-style: ' . $font->css_style . ';';
+  } // if
+
+  if ($font->css_weight) {
+    $css[] = 'font-weight: ' . $font->css_weight . ';';
+  } // if
+  */
+
+  return implode(' ', $css);
+
 }

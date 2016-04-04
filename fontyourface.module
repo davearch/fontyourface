@@ -42,17 +42,18 @@ function fontyourface_theme() {
  */
 function fontyourface_page_attachments(&$page) {
   $preview_fonts = &drupal_static('fontyourface_dynamic_preview_fonts');
+  // On a font preview page, ONLY show the preview font and other base theme font.
   if (!empty($preview_fonts)) {
     foreach ($preview_fonts as $preview_font) {
-      $element = \Drupal::moduleHandler()->invoke($preview_font->getProvider(), 'fontyourface_generate_font_family_css', [$preview_font]);
-      if (!empty($element)) {
+      $elements = \Drupal::moduleHandler()->invoke($preview_font->getProvider(), 'fontyourface_generate_font_family_css', [$preview_font]);
+      foreach ($elements as $element) {
         $page['#attached']['html_head'][] = [$element, $preview_font->css_family->value];
       }
       $page['#attached']['html_head'][] = [[
         '#type' => 'html_tag',
         '#tag' => 'style',
         '#value' => '.fontyourface-preview { '. fontyourface_font_css($preview_font) . ' }',
-      ], $preview_font->id() . '-preview'];
+      ], $preview_font->id() . '-fontyourface-preview'];
     }
   }
   else {
@@ -63,14 +64,27 @@ function fontyourface_page_attachments(&$page) {
       $font = $style->getFont();
       if (!empty($font) && Drupal::moduleHandler()->moduleExists($font->getProvider())) {
         $element = \Drupal::moduleHandler()->invoke($font->getProvider(), 'fontyourface_generate_font_family_css', [$font]);
-        if (!empty($element)) {
-          $page['#attached']['html_head'][] = [$element, $font->css_family->value];
+        foreach ($elements as $element) {
+          $page['#attached']['html_head'][] = [$element, $preview_font->css_family->value];
         }
+        $page['#attached']['html_head'][] = [[
+          '#type' => 'html_tag',
+          '#tag' => 'style',
+          '#value' => $style->getSelectors() . ' { '. fontyourface_font_css($font, $style) . ' }',
+        ], $style->id() . '-fontyourface-full'];
       }
     }
   }
 }
 
+/**
+ * Implements hook_preprocess_HOOK() for HTML document templates.
+ *
+ * Adds body classes if certain regions have content.
+ */
+function fontyourface_preprocess_html(&$variables) {
+  $variables['attributes']['class'][] = 'fontyourface';
+}
 /**
  * Prepares variables for Font templates.
  *
@@ -118,39 +132,30 @@ function fontyourface_save_font($font_data) {
 /**
  * Creates CSS with any properties set on font.
  */
-function fontyourface_font_css($font, $font_style) {
+function fontyourface_font_css($font, $font_style = NULL) {
 
-  $css = array();
+  $css = []
 
-  if ($font->css_family->value) {
+  // Enclose font family definition in single quotes if not already enclosed.
+  if ($font->css_family->value === "'") {
+    $family_list = $font->css_family->value;
+  } // if
+  else {
+    $family_list = "'" . $font->css_family->value . "'";
+  } // else
 
-    // Enclose font family definition in single quotes if not already enclosed.
-    if ($font->css_family->value === "'") {
-      $family_list = $font->css_family->value;
-    } // if
-    else {
-      $family_list = "'" . $font->css_family->value . "'";
-    } // else
-
-    /*
+  if ($font_style !== NULL) {
     if ($font->css_fallbacks) {
       $family_list .= ', ' . $font->css_fallbacks;
     } // if
+  }
 
-    */
-    $css[] = 'font-family: ' . $family_list . ';';
+  $css[] = 'font-family: ' . $family_list . ';';
 
-  } // if
-
-  /*
-  if ($font->css_style) {
-    $css[] = 'font-style: ' . $font->css_style . ';';
-  } // if
-
-  if ($font->css_weight) {
-    $css[] = 'font-weight: ' . $font->css_weight . ';';
-  } // if
-  */
+  if ($font_style !== NULL) {
+    $css[] = 'font-style: ' . $font_style->getStyle() . ';';
+    $css[] = 'font-weight: ' . $font_style->getWeight() . ';';
+  }
 
   return implode(' ', $css);
 

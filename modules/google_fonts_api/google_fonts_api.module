@@ -98,9 +98,9 @@ function google_fonts_api_fontyourface_import() {
     fontyourface_save_font($font);
 
   } // foreach
-  
-  return $success; 
-  
+
+  return TRUE;
+
 } // google_fonts_api_fontyourface_import
 
 /**
@@ -160,6 +160,8 @@ function _google_fonts_api_convert_api_results($json_font_list) {
         $fonts[$font_id]->css_family = $json_font->family;
         $fonts[$font_id]->css_style = $css_style;
         $fonts[$font_id]->css_weight = $css_weight;
+        $fonts[$font_id]->designer = '';
+        $fonts[$font_id]->designer_url = '';
         $fonts[$font_id]->foundry = '';
         $fonts[$font_id]->foundry_url = '';
         $fonts[$font_id]->license = '';

@@ -45,7 +45,7 @@ function fontyourface_page_attachments(&$page) {
   // On a font preview page, ONLY show the preview font and other base theme font.
   if (!empty($preview_fonts)) {
     foreach ($preview_fonts as $preview_font) {
-      $elements = \Drupal::moduleHandler()->invoke($preview_font->getProvider(), 'fontyourface_generate_font_family_css', [$preview_font]);
+      $elements = \Drupal::moduleHandler()->invoke($preview_font->getProvider(), 'fontyourface_generate_font_family_css', [[$preview_font]]);
       foreach ($elements as $element) {
         $page['#attached']['html_head'][] = [$element, $preview_font->css_family->value];
       }
@@ -63,9 +63,9 @@ function fontyourface_page_attachments(&$page) {
     foreach ($styles as $style) {
       $font = $style->getFont();
       if (!empty($font) && Drupal::moduleHandler()->moduleExists($font->getProvider())) {
-        $element = \Drupal::moduleHandler()->invoke($font->getProvider(), 'fontyourface_generate_font_family_css', [$font]);
+        $elements = \Drupal::moduleHandler()->invoke($font->getProvider(), 'fontyourface_generate_font_family_css', [[$font]]);
         foreach ($elements as $element) {
-          $page['#attached']['html_head'][] = [$element, $preview_font->css_family->value];
+          $page['#attached']['html_head'][] = [$element, $font->css_family->value];
         }
         $page['#attached']['html_head'][] = [[
           '#type' => 'html_tag',
@@ -134,7 +134,7 @@ function fontyourface_save_font($font_data) {
  */
 function fontyourface_font_css($font, $font_style = NULL) {
 
-  $css = []
+  $css = [];
 
   // Enclose font family definition in single quotes if not already enclosed.
   if ($font->css_family->value === "'") {

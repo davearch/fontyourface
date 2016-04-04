@@ -14,49 +14,53 @@ function google_fonts_api_fontyourface_api() {
 /**
  * Implements hook_fontyourface_generate_font_family_css.
  */
-function google_fonts_api_fontyourface_generate_font_family_css(Font $font) {
-  $metadata = $font->getMetadata();
-  $path_parts = explode(':', $metadata['path']);
+function google_fonts_api_fontyourface_generate_font_family_css($fonts) {
+  $fontlist = [];
+  foreach ($fonts as $font) {
+    $metadata = $font->getMetadata();
+    $path_parts = explode(':', $metadata['path']);
 
-  $subsets[$path_parts[0]][$metadata['subset']] = $metadata['subset'];
-  $all_subsets[$metadata['subset']] = $metadata['subset'];
+    $subsets[$path_parts[0]][$metadata['subset']] = $metadata['subset'];
+    $all_subsets[$metadata['subset']] = $metadata['subset'];
 
-  if (!isset($paths[$path_parts[0]])) {
-    $paths[$path_parts[0]] = array();
-  } // if
-
-  if (count($path_parts) > 1) {
-    $paths[$path_parts[0]][$path_parts[1]] = $path_parts[1];
-  } // if
-  else {
-    $paths[$path_parts[0]]['regular'] = 'regular';
-  } // else
-
-  if (count($paths) > 0) {
-
-    $families = array();
-
-    foreach ($paths as $family => $variants) {
-      $families[$family] = urlencode($family) . ':' . implode(',', $variants);
-    } // foreach
-
-    $base = 'http://fonts.googleapis.com/css?family=';
-
-    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-      $base = 'https://fonts.googleapis.com/css?family=';
+    if (!isset($paths[$path_parts[0]])) {
+      $paths[$path_parts[0]] = array();
     } // if
 
-    $url = $base . implode('|', $families) . '&subset=' . implode(',', $all_subsets);
+    if (count($path_parts) > 1) {
+      $paths[$path_parts[0]][$path_parts[1]] = $path_parts[1];
+    } // if
+    else {
+      $paths[$path_parts[0]]['regular'] = 'regular';
+    } // else
 
-    return [
-      '#tag' => 'link',
-      '#attributes' => [
-        'rel' => 'stylesheet',
-        'href' => $url,
-        'media' => 'all',
-      ],
-    ];
-  } // if
+    if (count($paths) > 0) {
+
+      $families = array();
+
+      foreach ($paths as $family => $variants) {
+        $families[$family] = urlencode($family) . ':' . implode(',', $variants);
+      } // foreach
+
+      $base = 'http://fonts.googleapis.com/css?family=';
+
+      if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $base = 'https://fonts.googleapis.com/css?family=';
+      } // if
+
+      $url = $base . implode('|', $families) . '&subset=' . implode(',', $all_subsets);
+
+      $fontlist[] = [
+        '#tag' => 'link',
+        '#attributes' => [
+          'rel' => 'stylesheet',
+          'href' => $url,
+          'media' => 'all',
+        ],
+      ];
+    } // if
+  }
+  return $fontlist;
 }
 
 /**

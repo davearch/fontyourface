@@ -1,5 +1,6 @@
-* Note that this module is not ready for D8. This is going to be a rewrite and work will happen in the 8.x-3.x-rewrite branch.
-* Right now...it does nothing other than have capability of being enabled.
+* This is going to be a rewrite and work will happen in the 8.x-3.x-rewrite branch.
+* Right now, the code is incredibly rough both in terms of coding styles and concepts. But it is partly working!
+* It currently works with Google Fonts.
 
 
 Installing @font-your-face:

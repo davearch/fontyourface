@@ -118,7 +118,7 @@ class FontDisplayForm extends EntityForm {
     $form['selectors'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Selectors'),
-      '#description' => $this->t('Selects the selected font will apply to.'),
+      '#description' => $this->t('Selects the selected font will apply to. Note that all pages will have a "fontyourface" class on the body tag. You can use that to specify a font.'),
       '#default_value' => $font_display->getSelectors(),
       '#maxlength' => 300,
       '#required' => TRUE,

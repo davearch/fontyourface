@@ -1,0 +1,7 @@
+name: @fontyourface - Adobe Edge Fonts
+type: module
+description: Adobe Edge Fonts that conform to fontyourface api.
+core: 8.x
+package: @font-your-face
+dependencies:
+  - fontyourface

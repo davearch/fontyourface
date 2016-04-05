@@ -1,0 +1,87 @@
+<?php
+
+use Drupal\fontyourface\Entity\Font;
+
+/**
+ * Implements hook_fontyourface_api()
+ */
+function adobe_edge_fonts_fontyourface_api() {
+  return [
+    'version' => '3'
+  ];
+}
+
+/**
+ * Implements hook_fontyourface_import().
+ */
+function adobe_edge_fonts_fontyourface_import() {
+  // Return the JSON object with all available fonts
+  // For now, it uses the API key of BarisW (co-maintainer of this module)
+  
+  // This key is limited to 10.000 requests per day, which should
+  // be sufficient as it is only used when selecting fonts in the
+  // admin interface. After that, the fonts are cached in Drupal.
+
+  try {
+    $uri = 'https://edgewebfonts.adobe.com/data/fontData.json';
+    $response = \Drupal::httpClient()->get($uri, array('headers' => array('Accept' => 'text/plain')));
+    $data = (string) $response->getBody();
+  }
+  catch (RequestException $e) {
+    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', array('%error' => $result->error)), 'error');
+    return FALSE;
+  }
+
+  $json_fonts_results = json_decode($data);
+  $fonts = _adobe_edge_fonts_convert_api_results($json_fonts_results->families);
+  
+  foreach ($fonts as $font) {
+    fontyourface_save_font($font);
+  }
+}
+
+/**
+ * Converts Adobe Edge Fonts json data into font-compatible format.
+ */
+function _adobe_edge_fonts_convert_api_results($json_fonts) {
+  $fonts = [];
+  foreach ($json_fonts as $json_font) {
+    foreach ($json_font->variations as $json_font_variant) {
+      $font_id = $json_font->name . ' ' . $json_font_variant->name;
+      $css_style = substr($json_font_variant->fvd, 0, 1);
+      $css_weight = substr($json_font_variant->fvd, 1, 1) * 100;
+
+      // Defaults for css style
+      if ($css_style == 'i') {
+        $css_style = 'italic';
+      }
+      else {
+        $css_style = 'normal';
+      }
+
+      if ($css_weight == '400') {
+        $css_weight = 'normal';
+      }
+      else if ($css_weight == '700') {
+        $css_weight = 'bold';
+      }
+
+      $font = new stdClass();
+      $font->name = $font_id;
+      $font->url = 'https://edgewebfonts.adobe.com/?font=' . $json_font->slug . '&fvd=' . $json_font_variant->fvd;
+      $font->provider = 'adobe_edge_fonts';
+      $font->css_family = $json_font->slug;
+      $font->css_style = $css_style;
+      $font->css_weight = $css_weight;
+      $font->designer = '';
+      $font->designer_url = '';
+      $font->foundry = '';
+      $font->foundry_url = '';
+      $font->license = 'Font license';
+      $font->license_url = $json_font_variant->eula;
+      $font->metadata = serialize(['id' => $json_font->id, 'subset' => $json_font_variant->fvd]);
+      $fonts[$font_id] = $font;
+    }
+  }
+  return $fonts;
+}

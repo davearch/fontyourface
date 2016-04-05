@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function adobe_edge_fonts_install() {
+  // Import Adobe Edge Fonts.
+  adobe_edge_fonts_fontyourface_import();
+}

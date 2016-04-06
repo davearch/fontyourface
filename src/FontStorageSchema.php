@@ -23,6 +23,7 @@ class FontStorageSchema extends SqlContentEntityStorageSchema {
     $schema = parent::getEntitySchema($entity_type, $reset);
 
     $schema['fontyourface_font']['indexes'] += [
+      'name' => ['name'],
       'pid' => ['pid'],
     ];
     $schema['fontyourface_font']['unique keys'] += [

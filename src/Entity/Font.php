@@ -52,8 +52,7 @@ use Drupal\user\UserInterface;
  *     "enable" = "/admin/appearance/font/{font}/enable",
  *     "disable" = "/admin/appearance/font/{font}/disable",
  *     "collection" = "/admin/appearance/font",
- *   },
- *   field_ui_base_route = "font.settings"
+ *   }
  * )
  */
 class Font extends ContentEntityBase implements FontInterface {

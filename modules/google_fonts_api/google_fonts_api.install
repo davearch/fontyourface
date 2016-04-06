@@ -6,4 +6,5 @@
 function google_fonts_api_install() {
   // Import google fonts.
   google_fonts_api_fontyourface_import();
+  module_set_weight('fontyourface', 10);
 }

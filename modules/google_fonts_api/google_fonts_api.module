@@ -94,7 +94,7 @@ function google_fonts_api_fontyourface_import() {
 
   try {
     $uri = 'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBgeqKlFdYj3Y7VwmrEXnXzpnx5TfKXG4o';
-    $response = \Drupal::httpClient()->get($uri, array('headers' => array('Accept' => 'text/plain')));
+    $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain'], 'verify' => FALSE]);
     $data = (string) $response->getBody();
   }
   catch (RequestException $e) {
@@ -114,6 +114,7 @@ function google_fonts_api_fontyourface_import() {
     fontyourface_save_font($font);
 
   }
+  drupal_set_message(t('Imported @count Google Fonts', ['@count' => count($fonts)]));
 
   return TRUE;
 

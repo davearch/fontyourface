@@ -483,10 +483,10 @@ display:
           entity_field: pid
           plugin_id: string
       sorts:
-        fid:
-          id: fid
+        name:
+          id: name
           table: fontyourface_font
-          field: fid
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
@@ -495,7 +495,7 @@ display:
           expose:
             label: ''
           entity_type: font
-          entity_field: fid
+          entity_field: name
           plugin_id: standard
       title: 'Font Selector'
       header: {  }

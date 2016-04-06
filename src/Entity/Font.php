@@ -444,23 +444,9 @@ class Font extends ContentEntityBase implements FontInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['metadata'] = BaseFieldDefinition::create('string')
+    $fields['metadata'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Font Metadata'))
       ->setDescription(t('Additional Font Metadata'))
-      ->setSettings([
-        'max_length' => 255,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 

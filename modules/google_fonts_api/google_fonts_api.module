@@ -13,16 +13,8 @@ function google_fonts_api_page_attachments(&$page) {
       $google_fonts[] = $font;
     }
   }
-  $url = google_fonts_api_fontyourface_generate_font_family_css($fonts);
+  $url = google_fonts_api_generate_font_family_css($fonts);
   if (!empty($url)) {
-        $fontlist[] = [
-      '#tag' => 'link',
-      '#attributes' => [
-        'rel' => 'stylesheet',
-        'href' => $url,
-        'media' => 'all',
-      ],
-    ];
     $page['#attached']['html_head'][] = [[
       '#type' => 'html_tag',
       '#tag' => 'link',
@@ -47,7 +39,7 @@ function google_fonts_api_fontyourface_api() {
 /**
  * Generates font family css for multiple fonts.
  */
-function google_fonts_api_fontyourface_generate_font_family_css($fonts) {
+function google_fonts_api_generate_font_family_css($fonts) {
   $fontlist = [];
   $url = '';
   foreach ($fonts as $font) {

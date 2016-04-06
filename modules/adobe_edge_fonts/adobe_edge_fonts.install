@@ -6,5 +6,5 @@
 function adobe_edge_fonts_install() {
   // Import Adobe Edge Fonts.
   adobe_edge_fonts_fontyourface_import();
-  module_set_weight('fontyourface', 10);
+  module_set_weight('adobe_edge_fonts', 10);
 }

@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Adobe Edge Fonts install file.
+ */
+
+/**
  * Implements hook_install().
  */
 function adobe_edge_fonts_install() {

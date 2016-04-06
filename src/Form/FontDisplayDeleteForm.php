@@ -15,6 +15,7 @@ use Drupal\Core\Url;
  * Builds the form to delete Font display entities.
  */
 class FontDisplayDeleteForm extends EntityConfirmFormBase {
+
   /**
    * {@inheritdoc}
    */

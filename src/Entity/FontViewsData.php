@@ -14,6 +14,7 @@ use Drupal\views\EntityViewsDataInterface;
  * Provides Views data for Font entities.
  */
 class FontViewsData extends EntityViewsData implements EntityViewsDataInterface {
+
   /**
    * {@inheritdoc}
    */

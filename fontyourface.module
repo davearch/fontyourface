@@ -45,17 +45,19 @@ function fontyourface_page_attachments(&$page) {
   $font_preview = &drupal_static('fontyourface_font_preview');
   // On a font preview page, ONLY show the preview font and other base theme font.
   if (empty($font_preview)) {
-    // We are dealing with a regular page;
+    // We are dealing with a regular page.
     $theme = \Drupal::theme()->getActiveTheme()->getName();
     $styles = FontDisplay::loadByTheme($theme);
     foreach ($styles as $style) {
       $font = $style->getFont();
       $fonts[$font->url->value] = $font;
-      $page['#attached']['html_head'][] = [[
-        '#type' => 'html_tag',
-        '#tag' => 'style',
-        '#value' => $style->getSelectors() . ' { '. fontyourface_font_css($font, $style) . ' }',
-      ], $style->id() . '-fontyourface-full'];
+      $page['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'style',
+          '#value' => $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }',
+        ], $style->id() . '-fontyourface-full'
+      ];
     }
   }
 }

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Adobe Edge Fonts module file.
+ */
+
 use Drupal\fontyourface\Entity\Font;
 
 /**
@@ -15,13 +20,15 @@ function adobe_edge_fonts_page_attachments(&$page) {
   }
   $url = adobe_edge_fonts_generate_font_family_css($fonts);
   if (!empty($url)) {
-    $page['#attached']['html_head'][] = [[
-      '#type' => 'html_tag',
-      '#tag' => 'script',
-      '#attributes' => [
-        'src' => $url,
-      ],
-    ], 'fontyourface-adobe-edge-fonts'];
+    $page['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'script',
+        '#attributes' => [
+          'src' => $url,
+        ],
+      ], 'fontyourface-adobe-edge-fonts'
+    ];
   }
 }
 
@@ -38,7 +45,7 @@ function adobe_edge_fonts_fontyourface_api() {
  * Implements hook_fontyourface_import().
  */
 function adobe_edge_fonts_fontyourface_import() {
-  // Return the JSON object with all available fonts
+  // Return the JSON object with all available fonts.
 
   try {
     $uri = 'https://edgewebfonts.adobe.com/data/fontData.json';
@@ -52,7 +59,7 @@ function adobe_edge_fonts_fontyourface_import() {
 
   $json_fonts_results = json_decode($data);
   $fonts = _adobe_edge_fonts_convert_api_results($json_fonts_results->families);
-  
+
   foreach ($fonts as $font) {
     fontyourface_save_font($font);
   }
@@ -89,7 +96,7 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
       $css_style = substr($json_font_variant->fvd, 0, 1);
       $css_weight = substr($json_font_variant->fvd, 1, 1) * 100;
 
-      // Defaults for css style
+      // Defaults for css style.
       if ($css_style == 'i') {
         $css_style = 'italic';
       }
@@ -100,7 +107,7 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
       if ($css_weight == '400') {
         $css_weight = 'normal';
       }
-      else if ($css_weight == '700') {
+      elseif ($css_weight == '700') {
         $css_weight = 'bold';
       }
 

@@ -53,7 +53,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
   /**
    * Sets the Font fallback fonts.
    *
-   * @param string $fallback_fonts
+   * @param string $fallback
    *   The fallback fonts.
    *
    * @return \Drupal\fontyourface\FontDisplayInterface
@@ -91,7 +91,7 @@ interface FontDisplayInterface extends ConfigEntityInterface {
   /**
    * Sets the Font theme for usage.
    *
-   * @param string $style
+   * @param string $theme
    *   Site theme name.
    *
    * @return \Drupal\fontyourface\FontDisplayInterface

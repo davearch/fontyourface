@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Google Fonts module file.
+ */
+
 use Drupal\fontyourface\Entity\Font;
 
 /**
@@ -15,15 +20,17 @@ function google_fonts_api_page_attachments(&$page) {
   }
   $url = google_fonts_api_generate_font_family_css($fonts);
   if (!empty($url)) {
-    $page['#attached']['html_head'][] = [[
-      '#type' => 'html_tag',
-      '#tag' => 'link',
-      '#attributes' => [
-        'rel' => 'stylesheet',
-        'href' => $url,
-        'media' => 'all',
-      ],
-    ], 'fontyourface-google-fonts-api'];
+    $page['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'link',
+        '#attributes' => [
+          'rel' => 'stylesheet',
+          'href' => $url,
+          'media' => 'all',
+        ],
+      ], 'fontyourface-google-fonts-api'
+    ];
   }
 }
 
@@ -87,7 +94,7 @@ function google_fonts_api_generate_font_family_css($fonts) {
 function google_fonts_api_fontyourface_import() {
   // Return the JSON object with all available fonts
   // For now, it uses the API key of BarisW (co-maintainer of this module)
-  
+
   // This key is limited to 10.000 requests per day, which should
   // be sufficient as it is only used when selecting fonts in the
   // admin interface. After that, the fonts are cached in Drupal.
@@ -121,56 +128,59 @@ function google_fonts_api_fontyourface_import() {
 }
 
 /**
- * Converts the Google Fonts API JSON results to a generic Fonts object array
+ * Converts the Google Fonts API JSON results to a generic Fonts object array.
  *
- * @param $json_font_list: Array of Font objects
- *   
+ * @param array $json_font_list
+ *   Array of Google Font objects.
+ *
+ * @return array
+ *   Array of objects compatible with Fontyourface interface.
  */
 function _google_fonts_api_convert_api_results($json_font_list) {
   $fonts = array();
   foreach ($json_font_list as $json_font) {
     foreach ($json_font->variants as $json_font_variant) {
       foreach ($json_font->subsets as $json_font_subset) {
-      
+
         $font_id = $json_font->family . ' ' . $json_font_variant . ' (' . $json_font_subset . ')';
-        
+
         switch ($json_font_variant) {
           case 'regular':
             $css_style = 'normal';
             $css_weight = 'normal';
             break;
-            
+
           case 'italic':
             $css_style = 'italic';
             $css_weight = 'normal';
             break;
-            
+
           case 'bold':
             $css_style = 'normal';
             $css_weight = 'bold';
             break;
-            
+
           case 'bolditalic':
             $css_style = 'italic';
             $css_weight = 'bold';
             break;
 
           default:
-            // For all other cases (eg 400 or 400italic)
+            // For all other cases (eg 400 or 400italic).
             if (is_numeric($json_font_variant)) {
-              // Variant is a number, like 400
+              // Variant is a number, like 400.
               $css_style = 'normal';
               $css_weight = $json_font_variant;
             }
-            elseif (is_numeric(substr($json_font_variant, 0, 3))){
-              // Variant is a combined string of number and string, like 400italic
-              // The numberic part is always three characters long, so we can split it easily
+            elseif (is_numeric(substr($json_font_variant, 0, 3))) {
+              // Variant is a combined string of number and string, like 400italic.
+              // The numeric part is always three characters long, so we can split it easily.
               $css_style = substr($json_font_variant, 3);
               $css_weight = substr($json_font_variant, 0, 3);
             }
         }
-        
-        $fonts[$font_id] = new stdClass;
+
+        $fonts[$font_id] = new stdClass();
         $fonts[$font_id]->name = $font_id;
         $fonts[$font_id]->url = 'http://www.google.com/webfonts/family?family=' . $json_font->family . '&subset=' . $json_font_subset . '#' . $json_font_variant;
         $fonts[$font_id]->provider = 'google_fonts_api';
@@ -187,7 +197,6 @@ function _google_fonts_api_convert_api_results($json_font_list) {
       }
     }
   }
-  
+
   return $fonts;
-  
 }

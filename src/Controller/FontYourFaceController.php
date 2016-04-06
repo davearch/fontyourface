@@ -40,4 +40,5 @@ class FontYourFaceController extends ControllerBase {
     drupal_set_message(t('Font @font successfully disabled', ['@font' => $font->name->value]));
     return $this->redirect('entity.font.collection');
   }
+
 }

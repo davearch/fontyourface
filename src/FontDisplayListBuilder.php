@@ -15,6 +15,7 @@ use Drupal\fontyourface\Entity\Font;
  * Provides a listing of Font display entities.
  */
 class FontDisplayListBuilder extends ConfigEntityListBuilder {
+
   /**
    * {@inheritdoc}
    */

@@ -17,6 +17,7 @@ use Drupal\fontyourface\Entity\Font;
  * @package Drupal\fontyourface\Form
  */
 class FontDisplayForm extends EntityForm {
+
   /**
    * {@inheritdoc}
    */

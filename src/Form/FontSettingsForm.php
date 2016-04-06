@@ -18,6 +18,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @ingroup fontyourface
  */
 class FontSettingsForm extends FormBase {
+
   /**
    * Returns a unique string identifying the form.
    *
@@ -44,7 +45,6 @@ class FontSettingsForm extends FormBase {
       $module_handler->invokeAll('fontyourface_import');
     }
   }
-
 
   /**
    * Defines the settings form for Font entities.

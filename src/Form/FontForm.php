@@ -16,6 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @ingroup fontyourface
  */
 class FontForm extends ContentEntityForm {
+
   /**
    * {@inheritdoc}
    */

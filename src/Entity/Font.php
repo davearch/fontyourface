@@ -57,6 +57,7 @@ use Drupal\user\UserInterface;
  */
 class Font extends ContentEntityBase implements FontInterface {
   use EntityChangedTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -64,7 +65,7 @@ class Font extends ContentEntityBase implements FontInterface {
     parent::preCreate($storage_controller, $values);
   }
 
-   /**
+  /**
    * {@inheritdoc}
    */
   public function getProvider() {

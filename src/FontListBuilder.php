@@ -19,6 +19,7 @@ use Drupal\Core\Url;
  */
 class FontListBuilder extends EntityListBuilder {
   use LinkGeneratorTrait;
+
   /**
    * {@inheritdoc}
    */

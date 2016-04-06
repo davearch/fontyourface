@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Route;
  * @see Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider
  */
 class FontHtmlRouteProvider extends AdminHtmlRouteProvider {
+
   /**
    * {@inheritdoc}
    */

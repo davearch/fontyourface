@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Google Fonts install file.
+ */
+
+/**
  * Implements hook_install().
  */
 function google_fonts_api_install() {

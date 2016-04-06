@@ -3,6 +3,29 @@
 use Drupal\fontyourface\Entity\Font;
 
 /**
+ * Implements hook_page_attachments().
+ */
+function adobe_edge_fonts_page_attachments(&$page) {
+  $enabled_fonts = &drupal_static('fontyourface_fonts');
+  $fonts = [];
+  foreach ($enabled_fonts as $font) {
+    if ($font->pid->value == 'adobe_edge_fonts') {
+      $fonts[] = $font;
+    }
+  }
+  $url = adobe_edge_fonts_generate_font_family_css($fonts);
+  if (!empty($url)) {
+    $page['#attached']['html_head'][] = [[
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [
+        'src' => $url,
+      ],
+    ], 'fontyourface-adobe-edge-fonts'];
+  }
+}
+
+/**
  * Implements hook_fontyourface_api()
  */
 function adobe_edge_fonts_fontyourface_api() {
@@ -38,6 +61,25 @@ function adobe_edge_fonts_fontyourface_import() {
   foreach ($fonts as $font) {
     fontyourface_save_font($font);
   }
+}
+
+/**
+ * Generates font family css for multiple fonts.
+ */
+function adobe_edge_fonts_generate_font_family_css($fonts) {
+  $font_list = $families = [];
+  $url = '';
+  foreach ($fonts as $font) {
+    $metadata = $font->getMetadata();
+    $font_list[$font->css_family->value][] = $metadata['subset'];
+  }
+  foreach ($font_list as $key => $font) {
+    $families[] = $key . ':' . implode(',', $font);
+  }
+  if (!empty($families)) {
+    $url = 'https://use.edgefonts.net/' . implode(';', $families) . '.js';
+  }
+  return $url;
 }
 
 /**
@@ -79,7 +121,15 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
       $font->foundry_url = '';
       $font->license = 'Font license';
       $font->license_url = $json_font_variant->eula;
-      $font->metadata = serialize(['id' => $json_font->id, 'subset' => $json_font_variant->fvd]);
+      $font->metadata = serialize([
+        'id' => $json_font->id,
+        'subset' => $json_font_variant->fvd,
+        'capitals' => $json_font->capitals,
+        'classification' => $json_font->classification,
+        'contrast' => $json_font->contrast,
+        'language' => $json_font->language,
+        'number_style' => $json_font->number_style,
+      ]);
       $fonts[$font_id] = $font;
     }
   }

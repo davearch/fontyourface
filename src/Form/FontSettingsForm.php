@@ -37,7 +37,12 @@ class FontSettingsForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Empty implementation of the abstract submit class.
+    $values = $form_state->getValues();
+    $op = $values['op'];
+    if ($op == 'Import all fonts') {
+      $module_handler = \Drupal::moduleHandler();
+      $module_handler->invokeAll('fontyourface_import');
+    }
   }
 
 
@@ -54,6 +59,10 @@ class FontSettingsForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['Font_settings']['#markup'] = 'Settings form for Font entities. Manage field settings here.';
+    $form['import'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Import all fonts'),
+    ];
     return $form;
   }
 

@@ -50,21 +50,23 @@ function google_fonts_api_generate_font_family_css($fonts) {
   $fontlist = [];
   $url = '';
   foreach ($fonts as $font) {
-    $metadata = $font->getMetadata();
-    $path_parts = explode(':', $metadata['path']);
+    if ($font->pid->value == 'google_fonts_api') {
+      $metadata = $font->getMetadata();
+      $path_parts = explode(':', $metadata['path']);
 
-    $subsets[$path_parts[0]][$metadata['subset']] = $metadata['subset'];
-    $all_subsets[$metadata['subset']] = $metadata['subset'];
+      $subsets[$path_parts[0]][$metadata['subset']] = $metadata['subset'];
+      $all_subsets[$metadata['subset']] = $metadata['subset'];
 
-    if (!isset($paths[$path_parts[0]])) {
-      $paths[$path_parts[0]] = array();
-    }
+      if (!isset($paths[$path_parts[0]])) {
+        $paths[$path_parts[0]] = array();
+      }
 
-    if (count($path_parts) > 1) {
-      $paths[$path_parts[0]][$path_parts[1]] = $path_parts[1];
-    }
-    else {
-      $paths[$path_parts[0]]['regular'] = 'regular';
+      if (count($path_parts) > 1) {
+        $paths[$path_parts[0]][$path_parts[1]] = $path_parts[1];
+      }
+      else {
+        $paths[$path_parts[0]]['regular'] = 'regular';
+      }
     }
   }
 

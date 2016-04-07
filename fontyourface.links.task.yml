@@ -1,8 +1,4 @@
 # Font routing definition
-font.settings_tab:
-  route_name: font.settings
-  title: 'Settings'
-  base_route: entity.font.collection
 entity.font.canonical:
   route_name: entity.font.canonical
   base_route: entity.font.canonical
@@ -11,3 +7,16 @@ entity.font.collection:
   route_name: entity.font.collection
   base_route: system.themes_page
   title: '@font-your-face'
+entity.font.browse:
+  route_name: entity.font.collection
+  parent_id: entity.font.collection
+  title: 'Browse'
+entity.font_display.collection:
+  title: 'Font display'
+  route_name: entity.font_display.collection
+  description: 'List Font display (bundles)'
+  parent_id: entity.font.collection
+font.settings_tab:
+  route_name: font.settings
+  title: 'Settings'
+  parent_id: entity.font.collection

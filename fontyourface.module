@@ -34,6 +34,12 @@ function fontyourface_theme() {
     'font' => [
       'render element' => 'elements',
     ],
+    'font__full' => [
+      'render element' => 'elements',
+    ],
+    'font__teaser' => [
+      'render element' => 'elements',
+    ],
   ];
 }
 
@@ -72,6 +78,13 @@ function fontyourface_preprocess_html(&$variables) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function fontyourface_theme_suggestions_font(array $variables) {
+  return ['font__' . $variables['elements']['#view_mode']];
+}
+
+/**
  * Prepares variables for Font templates.
  *
  * Default template: font.html.twig.
@@ -89,11 +102,53 @@ function template_preprocess_font(array &$variables) {
   $font_preview = &drupal_static('fontyourface_font_preview');
   $font_preview = TRUE;
   $variables['font_style'] = fontyourface_font_css($font);
+  $title = \Drupal\Component\Utility\Html::escape($font->name->value);
+  $variables['font_title'] = \Drupal::l($title, $font->urlInfo());
 
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
+
+  if ($font->isDisabled()) {
+    $url = $font->urlInfo('enable', ['query' => \Drupal::destination()->getAsArray()]);
+    $text = t('Enable');
+  }
+  if ($font->isEnabled()) {
+    $url = $font->urlInfo('disable', ['query' => \Drupal::destination()->getAsArray()]);
+    $text = t('Disable');
+  }
+
+  $url->setOption('destination', \Drupal::destination());
+  $variables['operation_links'] = \Drupal::l($text, $url);
+}
+
+/**
+ * Prepares variables for Font templates.
+ *
+ * Default template: font--full.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_font__full(array &$variables) {
+  template_preprocess_font($variables);
+}
+
+/**
+ * Prepares variables for Font templates.
+ *
+ * Default template: font--teaser.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_font__teaser(array &$variables) {
+  template_preprocess_font($variables);
 }
 
 /**

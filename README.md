@@ -1,6 +1,6 @@
 * This is going to be a rewrite and work will happen in the 8.x-3.x-rewrite branch.
-* Right now, the code is incredibly rough both in terms of coding styles and concepts. But it is partly working!
-* It currently works with Google Fonts.
+* Right now, the code is fairly rough and still undergoing development. But it is partly working!
+* It currently works with Google Fonts and Adobe Edge Fonts.
 
 
 Installing @font-your-face:

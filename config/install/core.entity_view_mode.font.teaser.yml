@@ -6,4 +6,4 @@ dependencies:
 id: font.teaser
 label: 'Teaser Mode'
 targetEntityType: font
-cache: true
+cache: false

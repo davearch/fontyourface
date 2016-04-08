@@ -85,6 +85,15 @@ function fontyourface_theme_suggestions_font(array $variables) {
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function fontyourface_views_pre_render($view) {
+  if ($view->id() == 'fontyourface_font_manager') {
+    $view->element['#attached']['library'][] = 'fontyourface/fontyourface.admin';
+  }
+}
+
+/**
  * Prepares variables for Font templates.
  *
  * Default template: font.html.twig.
@@ -124,21 +133,14 @@ function template_preprocess_font(array &$variables) {
 }
 
 /**
- * Prepares variables for Font templates.
- *
- * Default template: font--full.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An associative array containing the user information and any
- *   - attributes: HTML attributes for the containing element.
+ * Prepares variables for full font template preview.
  */
 function template_preprocess_font__full(array &$variables) {
   template_preprocess_font($variables);
 }
 
 /**
- * Prepares variables for Font templates.
+ * Prepares variables for font teaser preview.
  *
  * Default template: font--teaser.html.twig.
  *

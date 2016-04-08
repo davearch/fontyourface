@@ -1,6 +1,8 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.font.teaser
   module:
     - fontyourface
     - user
@@ -24,7 +26,7 @@ display:
         options:
           perm: 'administer font entities'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
@@ -47,10 +49,15 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 100
+          items_per_page: 50
           offset: 0
           id: 0
           total_pages: null
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -59,61 +66,21 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
           quantity: 9
       style:
-        type: table
+        type: html_list
         options:
-          grouping: {  }
-          row_class: ''
+          row_class: fontyourface-font-manager-item
           default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            name: name
-            css_family: css_family
-            pid: pid
-            operations: operations
-          info:
-            name:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            css_family:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-medium
-            pid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-medium
-            operations:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-          default: '-1'
-          empty_table: false
+          uses_fields: false
+          type: ul
+          wrapper_class: item-list
+          class: ''
       row:
-        type: fields
+        type: 'entity:font'
+        options:
+          relationship: none
+          view_mode: teaser
       fields:
         name:
           id: name
@@ -509,7 +476,7 @@ display:
         groups:
           1: AND
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -526,7 +493,7 @@ display:
       display_extenders: {  }
       path: admin/appearance/font
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

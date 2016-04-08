@@ -15,9 +15,10 @@
  * @ingroup themeable
  */
 #}
-<div{{ attributes.addClass('font odd') }}>
+<div{{ attributes }}>
   <div class="fontyourface-header">
     <h4>{{ font_title }}</h4>
+    <h5>{{- content.pid }}</h5>
   </div>
   <div class="fontyourface-preview">
     <span class="fontyourface-preview" style="{{- font_style }} font-size: 40px; line-height: 40px">AaGg</span>

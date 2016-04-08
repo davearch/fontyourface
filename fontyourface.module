@@ -110,8 +110,9 @@ function template_preprocess_font(array &$variables) {
   $fonts[$font->url->value] = $font;
   $font_preview = &drupal_static('fontyourface_font_preview');
   $font_preview = TRUE;
-  $variables['font_style'] = fontyourface_font_css($font);
   $title = \Drupal\Component\Utility\Html::escape($font->name->value);
+
+  $variables['font_style'] = fontyourface_font_css($font);
   $variables['font_title'] = \Drupal::l($title, $font->urlInfo());
 
   // Helpful $content variable for templates.
@@ -119,13 +120,16 @@ function template_preprocess_font(array &$variables) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
 
+  $variables['attributes']['class'] = ['font'];
   if ($font->isDisabled()) {
     $url = $font->urlInfo('enable', ['query' => \Drupal::destination()->getAsArray()]);
     $text = t('Enable');
+    $variables['attributes']['class'][] = 'disabled';
   }
   if ($font->isEnabled()) {
     $url = $font->urlInfo('disable', ['query' => \Drupal::destination()->getAsArray()]);
     $text = t('Disable');
+    $variables['attributes']['class'][] = 'enabled';
   }
 
   $url->setOption('destination', \Drupal::destination());

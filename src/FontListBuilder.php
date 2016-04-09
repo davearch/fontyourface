@@ -65,14 +65,14 @@ class FontListBuilder extends EntityListBuilder {
       $operations['disable'] = [
         'title' => $this->t('Disable'),
         'weight' => 100,
-        'url' => $entity->urlInfo('disable')
+        'url' => \Drupal\Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $entity->id()], ['query' => \Drupal::destination()->getAsArray()]),
       ];
     }
     if ($entity->isDisabled()) {
       $operations['enable'] = [
         'title' => $this->t('enable'),
         'weight' => 100,
-        'url' => $entity->urlInfo('enable')
+        'url' => \Drupal\Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $entity->id()], ['query' => \Drupal::destination()->getAsArray()]),
       ];
     }
 

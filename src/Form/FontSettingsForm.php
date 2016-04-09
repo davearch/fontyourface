@@ -58,10 +58,16 @@ class FontSettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['Font_settings']['#markup'] = 'Settings form for Font entities. Manage field settings here.';
+    $form['Font_settings']['#markup'] = 'Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.';
+    $form['save'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Save'),
+      '#weight' => 10,
+    ];
     $form['import'] = [
       '#type' => 'submit',
       '#value' => $this->t('Import all fonts'),
+      '#weight' => 10,
     ];
     return $form;
   }

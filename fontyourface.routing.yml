@@ -1,15 +1,17 @@
 entity.font.enable:
-  path: '/admin/appearance/font/{font}/enable'
+  path: '/admin/appearance/font/{font}/{js}/enable'
   defaults:
     _title: 'Enable font'
     _controller: '\Drupal\fontyourface\Controller\FontYourFaceController::enableFont'
   requirements:
     _permission: 'administer font entities'
+    js: 'nojs|ajax'
 
 entity.font.disable:
-  path: '/admin/appearance/font/{font}/disable'
+  path: '/admin/appearance/font/{font}/{js}/disable'
   defaults:
     _title: 'Disable font'
     _controller: '\Drupal\fontyourface\Controller\FontYourFaceController::disableFont'
   requirements:
     _permission: 'administer font entities'
+    js: 'nojs|ajax'

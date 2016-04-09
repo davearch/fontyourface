@@ -5,6 +5,7 @@
  * Contains fontyourface.module..
  */
 
+use Drupal\Core\Url;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\fontyourface\Entity\Font;
@@ -122,12 +123,12 @@ function template_preprocess_font(array &$variables) {
 
   $variables['attributes']['class'] = ['font'];
   if ($font->isDisabled()) {
-    $url = $font->urlInfo('enable', ['query' => \Drupal::destination()->getAsArray()]);
+    $url = Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
     $text = t('Enable');
     $variables['attributes']['class'][] = 'disabled';
   }
   if ($font->isEnabled()) {
-    $url = $font->urlInfo('disable', ['query' => \Drupal::destination()->getAsArray()]);
+    $url = Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
     $text = t('Disable');
     $variables['attributes']['class'][] = 'enabled';
   }

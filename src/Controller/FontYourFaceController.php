@@ -9,15 +9,7 @@ namespace Drupal\fontyourface\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityAccessControlHandlerInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\fontyourface\Entity\Font;
 
 /**
@@ -32,17 +24,16 @@ class FontYourFaceController extends ControllerBase {
     try {
       $font->enable();
       if ($js == 'ajax') {
-        $renderer = \Drupal::service('renderer');
         $url = Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
         $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'enabled', 'use-ajax']]]);
-        $text = t('Enable');
+        $text = $this->t('Enable');
         $link = \Drupal::l($text, $url);
 
         $response = new AjaxResponse();
         return $response->addCommand(new ReplaceCommand('#font-status-' . $font->id(), $link));
       }
       else {
-        drupal_set_message(t('Font @font successfully enabled', ['@font' => $font->name->value]));
+        drupal_set_message($this->t('Font @font successfully enabled', ['@font' => $font->name->value]));
         return $this->redirect('entity.font.collection');
       }
     }
@@ -68,17 +59,16 @@ class FontYourFaceController extends ControllerBase {
     try {
       $font->disable();
       if ($js == 'ajax') {
-        $renderer = \Drupal::service('renderer');
         $url = Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
         $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'disabled', 'use-ajax']]]);
-        $text = t('Enable');
+        $text = $this->t('Enable');
         $link = \Drupal::l($text, $url);
 
         $response = new AjaxResponse();
         return $response->addCommand(new ReplaceCommand('#font-status-' . $font->id(), $link));
       }
       else {
-        drupal_set_message(t('Font @font successfully disabled', ['@font' => $font->name->value]));
+        drupal_set_message($this->t('Font @font successfully disabled', ['@font' => $font->name->value]));
         return $this->redirect('entity.font.collection');
       }
     }

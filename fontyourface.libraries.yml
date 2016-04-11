@@ -3,5 +3,7 @@ fontyourface.admin:
   css:
     component:
       css/fontyourface.admin.css: {}
+  js:
+    js/fontyourface.admin.js: {}
   dependencies:
-    - core/drupal.ajax
+    - core/jquery

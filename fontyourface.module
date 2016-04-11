@@ -124,11 +124,13 @@ function template_preprocess_font(array &$variables) {
   $variables['attributes']['class'] = ['font'];
   if ($font->isDisabled()) {
     $url = Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
+    $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'disabled', 'use-ajax']]]);
     $text = t('Enable');
     $variables['attributes']['class'][] = 'disabled';
   }
   if ($font->isEnabled()) {
     $url = Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
+    $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'enabled', 'use-ajax']]]);
     $text = t('Disable');
     $variables['attributes']['class'][] = 'enabled';
   }

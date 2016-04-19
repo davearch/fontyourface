@@ -182,6 +182,7 @@ function fontyourface_save_font($font_data) {
   $font->designer_url = $font_data->designer_url;
   $font->metadata = $font_data->metadata;
   $font->save();
+  return $font;
 }
 
 /**
@@ -191,7 +192,7 @@ function fontyourface_font_css($font, $font_style = NULL) {
   $css = [];
 
   // Enclose font family definition in single quotes if not already enclosed.
-  if ($font->css_family->value === "'") {
+  if ($font->css_family->value[0] === "'") {
     $family_list = $font->css_family->value;
   }
   else {

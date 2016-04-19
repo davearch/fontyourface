@@ -6,7 +6,7 @@ define('TYPEKIT_API_BASE_URL', 'https://typekit.com/api/v1/json/');
  * Implements hook_page_attachments().
  */
 function typekit_api_page_attachments(&$page) {
-  $enabled_fonts = &drupal_static('fontyourface_fonts');
+  $enabled_fonts = &drupal_static('fontyourface_fonts', []);
   $kits = [];
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'typekit_api') {

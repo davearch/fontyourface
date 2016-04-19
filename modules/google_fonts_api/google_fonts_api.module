@@ -11,11 +11,11 @@ use Drupal\fontyourface\Entity\Font;
  * Implements hook_page_attachments().
  */
 function google_fonts_api_page_attachments(&$page) {
-  $fonts = &drupal_static('fontyourface_fonts');
-  $google_fonts = [];
-  foreach ($fonts as $font) {
+  $enabled_fonts = &drupal_static('fontyourface_fonts', []);
+  $fonts = [];
+  foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'google_fonts_api') {
-      $google_fonts[] = $font;
+      $fonts[] = $font;
     }
   }
   $url = google_fonts_api_generate_font_family_css($fonts);

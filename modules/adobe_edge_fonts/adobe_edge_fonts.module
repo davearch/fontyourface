@@ -11,7 +11,7 @@ use Drupal\fontyourface\Entity\Font;
  * Implements hook_page_attachments().
  */
 function adobe_edge_fonts_page_attachments(&$page) {
-  $enabled_fonts = &drupal_static('fontyourface_fonts');
+  $enabled_fonts = &drupal_static('fontyourface_fonts', []);
   $fonts = [];
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'adobe_edge_fonts') {

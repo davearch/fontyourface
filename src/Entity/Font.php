@@ -180,7 +180,7 @@ class Font extends ContentEntityBase implements FontInterface {
     foreach ($enabled_fonts as $enabled_font_url) {
       $font = self::loadByUrl($enabled_font_url);
       if (!empty($font)) {
-        $fonts[$font->id()] = $font;
+        $fonts[$font->url->value] = $font;
       }
     }
     return $fonts;

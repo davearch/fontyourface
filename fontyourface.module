@@ -48,7 +48,15 @@ function fontyourface_theme() {
  * Implements hook_page_attachments().
  */
 function fontyourface_page_attachments(&$page) {
-  $fonts = &drupal_static('fontyourface_fonts');
+  $config = \Drupal::config('fontyourface.settings');
+  $fonts = &drupal_static('fontyourface_fonts', []);
+  // Load all enabled fonts regardless of theme if setting allows it.
+  if ($config->get('load_all_fonts')) {
+    foreach(Font::loadEnabledFonts() as $font) {
+      $fonts[$font->url->value] = $font;
+    }
+  }
+
   $font_preview = &drupal_static('fontyourface_font_preview');
   // On a font preview page, ONLY show the preview font and other base theme font.
   if (empty($font_preview)) {

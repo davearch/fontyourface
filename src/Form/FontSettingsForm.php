@@ -50,10 +50,10 @@ class FontSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('fontyourface.settings');
     $form['Font_settings']['#markup'] = 'Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.';
-    $form['load_all_fonts'] = [
+    $form['load_all_enabled_fonts'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Load all enabled fonts'),
-      '#default_value' => (int) $config->get('load_all_fonts'),
+      '#default_value' => (int) $config->get('load_all_enabled_fonts'),
       '#description' => $this->t('This will load all fonts that have been enabled regardless of theme. Warning: this may add considerable download weight to your pages depending on the number of enabled fonts'),
     ];
     $form['import'] = [
@@ -81,7 +81,7 @@ class FontSettingsForm extends ConfigFormBase {
     }
     if ($op == $this->t('Save configuration')) {
       $config = $this->config('fontyourface.settings')
-        ->set('load_all_fonts', $values['load_all_fonts'])
+        ->set('load_all_enabled_fonts', $values['load_all_enabled_fonts'])
         ->save();
       parent::submitForm($form, $form_state);
     }

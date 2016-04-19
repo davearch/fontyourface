@@ -51,7 +51,7 @@ function fontyourface_page_attachments(&$page) {
   $config = \Drupal::config('fontyourface.settings');
   $fonts = &drupal_static('fontyourface_fonts', []);
   // Load all enabled fonts regardless of theme if setting allows it.
-  if ($config->get('load_all_fonts')) {
+  if ($config->get('load_all_enabled_fonts')) {
     foreach(Font::loadEnabledFonts() as $font) {
       $fonts[$font->url->value] = $font;
     }

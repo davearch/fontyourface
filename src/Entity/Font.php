@@ -152,8 +152,9 @@ class Font extends ContentEntityBase implements FontInterface {
       $enabled_fonts[] = $this->url->value;
       $config->set('enabled_fonts', $enabled_fonts)
         ->save();
-      $this->save();
     }
+    $this->status->value = TRUE;
+    $this->save();
     return $this->isEnabled();
   }
 
@@ -166,6 +167,7 @@ class Font extends ContentEntityBase implements FontInterface {
     $enabled_fonts = array_diff($enabled_fonts, [$this->url->value]);
     $config->set('enabled_fonts', $enabled_fonts)
       ->save();
+    $this->status->value = FALSE;
     $this->save();
     return $this->isDisabled();
   }
@@ -459,6 +461,12 @@ class Font extends ContentEntityBase implements FontInterface {
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
+
+    $fields['status'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Font status'))
+      ->setDescription(t('A boolean indicating whether the font is enabled. Mostly used for views.'))
+      ->setTranslatable(TRUE)
+      ->setDefaultValue(FALSE);
 
     return $fields;
   }

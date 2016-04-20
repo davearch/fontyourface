@@ -189,6 +189,7 @@ function fontyourface_save_font($font_data) {
   $font->designer = $font_data->designer;
   $font->designer_url = $font_data->designer_url;
   $font->metadata = $font_data->metadata;
+  $font->status = FALSE;
   $font->save();
   return $font;
 }

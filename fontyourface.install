@@ -11,3 +11,13 @@
 function fontyourface_install() {
   module_set_weight('fontyourface', 1);
 }
+
+/**
+ * Updates fonts which are enabled to have enabled property in Font status.
+ */
+function fontyourface_update_8001() {
+  $fonts = \Drupal\fontyourface\Entity\Font::loadEnabledFonts();
+  foreach ($fonts as $font) {
+    $font->enable();
+  }
+}

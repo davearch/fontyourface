@@ -85,6 +85,11 @@ class FontSettingsForm extends ConfigFormBase {
         ->save();
       parent::submitForm($form, $form_state);
     }
+    // Resave enabled fonts.
+    $fonts = \Drupal\fontyourface\Entity\Font::loadEnabledFonts();
+    foreach ($fonts as $font) {
+      $font->enable();
+    }
   }
 
 }

@@ -490,6 +490,20 @@ display:
           entity_field: css_weight
           plugin_id: fontyourface_font_weight
       sorts:
+        status:
+          id: status
+          table: fontyourface_font
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: font
+          entity_field: status
+          plugin_id: standard
         name:
           id: name
           table: fontyourface_font

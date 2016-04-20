@@ -25,9 +25,14 @@ class FontYourFaceProviderFilter extends StringFilter {
   /**
    * Provide simple equality operator
    */
-  public function operatorOptions() {
+  public function operators() {
     return [
-      '=' => $this->t('Is equal to'),
+      '=' => [
+        'title' => $this->t('Is equal to'),
+        'short' => $this->t('='),
+        'method' => 'opEqual',
+        'values' => 1,
+      ],
     ];
   }
 

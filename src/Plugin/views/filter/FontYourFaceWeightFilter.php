@@ -11,7 +11,7 @@ use Drupal\views\Plugin\views\filter\StringFilter;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Filter handler which allows to search based on font providers.
+ * Filter handler which allows to search based on font weight.
  *
  * @ingroup views_field_handlers
  *
@@ -25,9 +25,14 @@ class FontYourFaceWeightFilter extends StringFilter {
   /**
    * Provide simple equality operator
    */
-  public function operatorOptions() {
+  public function operators() {
     return [
-      '=' => $this->t('Is equal to'),
+      '=' => [
+        'title' => $this->t('Is equal to'),
+        'short' => $this->t('='),
+        'method' => 'opEqual',
+        'values' => 1,
+      ],
     ];
   }
 

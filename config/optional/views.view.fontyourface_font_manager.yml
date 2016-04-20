@@ -377,7 +377,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: ''
+          value: All
           group: 1
           exposed: true
           expose:
@@ -417,7 +417,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: ''
+          value: All
           group: 1
           exposed: true
           expose:
@@ -457,7 +457,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: '100'
+          value: All
           group: 1
           exposed: true
           expose:

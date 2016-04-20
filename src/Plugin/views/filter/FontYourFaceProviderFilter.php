@@ -35,7 +35,7 @@ class FontYourFaceProviderFilter extends StringFilter {
    * {@inheritdoc}
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
-    $options = [];
+    $options = ['All' => '- Any -'];
     foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
       $name = $module_name;
       $module_info = \Drupal::moduleHandler()->invoke($module_name, 'fontyourface_api');

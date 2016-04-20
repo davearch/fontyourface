@@ -36,6 +36,7 @@ class FontYourFaceWeightFilter extends StringFilter {
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
     $options = [
+      'All' => '- Any -',
       '100' => $this->t('100'),
       '200' => $this->t('200'),
       '300' => $this->t('300'),

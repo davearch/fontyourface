@@ -36,6 +36,7 @@ class FontYourFaceStyleFilter extends StringFilter {
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
     $options = [
+      'All' => '- Any -',
       'normal' => $this->t('Normal'),
       'italic' => $this->t('Italics'),
     ];

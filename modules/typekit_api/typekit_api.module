@@ -39,7 +39,8 @@ function typekit_api_page_attachments(&$page) {
  */
 function typekit_api_fontyourface_api() {
   return [
-    'version' => '3'
+    'version' => '3',
+    'name' => 'Typekit',
   ];
 }
 

@@ -37,7 +37,8 @@ function adobe_edge_fonts_page_attachments(&$page) {
  */
 function adobe_edge_fonts_fontyourface_api() {
   return [
-    'version' => '3'
+    'version' => '3',
+    'name' => 'Adobe Edge',
   ];
 }
 

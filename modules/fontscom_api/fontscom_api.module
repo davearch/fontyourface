@@ -5,6 +5,7 @@
  */
 function fontscom_api_fontyourface_api() {
   return [
-    'version' => '3'
+    'version' => '3',
+    'name' => 'Fonts.com',
   ];
 }

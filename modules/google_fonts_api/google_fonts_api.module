@@ -39,7 +39,8 @@ function google_fonts_api_page_attachments(&$page) {
  */
 function google_fonts_api_fontyourface_api() {
   return [
-    'version' => '3'
+    'version' => '3',
+    'name' => 'Google Fonts',
   ];
 }
 

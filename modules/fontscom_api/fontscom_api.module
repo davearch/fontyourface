@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_fontyourface_api().
+ */
+function typekit_api_fontyourface_api() {
+  return [
+    'version' => '3'
+  ];
+}

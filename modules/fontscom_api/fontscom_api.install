@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Fonts.com API install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function fontscom_api_install() {
+  module_set_weight('fontscom_api', 10);
+}

@@ -33,6 +33,7 @@ function typekit_api_page_attachments(&$page) {
     ];
   }
 }
+
 /**
  * Implements hook_fontyourface_api().
  */
@@ -86,6 +87,7 @@ function typekit_api_fontyourface_import() {
   }
   drupal_set_message('Imported Typekit kits: @kits', array('@kits' => print_r($kits, TRUE)));
 }
+
 /**
  * Implements hook_form_alter().
  */

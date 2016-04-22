@@ -11,10 +11,12 @@
         if ($(font_status).hasClass('enabled')) {
           $(this).removeClass('disabled');
           $(this).addClass('enabled');
+          $(font_status).text(Drupal.t('Disable'));
         }
         if ($(font_status).hasClass('disabled')) {
           $(this).removeClass('enabled');
           $(this).addClass('disabled');
+          $(font_status).text(Drupal.t('Enable'));
         }
       })
     }

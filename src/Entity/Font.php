@@ -49,8 +49,8 @@ use Drupal\user\UserInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/appearance/font/{font}",
- *     "enable" = "/admin/appearance/font/{font}/enable",
- *     "disable" = "/admin/appearance/font/{font}/disable",
+ *     "enable" = "/admin/appearance/font/{font}/{js}/enable",
+ *     "disable" = "/admin/appearance/font/{font}/{js}/disable",
  *     "collection" = "/admin/appearance/font",
  *   },
  *   render_cache = FALSE,

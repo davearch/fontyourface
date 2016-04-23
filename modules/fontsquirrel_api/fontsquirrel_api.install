@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Google Fonts install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function fontsquirrel_api_install() {
+  // Import google fonts.
+  fontsquirrel_api_fontyourface_import();
+  module_set_weight('fontsquirrel_api', 10);
+}

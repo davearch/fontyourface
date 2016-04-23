@@ -62,7 +62,7 @@ function typekit_api_fontyourface_import() {
     if (typekit_api_kit_matches_domain($kit, $_SERVER['HTTP_HOST'])) {
       foreach ($kit->families as $family) {
         foreach ($family->variations as $variant_id) {
-          $variant = typekit_api_get_variant($family->id, $variant_id);
+          $variant = typekit_api_get_variant($family->id, $variant_id, $config->get('token'));
           $metadata = [
             'typekit_id' => $variant->id,
             'variant' => $variant->font_variant,
@@ -116,7 +116,7 @@ function typekit_api_form_font_settings_submit(&$form, \Drupal\Core\Form\FormSta
 /**
  * Returns kits based on typekit id.
  */
-function typekit_api_get_kits($token) {
+function typekit_api_get_kits($token = NULL) {
   $kits = [];
   try {
     $uri = TYPEKIT_API_BASE_URL . 'kits';
@@ -133,7 +133,7 @@ function typekit_api_get_kits($token) {
 /**
  * Returns kit information.
  */
-function typekit_api_get_kit($kit_id, $token) {
+function typekit_api_get_kit($kit_id, $token = NULL) {
   try {
     $uri = TYPEKIT_API_BASE_URL . 'kits/' . $kit_id;
     $response = \Drupal::httpClient()->get($uri, ['headers' => typekit_api_token_headers($token), 'verify' => FALSE]);
@@ -149,7 +149,7 @@ function typekit_api_get_kit($kit_id, $token) {
 /**
  * Get a specific variant from API based on family and variant IDs.
  */
-function typekit_api_get_variant($family_id, $variant_id) {
+function typekit_api_get_variant($family_id, $variant_id, $token = NULL) {
   try {
     $uri = TYPEKIT_API_BASE_URL . 'families/' . $family_id . '/' . $variant_id;
     $response = \Drupal::httpClient()->get($uri, ['headers' => typekit_api_token_headers($token), 'verify' => FALSE]);

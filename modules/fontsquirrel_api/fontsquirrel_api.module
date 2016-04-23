@@ -49,11 +49,11 @@ function fontsquirrel_api_fontyourface_import() {
     $font->provider = 'fontsquirrel_api';
     $font->css_family = $font_import->family_urlname . 'regular';
     // Font Squirrel fonts have no concept of normal/bold/light/italics fonts.
-    $font->weight = 400;
-    $font->style = 'normal';
+    $font->css_weight = 400;
+    $font->css_style = 'normal';
     $font->foundry = $font_import->foundry_name;
     $font->foundry_url = 'https://www.fontsquirrel.com/foundry/' . $font_import->foundry_urlname;
-    $font->license = 'See Sont Squirrel license page';
+    $font->license = 'See Font Squirrel license page';
     $font->license_url = $font->url . '#eula';
     $font->metadata = serialize($metadata);
     if ($font_import->family_count > 1) {
@@ -64,6 +64,7 @@ function fontsquirrel_api_fontyourface_import() {
         $variant_metadata['font_filename'] = $variant->filename;
         $variant_font = clone $font;
         $variant_font->name = $variant->family_name . ' ' . $variant->style_name;
+        $variant_font->url = $font->url . '#' . $variant->fontface_name;
         $variant_font->css_family = $variant->fontface_name;
         $variant_font->metadata = serialize($variant_metadata);
         $fonts[] = $variant_font;

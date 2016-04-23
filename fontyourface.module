@@ -220,3 +220,19 @@ function fontyourface_font_css($font, $font_style = NULL) {
 
   return implode(' ', $css);
 }
+
+/**
+ * Logs to watchdog if logging is enabled.
+ *
+ * @param string $message
+ *   Log message. This should be a literal string; see
+ *   http://drupal.org/node/323101 for more details.
+ * @param array $arguments
+ *   Arguments to replace placeholders, if there are any, in $message.
+ */
+function fontyourface_log($message, $arguments) {
+  $config = \Drupal::config('fontyourface.settings');
+  if ($config->get('fontyourface_detailed_logging')) {
+    watchdog('@font-your-face', $message, $arguments, WATCHDOG_INFO);
+  }
+}

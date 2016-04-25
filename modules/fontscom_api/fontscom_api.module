@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * Implements hook_requirements().
+ */
+function fontscom_api_requirements($phase) {
+  $requirements['not_implemented'] = [
+    'title' => t('Not yet implemented'),
+    'description' => t('TODO: This module still needs to be implemented.'),
+    'severity' => REQUIREMENT_ERROR,
+  ];
+
+  return $requirements;
+}
+
+/**
  * Implements hook_fontyourface_api().
  */
 function fontscom_api_fontyourface_api() {

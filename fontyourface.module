@@ -8,6 +8,7 @@
 use Drupal\Core\Url;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\fontyourface\Entity\Font;
 use Drupal\fontyourface\Entity\FontDisplay;
 
@@ -52,7 +53,7 @@ function fontyourface_page_attachments(&$page) {
   $fonts = &drupal_static('fontyourface_fonts', []);
   // Load all enabled fonts regardless of theme if setting allows it.
   if ($config->get('load_all_enabled_fonts')) {
-    foreach(Font::loadEnabledFonts() as $font) {
+    foreach (Font::loadEnabledFonts() as $font) {
       $fonts[$font->url->value] = $font;
     }
   }
@@ -119,7 +120,7 @@ function template_preprocess_font(array &$variables) {
   $fonts[$font->url->value] = $font;
   $font_preview = &drupal_static('fontyourface_font_preview');
   $font_preview = TRUE;
-  $title = \Drupal\Component\Utility\Html::escape($font->name->value);
+  $title = Html::escape($font->name->value);
 
   $variables['font_style'] = fontyourface_font_css($font);
   $variables['font_title'] = \Drupal::l($title, $font->urlInfo());
@@ -132,19 +133,41 @@ function template_preprocess_font(array &$variables) {
   $variables['attributes']['class'] = ['font'];
   if ($font->isDisabled()) {
     $url = Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
-    $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'disabled', 'use-ajax']]]);
+    $url->setOptions(
+      [
+        'attributes' => [
+          'id' => 'font-status-' . $font->id(),
+          'class' => [
+            'font-status',
+            'disabled',
+            'use-ajax'
+          ]
+        ]
+      ]
+    );
     $text = t('Enable');
     $variables['attributes']['class'][] = 'disabled';
   }
   if ($font->isEnabled()) {
     $url = Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
-    $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'enabled', 'use-ajax']]]);
+    $url->setOptions(
+      [
+        'attributes' => [
+          'id' => 'font-status-' . $font->id(),
+          'class' => [
+            'font-status',
+            'enabled',
+            'use-ajax'
+          ]
+        ]
+      ]
+    );
     $text = t('Disable');
     $variables['attributes']['class'][] = 'enabled';
   }
 
-  $url->setOption('destination', \Drupal::destination());
-  $variables['operation_links'] = \Drupal::l($text, $url);
+  $url->setOption('destination', Drupal::destination());
+  $variables['operation_links'] = Drupal::l($text, $url);
 }
 
 /**

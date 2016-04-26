@@ -54,7 +54,7 @@ function fontsquirrel_api_entity_presave(Drupal\Core\Entity\EntityInterface $ent
         while ($entry = zip_read($zip)) {
           $entry_name = zip_entry_name($entry);
           $path_info = pathinfo($entry_name);
-          if (strpos($path_info['filename'], $font_pathinfo['filename']) !== FALSE && in_array($path_info['extension'], ['eot', 'ttf', 'woff', 'svg'])) {
+          if (strpos($path_info['filename'], $font_pathinfo['filename'] . '-webfont') !== FALSE && in_array($path_info['extension'], ['eot', 'ttf', 'woff', 'svg'])) {
             $files[$path_info['extension']] = $path_info['filename'] . '.' . $path_info['extension'];
             $data = zip_entry_read($entry, zip_entry_filesize($entry));
             file_unmanaged_save_data($data, $directory_location . '/' . $path_info['filename'] . '.' . $path_info['extension'], FILE_EXISTS_OVERWRITE);

@@ -11,6 +11,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\fontyourface\Entity\Font;
 use Drupal\fontyourface\Entity\FontDisplay;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Entity\Vocabulary;
+
 
 /**
  * Implements hook_help().

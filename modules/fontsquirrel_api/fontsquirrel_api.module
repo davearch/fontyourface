@@ -5,6 +5,7 @@
  * Font Squirrel API module file.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\fontyourface\Entity\Font;
 
 /**
@@ -15,7 +16,7 @@ function fontsquirrel_api_page_attachments(&$page) {
   $kits = [];
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'fontsquirrel_api' && $font->isEnabled()) {
-      $directory_location = file_build_uri('fontyourface/fontsquirrel/' . _fontsquirrel_api_get_sanitized_css_family($font->css_family->value) . '-fontfacekit');
+      $directory_location = _fontsquirrel_api_get_font_directory_location($font);
       $page['#attached']['html_head'][] = [
         [
           '#type' => 'html_tag',
@@ -31,15 +32,14 @@ function fontsquirrel_api_page_attachments(&$page) {
   }
 }
 
-
 /**
  * Implements hook_entity_presave().
  */
-function fontsquirrel_api_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
-  if ($entity instanceof Drupal\fontyourface\Entity\Font) {
+function fontsquirrel_api_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof Font) {
     if ($entity->pid->value == 'fontsquirrel_api' && $entity->isEnabled()) {
       $metadata = $entity->getMetadata();
-      $directory_location = file_build_uri('fontyourface/fontsquirrel/' . _fontsquirrel_api_get_sanitized_css_family($entity->css_family->value) . '-fontfacekit');
+      $directory_location = _fontsquirrel_api_get_font_directory_location($entity);
       file_prepare_directory($directory_location, FILE_CREATE_DIRECTORY);
       $zip_location = file_build_uri('fontyourface/fontsquirrel/' . $metadata['path'] . '-fontfacekit.zip');
       // Throw an exception; make it hard if this fails.
@@ -54,10 +54,11 @@ function fontsquirrel_api_entity_presave(Drupal\Core\Entity\EntityInterface $ent
         while ($entry = zip_read($zip)) {
           $entry_name = zip_entry_name($entry);
           $path_info = pathinfo($entry_name);
-          if (strpos($path_info['filename'], $font_pathinfo['filename'] . '-webfont') !== FALSE && in_array($path_info['extension'], ['eot', 'ttf', 'woff', 'svg'])) {
+          if (strpos($path_info['filename'], $font_pathinfo['filename'] . '-webfont') !== FALSE &&
+              in_array($path_info['extension'], ['eot', 'ttf', 'woff', 'svg'])) {
             $files[$path_info['extension']] = $path_info['filename'] . '.' . $path_info['extension'];
             $data = zip_entry_read($entry, zip_entry_filesize($entry));
-            file_unmanaged_save_data($data, $directory_location . '/' . $path_info['filename'] . '.' . $path_info['extension'], FILE_EXISTS_OVERWRITE);
+            file_unmanaged_save_data($data, $directory_location . '/' . $path_info['filename'] . '.' . $path_info['extension'], FILE_EXISTS_REPLACE);
           }
           zip_entry_close($entry);
         }
@@ -65,7 +66,7 @@ function fontsquirrel_api_entity_presave(Drupal\Core\Entity\EntityInterface $ent
       }
       if (!empty($files)) {
         $css_file = _fontsquirrel_api_generate_fontfamily_css_stylesheet($entity->css_family->value, $files);
-        file_unmanaged_save_data($css_file, $directory_location . '/fontyourface-stylesheet.css', FILE_EXISTS_OVERWRITE);
+        file_unmanaged_save_data($css_file, $directory_location . '/fontyourface-stylesheet.css', FILE_EXISTS_REPLACE);
       }
     }
   }
@@ -146,6 +147,15 @@ function fontsquirrel_api_fontyourface_import() {
   }
 }
 
+/**
+ * Get font family information from Font Squirrel.
+ *
+ * @param object $font_import
+ *   Initial font package data from Font Squirrel.
+ *
+ * @return object
+ *   Font Family information from Font Squirrel.
+ */
 function fontsquirrel_api_get_font_family_info($font_import) {
   try {
     $uri = 'http://www.fontsquirrel.com/api/familyinfo/' . $font_import->family_urlname;
@@ -160,10 +170,43 @@ function fontsquirrel_api_get_font_family_info($font_import) {
   return $data;
 }
 
+/**
+ * Returns directory location of font package from Font Squirrel.
+ *
+ * @param Font $font
+ *   Font entity with downloaded package.
+ *
+ * @return string
+ *   File stream location to font package.
+ */
+function _fontsquirrel_api_get_font_directory_location(Font $font) {
+  return file_build_uri('fontyourface/fontsquirrel/' . _fontsquirrel_api_get_sanitized_css_family($font->css_family->value) . '-fontfacekit');
+}
+
+/**
+ * Returns sanitized css family text.
+ *
+ * @param string $css_family
+ *   Unsanitized version of css family string.
+ *
+ * @return string
+ *   Sanitized css family string.
+ */
 function _fontsquirrel_api_get_sanitized_css_family($css_family) {
   return preg_replace("/[^A-Za-z0-9\-]/", '', $css_family);
 }
 
+/**
+ * Generates CSS to load font.
+ *
+ * @param string $css_family
+ *   Font entity with downloaded package.
+ * @param array $files
+ *   Font files keyed by file type.
+ *
+ * @return string
+ *   CSS Definition for @font-face.
+ */
 function _fontsquirrel_api_generate_fontfamily_css_stylesheet($css_family, $files) {
   $data = "@font-face {\n";
   $data .= "font-family: '{$css_family}';\n";

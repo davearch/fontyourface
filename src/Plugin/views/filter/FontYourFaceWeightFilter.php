@@ -19,11 +19,11 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class FontYourFaceWeightFilter extends StringFilter {
 
-  // exposed filter options
+  // Exposed filter options.
   protected $alwaysMultiple = TRUE;
 
   /**
-   * Provide simple equality operator
+   * Provide simple equality operator.
    */
   public function operators() {
     return [

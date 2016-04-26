@@ -9,6 +9,7 @@ namespace Drupal\fontyourface\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\fontyourface\Entity\Font;
 
 /**
  * Class FontSettingsForm.
@@ -86,7 +87,7 @@ class FontSettingsForm extends ConfigFormBase {
       parent::submitForm($form, $form_state);
     }
     // Resave enabled fonts.
-    $fonts = \Drupal\fontyourface\Entity\Font::loadEnabledFonts();
+    $fonts = Font::loadEnabledFonts();
     foreach ($fonts as $font) {
       $font->enable();
     }

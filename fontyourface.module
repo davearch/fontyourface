@@ -230,6 +230,17 @@ function fontyourface_save_font($font_data) {
       ];
     }
   }
+  $font->tags = [];
+  if (!empty($font_data->foundry)) {
+    $font->field_tags[] = [
+      'target_id' => _fontyourface_get_vocabulary_term($font_data->foundry, 'font_foundry'),
+    ];
+  }
+  if (!empty($font_data->designer)) {
+    $font->field_tags[] = [
+      'target_id' => _fontyourface_get_vocabulary_term($font_data->designer, 'font_designer'),
+    ];
+  }
   $font->setMetadata($font_data->metadata);
   $font->status = FALSE;
   $font->save();

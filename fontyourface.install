@@ -64,6 +64,21 @@ function fontyourface_update_8002() {
   ]);
   $tags->save();
 
+  $foundry = Vocabulary::create([
+    'name' => 'Font Foundry',
+    'description' => 'Font Foundry',
+    'vid' => 'font_foundry',
+  ]);
+  $foundry->save();
+
+  $designer = Vocabulary::create([
+    'name' => 'Font Designer',
+    'description' => 'Font Designer',
+    'vid' => 'font_designer',
+  ]);
+  $designer->save();
+
+
   $field_name = 'field_classification';
   $classification_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_classification',
@@ -167,6 +182,8 @@ function fontyourface_update_8002() {
       'handler_settings' => [
         // Reference a single vocabulary.
         'target_bundles' => [
+          'font_designer' => 'font_designer',
+          'font_foundry' => 'font_foundry',
           'font_tags' => 'font_tags',
         ],
         // Enable auto-create.

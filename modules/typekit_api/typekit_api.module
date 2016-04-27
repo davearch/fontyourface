@@ -85,7 +85,7 @@ function typekit_api_fontyourface_import() {
           $font_data->css_style = $variant->font_style;
           $font_data->css_weight = $variant->font_weight;
           $font_data->foundry_url = 'http://typekit.com/foundries/' . $variant->foundry->slug;
-          $font_data->metadata = serialize($metadata);
+          $font_data->metadata = $metadata;
           $font = fontyourface_save_font($font_data);
           $font->enable();
         }

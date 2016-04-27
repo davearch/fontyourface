@@ -120,7 +120,7 @@ function fontsquirrel_api_fontyourface_import() {
     $font->foundry_url = 'https://www.fontsquirrel.com/foundry/' . $font_import->foundry_urlname;
     $font->license = 'See Font Squirrel license page';
     $font->license_url = $font->url . '#eula';
-    $font->metadata = serialize($metadata);
+    $font->metadata = $metadata;
     if ($font_import->family_count > 1) {
       $variants = fontsquirrel_api_get_font_family_info($font_import);
       foreach ($variants as $key => $variant) {
@@ -131,7 +131,7 @@ function fontsquirrel_api_fontyourface_import() {
         $variant_font->name = $variant->family_name . ' ' . $variant->style_name;
         $variant_font->url = $font->url . '#' . $variant->fontface_name;
         $variant_font->css_family = $variant->fontface_name;
-        $variant_font->metadata = serialize($variant_metadata);
+        $variant_font->metadata = $variant_metadata;
         $fonts[] = $variant_font;
         fontyourface_save_font($variant_font);
       }

@@ -5,11 +5,28 @@
  * Font-Your-Face install/update/uninstall hook implementation.
  */
 
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Entity\Vocabulary;
+
 /**
  * Implements hook_install().
  */
 function fontyourface_install() {
   module_set_weight('fontyourface', 1);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function fontyourface_uninstall() {
+  $vids = ['font_classification', 'font_tags', 'languages_supported'];
+  foreach ($vids as $vid) {
+    $vocabulary = Vocabulary::load($vid);
+    $vocabulary->delete();
+  }
 }
 
 /**
@@ -20,4 +37,147 @@ function fontyourface_update_8001() {
   foreach ($fonts as $font) {
     $font->enable();
   }
+}
+
+/**
+ * Adds classification, languages, tags vocabularies and fields from config.
+ */
+function fontyourface_update_8002() {
+  $classification = Vocabulary::create([
+    'name' => 'Classification',
+    'description' => 'This is the general font type.',
+    'vid' => 'font_classification',
+  ]);
+  $classification->save();
+
+  $languages_supported = Vocabulary::create([
+    'name' => 'Languages Supported',
+    'description' => 'The languages supported by the font.',
+    'vid' => 'languages_supported',
+  ]);
+  $languages_supported->save();
+
+  $tags = Vocabulary::create([
+    'name' => 'Font Tags',
+    'description' => 'The tags that came with the font.',
+    'vid' => 'font_tags',
+  ]);
+  $tags->save();
+
+  $field_name = 'field_classification';
+  $classification_field_storage = FieldStorageConfig::create([
+    'field_name' => 'field_classification',
+    'entity_type' => 'font',
+    'translatable' => TRUE,
+    'entity_types' => [],
+    'settings' => [
+      'target_type' => 'taxonomy_term',
+    ],
+    'type' => 'entity_reference',
+    'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+  ]);
+  $classification_field_storage->save();
+
+  $classification_field = FieldConfig::create([
+    'label' => 'Classification',
+    'field_name' => 'field_classification',
+    'field_storage' => $classification_field_storage,
+    'entity_type' => 'font',
+    'bundle' => 'font',
+    'settings' => [
+      'handler' => 'default:taxonomy_term',
+      'handler_settings' => [
+        // Reference a single vocabulary.
+        'target_bundles' => [
+          'font_classification' => 'font_classification',
+        ],
+        // Enable auto-create.
+        'auto_create' => TRUE,
+        'auto_create_bundle' => FALSE,
+        'sort' => [
+          'field' => '_none',
+        ]
+      ],
+    ],
+    'translatable' => FALSE,
+  ]);
+  $classification_field->save();
+
+  $field_name = 'field_supported_languages';
+  $supported_languages_field_storage = FieldStorageConfig::create([
+    'field_name' => 'field_supported_languages',
+    'entity_type' => 'font',
+    'translatable' => TRUE,
+    'entity_types' => [],
+    'settings' => [
+      'target_type' => 'taxonomy_term',
+    ],
+    'type' => 'entity_reference',
+    'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+  ]);
+  $supported_languages_field_storage->save();
+
+  $supported_languages_field = FieldConfig::create([
+    'label' => 'Supported Languages',
+    'field_name' => 'field_supported_languages',
+    'field_storage' => $supported_languages_field_storage,
+    'entity_type' => 'font',
+    'bundle' => 'font',
+    'settings' => [
+      'handler' => 'default:taxonomy_term',
+      'handler_settings' => [
+        // Reference a single vocabulary.
+        'target_bundles' => [
+          'languages_supported' => 'languages_supported',
+        ],
+        // Enable auto-create.
+        'auto_create' => TRUE,
+        'auto_create_bundle' => FALSE,
+        'sort' => [
+          'field' => '_none',
+        ]
+      ],
+    ],
+    'translatable' => FALSE,
+  ]);
+  $supported_languages_field->save();
+
+  $field_name = 'field_tags';
+  $tags_field_storage = FieldStorageConfig::create([
+    'field_name' => 'field_tags',
+    'entity_type' => 'font',
+    'translatable' => TRUE,
+    'entity_types' => [],
+    'settings' => [
+      'target_type' => 'taxonomy_term',
+    ],
+    'type' => 'entity_reference',
+    'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
+  ]);
+  $tags_field_storage->save();
+
+  $tags_field = FieldConfig::create([
+    'label' => 'Tags',
+    'field_name' => 'field_tags',
+    'field_storage' => $tags_field_storage,
+    'entity_type' => 'font',
+    'bundle' => 'font',
+    'settings' => [
+      'handler' => 'default:taxonomy_term',
+      'handler_settings' => [
+        // Reference a single vocabulary.
+        'target_bundles' => [
+          'font_tags' => 'font_tags',
+        ],
+        // Enable auto-create.
+        'auto_create' => TRUE,
+        'auto_create_bundle' => FALSE,
+        'sort' => [
+          'field' => '_none',
+        ]
+      ],
+    ],
+    'translatable' => FALSE,
+  ]);
+  $tags_field->save();
 }

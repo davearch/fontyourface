@@ -3,7 +3,6 @@ status: true
 dependencies: {  }
 name: 'Font Tags'
 vid: font_tags
-description: ''
+description: 'The tags that came with the font.'
 hierarchy: 0
 weight: 0
-

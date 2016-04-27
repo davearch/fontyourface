@@ -125,7 +125,13 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
       $font->foundry_url = '';
       $font->license = 'Font license';
       $font->license_url = $json_font_variant->eula;
-      $font->metadata = serialize([
+      $font->classification = $json_font->classification;
+      $font->language = _adobe_edge_fonts_human_languages($json_font->language);
+      $font->tags = [
+        $json_font->number-style,
+        $json_font->contrast,
+      ];
+      $font->metadata = [
         'id' => $json_font->id,
         'subset' => $json_font_variant->fvd,
         'capitals' => $json_font->capitals,
@@ -133,9 +139,36 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
         'contrast' => $json_font->contrast,
         'language' => $json_font->language,
         'number_style' => $json_font->number_style,
-      ]);
+      ];
       $fonts[$font_id] = $font;
     }
   }
   return $fonts;
+}
+
+/**
+ * Returns list of human-readable languages.
+ */
+function _adobe_edge_fonts_human_languages($list) {
+  $languages = [
+    'ca' => 'Catalan',
+    'cs' => 'Czech',
+    'de' => 'German',
+    'en' => 'English',
+    'es' => 'Spanish',
+    'fr' => 'French',
+    'it' => 'Italian',
+    'nl' => 'Dutch',
+    'pl' => 'Polish',
+    'pt' => 'Portuguese',
+    'ru' => 'Russian',
+    'sv' => 'Swedish'
+  ];
+  $new_list = [];
+  foreach ($list as $item) {
+    if (isset($languages[$item])) {
+      $new_list[$item] = $languages[$item];
+    }
+  }
+  return $new_list;
 }

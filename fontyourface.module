@@ -214,7 +214,23 @@ function fontyourface_save_font($font_data) {
   $font->license_url = !empty($font_data->license_url) ? $font_data->license_url : '';
   $font->designer = !empty($font_data->designer) ? $font_data->designer : '';
   $font->designer_url = !empty($font_data->designer_url) ? $font_data->designer_url : '';
-  $font->metadata = $font_data->metadata;
+  if (!empty($font_data->classification)) {
+    $font->field_classification = [];
+    foreach ($font_data->classification as $classification) {
+      $font->field_classification[] = [
+        'target_id' => _fontyourface_get_vocabulary_term($classification, 'font_classification'),
+      ];
+    }
+  }
+  if (!empty($font_data->language)) {
+    $font->field_supported_languages = [];
+    foreach ($font_data->language as $language) {
+      $font->field_supported_languages[] = [
+        'target_id' => _fontyourface_get_vocabulary_term($language, 'languages_supported'),
+      ];
+    }
+  }
+  $font->setMetadata($font_data->metadata);
   $font->status = FALSE;
   $font->save();
   return $font;
@@ -261,4 +277,21 @@ function fontyourface_log($message, $arguments) {
   if ($config->get('fontyourface_detailed_logging')) {
     watchdog('@font-your-face', $message, $arguments, WATCHDOG_INFO);
   }
+}
+
+/**
+ * Retrieves a tid for use from taxonomy.
+ */
+function _fontyourface_get_vocabulary_term($term_value, $vocabulary) {
+  if ($terms = taxonomy_term_load_multiple_by_name($term_value, $vocabulary)) {
+    $term = reset($terms);
+  }
+  else {
+    $term = Term::create([
+      'name' => $term_value,
+      'vid' => $vocabulary,
+    ]);
+    $term->save();
+  }
+  return $term->id();
 }

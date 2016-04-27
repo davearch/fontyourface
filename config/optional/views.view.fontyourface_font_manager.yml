@@ -3,8 +3,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.font.teaser
+    - taxonomy.vocabulary.font_classification
+    - taxonomy.vocabulary.font_foundry
+    - taxonomy.vocabulary.languages_supported
   module:
     - fontyourface
+    - taxonomy
     - user
 id: fontyourface_font_manager
 label: 'FontYourFace Font Manager'
@@ -489,6 +493,141 @@ display:
           entity_type: font
           entity_field: css_weight
           plugin_id: fontyourface_font_weight
+        field_classification_target_id:
+          id: field_classification_target_id
+          table: font__field_classification
+          field: field_classification_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_classification_target_id_op
+            label: Classification
+            description: ''
+            use_operator: false
+            operator: field_classification_target_id_op
+            identifier: field_classification_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: font_classification
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        field_supported_languages_target_id:
+          id: field_supported_languages_target_id
+          table: font__field_supported_languages
+          field: field_supported_languages_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_supported_languages_target_id_op
+            label: Language/subset
+            description: ''
+            use_operator: false
+            operator: field_supported_languages_target_id_op
+            identifier: field_supported_languages_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: languages_supported
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: font__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_tags_target_id_op
+            label: Tags
+            description: ''
+            use_operator: false
+            operator: field_tags_target_id_op
+            identifier: field_tags_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: font_foundry
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       sorts:
         status:
           id: status
@@ -536,6 +675,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.permissions
       tags: {  }
   page_1:
@@ -553,5 +693,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.permissions
       tags: {  }

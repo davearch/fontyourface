@@ -25,6 +25,13 @@ function fontsquirrel_api_requirements($phase) {
  */
 function fontsquirrel_api_install() {
   // Import Font Squirred fonts.
-  // fontsquirrel_api_fontyourface_import();
+  fontsquirrel_api_fontyourface_import();
   module_set_weight('fontsquirrel_api', 10);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function fontsquirrel_api_uninstall() {
+  fontyourface_delete('fontsquirrel_api');
 }

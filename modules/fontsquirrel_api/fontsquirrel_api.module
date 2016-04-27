@@ -120,6 +120,12 @@ function fontsquirrel_api_fontyourface_import() {
     $font->foundry_url = 'https://www.fontsquirrel.com/foundry/' . $font_import->foundry_urlname;
     $font->license = 'See Font Squirrel license page';
     $font->license_url = $font->url . '#eula';
+    $font->classification = [
+      str_replace(' ', '-', strtolower($font_import->classification)),
+    ];
+    $font->language = [
+      'English',
+    ];
     $font->metadata = $metadata;
     if ($font_import->family_count > 1) {
       $variants = fontsquirrel_api_get_font_family_info($font_import);

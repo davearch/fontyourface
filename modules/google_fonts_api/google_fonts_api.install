@@ -13,3 +13,10 @@ function google_fonts_api_install() {
   google_fonts_api_fontyourface_import();
   module_set_weight('google_fonts_api', 10);
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function google_fonts_api_uninstall() {
+  fontyourface_delete('google_fonts_api');
+}

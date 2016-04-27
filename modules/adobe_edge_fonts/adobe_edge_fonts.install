@@ -13,3 +13,10 @@ function adobe_edge_fonts_install() {
   adobe_edge_fonts_fontyourface_import();
   module_set_weight('adobe_edge_fonts', 10);
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function adobe_edge_fonts_uninstall() {
+  fontyourface_delete('adobe_edge_fonts');
+}

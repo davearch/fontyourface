@@ -263,6 +263,14 @@ function fontyourface_font_css($font, $font_style = NULL) {
   return implode(' ', $css);
 }
 
+function fontyourface_delete($provider) {
+  $fids = \Drupal::entityQuery('font')
+    ->condition('pid', $provider)
+    ->execute();
+
+  entity_delete_multiple('font', array_keys($fids));
+}
+
 /**
  * Logs to watchdog if logging is enabled.
  *

@@ -116,7 +116,7 @@ function fontyourface_views_pre_render($view) {
  *   - elements: An associative array containing the user information and any
  *   - attributes: HTML attributes for the containing element.
  */
-function template_preprocess_font(array &$variables) {
+function fontyourface_preprocess_font(array &$variables) {
   // Fetch Font Entity Object.
   $font = $variables['elements']['#font'];
   $fonts = &drupal_static('fontyourface_fonts');
@@ -176,8 +176,8 @@ function template_preprocess_font(array &$variables) {
 /**
  * Prepares variables for full font template preview.
  */
-function template_preprocess_font__full(array &$variables) {
-  template_preprocess_font($variables);
+function fontyourface_preprocess_font__full(array &$variables) {
+  fontyourface_preprocess_font($variables);
 }
 
 /**
@@ -190,8 +190,8 @@ function template_preprocess_font__full(array &$variables) {
  *   - elements: An associative array containing the user information and any
  *   - attributes: HTML attributes for the containing element.
  */
-function template_preprocess_font__teaser(array &$variables) {
-  template_preprocess_font($variables);
+function fontyourface_preprocess_font__teaser(array &$variables) {
+  fontyourface_preprocess_font($variables);
 }
 
 /**
@@ -243,6 +243,9 @@ function fontyourface_save_font($font_data) {
   }
   $font->setMetadata($font_data->metadata);
   $font->status = FALSE;
+  if ($font->isEnabled()) {
+    $font->status = TRUE;
+  }
   $font->save();
   return $font;
 }

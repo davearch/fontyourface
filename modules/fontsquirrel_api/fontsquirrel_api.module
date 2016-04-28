@@ -83,6 +83,31 @@ function fontsquirrel_api_entity_presave(EntityInterface $entity) {
 }
 
 /**
+ * Prepares variables for Font templates.
+ *
+ * Default template: font.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
+ */
+function fontsquirrel_api_preprocess_font(array &$variables) {
+  $font = $variables['elements']['#font'];
+  $metadata = $font->getMetadata();
+  if ($font->pid->value == 'fontsquirrel_api' && $font->isDisabled()) {
+    $variables['font_preview']['#markup'] = '<img style=\'max-width:100%;\' src="'. $metadata['preview_image'] . '" />';
+  }
+}
+
+/**
+ * Prepares variables for full font template preview.
+ */
+function fontsquirrel_api_preprocess_font__full(array &$variables) {
+  fontsquirrel_api_preprocess_font($variables);
+}
+
+/**
  * Prepares variables for font teaser preview.
  *
  * Default template: font--teaser.html.twig.
@@ -151,6 +176,7 @@ function fontsquirrel_api_fontyourface_import() {
       $variant_metadata = $metadata;
       $variant_metadata['font_filename'] = $variant->filename;
       $variant_metadata['checksum'] = $variant->checksum;
+      $variant_metadata['preview_image'] = str_replace('\\', '', $variant->sample_image);
       $variant_font = clone $font;
       $variant_font->name = $variant->family_name . ' ' . $variant->style_name;
       $variant_font->url = $font->url . '#' . $variant->fontface_name;

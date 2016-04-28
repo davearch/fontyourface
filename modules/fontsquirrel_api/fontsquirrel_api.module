@@ -9,6 +9,16 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\fontyourface\Entity\Font;
 
 /**
+ * Implements hook_fontyourface_api()
+ */
+function fontsquirrel_api_fontyourface_api() {
+  return [
+    'version' => '3',
+    'name' => 'Font Squirrel',
+  ];
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function fontsquirrel_api_page_attachments(&$page) {
@@ -73,13 +83,21 @@ function fontsquirrel_api_entity_presave(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_fontyourface_api()
+ * Prepares variables for font teaser preview.
+ *
+ * Default template: font--teaser.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
  */
-function fontsquirrel_api_fontyourface_api() {
-  return [
-    'version' => '3',
-    'name' => 'Font Squirrel',
-  ];
+function fontsquirrel_api_preprocess_font__teaser(array &$variables) {
+  $font = $variables['elements']['#font'];
+  $metadata = $font->getMetadata();
+  if ($font->pid->value == 'fontsquirrel_api' && $font->isDisabled()) {
+    $variables['font_preview']['#markup'] = '<img width="160px" src="https://www.fontsquirrel.com/widgets/test_drive/' . $metadata['checksum'] . '?s=144&t=AaGg" />';
+  }
 }
 
 /**
@@ -127,25 +145,19 @@ function fontsquirrel_api_fontyourface_import() {
       'English',
     ];
     $font->metadata = $metadata;
-    if ($font_import->family_count > 1) {
-      $variants = fontsquirrel_api_get_font_family_info($font_import);
-      foreach ($variants as $key => $variant) {
-        $count++;
-        $variant_metadata = $metadata;
-        $variant_metadata['font_filename'] = $variant->filename;
-        $variant_font = clone $font;
-        $variant_font->name = $variant->family_name . ' ' . $variant->style_name;
-        $variant_font->url = $font->url . '#' . $variant->fontface_name;
-        $variant_font->css_family = $variant->fontface_name;
-        $variant_font->metadata = $variant_metadata;
-        $fonts[] = $variant_font;
-        fontyourface_save_font($variant_font);
-      }
-    }
-    else {
+    $variants = fontsquirrel_api_get_font_family_info($font_import);
+    foreach ($variants as $key => $variant) {
       $count++;
-      $fonts[] = $font;
-      fontyourface_save_font($font);
+      $variant_metadata = $metadata;
+      $variant_metadata['font_filename'] = $variant->filename;
+      $variant_metadata['checksum'] = $variant->checksum;
+      $variant_font = clone $font;
+      $variant_font->name = $variant->family_name . ' ' . $variant->style_name;
+      $variant_font->url = $font->url . '#' . $variant->fontface_name;
+      $variant_font->css_family = $variant->fontface_name;
+      $variant_font->metadata = $variant_metadata;
+      $fonts[] = $variant_font;
+      fontyourface_save_font($variant_font);
     }
   }
   if ($count) {

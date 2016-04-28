@@ -128,7 +128,6 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
       $font->classification = $json_font->classification;
       $font->language = _adobe_edge_fonts_human_languages($json_font->language);
       $font->tags = [
-        $json_font->number-style,
         $json_font->contrast,
       ];
       $font->metadata = [

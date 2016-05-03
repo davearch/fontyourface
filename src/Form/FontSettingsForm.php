@@ -77,8 +77,20 @@ class FontSettingsForm extends ConfigFormBase {
     $values = $form_state->getValues();
     $op = (string) $values['op'];
     if ($op == $this->t('Import all fonts')) {
-      $module_handler = \Drupal::moduleHandler();
-      $module_handler->invokeAll('fontyourface_import');
+      $batch = [
+        'title' => $this->t('Importing...'),
+        'operations' => [],
+        'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished'
+      ];
+      foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
+        $batch['operations'][] = [
+          '\Drupal\fontyourface\Form\FontSettingsForm::importFromProvider',
+          [
+            $module_name,
+          ],
+        ];
+      }
+      batch_set($batch);
     }
     if ($op == $this->t('Save configuration')) {
       $config = $this->config('fontyourface.settings')
@@ -93,4 +105,34 @@ class FontSettingsForm extends ConfigFormBase {
     }
   }
 
+  /**
+   * Imports fonts from provider. Batch operation handler.
+   *
+   * @param string $module
+   *   Module name that is providing fonts.
+   * @param array $context
+   *   Context batch array.
+   *
+   * @return null
+   */
+  public static function importFromProvider($module, &$context) {
+    $module_handler = \Drupal::moduleHandler();
+    $module_handler->invoke($module, 'fontyourface_import');
+  }
+
+  /**
+   * Imports fonts from provider. Batch completion handler.
+   *
+   * @param boolean $success
+   *   Boolean if operations were successful.
+   * @param array $results
+   *   Results of batch operations.
+   * @param array $operations
+   *   List of batch operations run.
+   *
+   * @return null
+   */
+  public static function importFinished($success, $results, $operations) {
+    drupal_set_message(t('Finished importing fonts.'));
+  }
 }

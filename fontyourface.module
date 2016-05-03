@@ -278,11 +278,21 @@ function fontyourface_font_css($font, $font_style = NULL) {
 }
 
 function fontyourface_delete($provider) {
-  $fids = \Drupal::entityQuery('font')
-    ->condition('pid', $provider)
-    ->execute();
 
-  entity_delete_multiple('font', array_keys($fids));
+  // Delete fonts, 100 at a time.
+  @set_time_limit(3600);
+  while (true) {
+    $fids = \Drupal::entityQuery('font')
+      ->condition('pid', $provider)
+      ->range(0, 100)
+      ->execute();
+    if (!empty($fids)) {
+      entity_delete_multiple('font', array_keys($fids));
+    }
+    else {
+      break;
+    }
+  }
 }
 
 /**

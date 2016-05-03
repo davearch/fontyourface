@@ -187,7 +187,7 @@ function fontsquirrel_api_fontyourface_import() {
     }
   }
   if ($count) {
-    drupal_set_message(t("@count fonts (and variants) imported from Font Squirrel", ['@count' => $count]));
+    drupal_set_message(t('Imported @count Font Squirrel fonts (and variants).', ['@count' => $count]));
   }
 }
 

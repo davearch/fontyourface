@@ -22,10 +22,12 @@ function fontyourface_install() {
  * Implements hook_uninstall().
  */
 function fontyourface_uninstall() {
-  $vids = ['font_classification', 'font_tags', 'languages_supported'];
+  $vids = ['font_classification', 'font_tags', 'languages_supported', 'font_designer', 'font_foundry'];
   foreach ($vids as $vid) {
     $vocabulary = Vocabulary::load($vid);
-    $vocabulary->delete();
+    if (!empty($vocabulary)) {
+      $vocabulary->delete();
+    }
   }
 }
 

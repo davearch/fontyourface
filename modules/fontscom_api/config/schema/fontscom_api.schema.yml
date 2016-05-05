@@ -4,4 +4,7 @@ typekit.settings:
   mapping:
     token:
       type: string
-      label: 'Typekit API token'
+      label: 'Fonts.com Authentication Key'
+    project:
+      type: string
+      label: 'Fonts.com Project'

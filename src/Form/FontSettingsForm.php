@@ -116,8 +116,12 @@ class FontSettingsForm extends ConfigFormBase {
    * @return null
    */
   public static function importFromProvider($module, &$context) {
+    $context['message'] = t('Importing from @module', ['@module' => $module]);
     $module_handler = \Drupal::moduleHandler();
-    $module_handler->invoke($module, 'fontyourface_import', $context);
+    $new_context = $module_handler->invoke($module, 'fontyourface_import', [$context]);
+    if (!empty($new_context)) {
+      $context = $new_context;
+    }
   }
 
   /**

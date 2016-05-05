@@ -1,17 +1,12 @@
 <?php
 
-/**
- * Implements hook_requirements().
- */
-function fontscom_api_requirements($phase) {
-  $requirements['not_implemented'] = [
-    'title' => t('Not yet implemented'),
-    'description' => t('TODO: This module still needs to be implemented.'),
-    'severity' => REQUIREMENT_ERROR,
-  ];
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\fontyourface\Entity\Font;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Utility\Html;
 
-  return $requirements;
-}
+define('FONTSCOM_API_BASE_URL', 'https://api.fonts.com');
+define('FONTSCOM_API_APP_KEY', '1fdb130c-d5c0-4fab-8e2b-271508570323932606');
 
 /**
  * Implements hook_fontyourface_api().
@@ -21,4 +16,109 @@ function fontscom_api_fontyourface_api() {
     'version' => '3',
     'name' => 'Fonts.com',
   ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function fontscom_api_form_Font_settings_alter(&$form, FormStateInterface $form_state) {
+  $config = \Drupal::config('fontscom_api.settings');
+  $form['fontscom_api'] = [
+    '#type' => 'fieldset',
+    '#title' => t('FONTS.COM SETTINGS'),
+  ];
+  $form['fontscom_api']['fontscom_api_token'] = [
+    '#type' => 'textfield',
+    '#title' => t('Fonts.com Authentication Key'),
+    '#description' => t('Add your Fonts.com authentication key to import your projects. Available at !link', ['!link' => '<a target="_blank" href="https://www.fonts.com/account#authentification-section">https://www.fonts.com/account#authentification-section</a>']),
+    '#default_value' => $config->get('token'),
+  ];
+
+  if (!empty($config->get('token'))) {
+    $projects = fontscom_api_get_projects();
+
+    if (count($projects) > 0) {
+      $options = ['' => '-- Select a project --'];
+      foreach ($projects as $key => $project) {
+        $options[$project->ProjectKey] = Html::escape($project->ProjectName);
+      }
+      $form['fontscom_api']['fontscom_api_project'] = [
+        '#type' => 'select',
+        '#title' => t('Project'),
+        '#options' => $options,
+        '#default_value' => $config->get('project'),
+        '#required' => TRUE,
+      ];
+    }
+  }
+  $form['#submit'][] = 'fontscom_api_form_font_settings_submit';
+}
+
+/**
+ * Submits Font settings form data.
+ */
+function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+  $config = \Drupal::configFactory()->getEditable('fontscom_api.settings');
+  $config->set('token', $values['fontscom_api_token']);
+  if (isset($values['fontscom_api_project'])) {
+    $config->set('project', $values['fontscom_api_project']);
+  }
+  $config->save();
+  drupal_set_message(t('Saved Fonts.com Authentication Key'));
+}
+
+/**
+ * Provides headers with api parameters.
+ */
+function fonts_com_api_headers($path) {
+  $config = \Drupal::config('fontscom_api.settings');
+
+  $fontscom_token = $config->get('token');
+
+  if (empty($fontscom_token)) {
+    return [];
+  }
+
+  list($public_key, $private_key) = explode('--', $fontscom_token);
+
+  $encoded = base64_encode(hash_hmac('md5', $public_key . '|' . $path, $private_key, TRUE));
+  $auth = urlencode($public_key . ':' . $encoded);
+
+  return ['Authorization' => $auth, 'AppKey' => FONTSCOM_API_APP_KEY];
+
+}
+
+/**
+ * Returns list of projects.
+ */
+function fontscom_api_get_projects() {
+  $projects = [];
+  try {
+    $path = '/rest/json/Projects/?wfspstart=0&wfsplimit=100';
+    $uri = FONTSCOM_API_BASE_URL . '/rest/json/Projects/?wfspstart=0&wfsplimit=100';
+    $response = \Drupal::httpClient()->get($uri, ['headers' => fonts_com_api_headers($path), 'verify' => FALSE]);
+    $data = json_decode((string) $response->getBody());
+  }
+  catch (RequestException $e) {
+    drupal_set_message(t('There was an error importing kit list from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
+    return [];
+  }
+
+  if ($data->Projects->TotalRecords > 0) {
+    $project = $data->Projects->Project;
+    $projects = fontscom_api_unknown_to_array($project);
+  }
+  return $projects;
+}
+
+/**
+ * Returns an array, regardless of input.
+ */
+function fontscom_api_unknown_to_array($unknown) {
+  if (is_array($unknown)) {
+    return $unknown;
+  }
+
+  return [$unknown];
 }

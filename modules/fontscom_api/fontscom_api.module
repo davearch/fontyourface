@@ -19,6 +19,19 @@ function fontscom_api_fontyourface_api() {
 }
 
 /**
+ * Implements hook_fontyourface_import().
+ */
+function fontscom_api_fontyourface_import() {
+  $config = \Drupal::config('fontscom_api.settings');
+  // Only get all fonts when we have set a project and token.
+  if (!empty($config->get('token')) && !empty($config->get('project'))) {
+  }
+  else {
+    drupal_set_message(t('Due to the number of fonts, automated import from install for Fonts.com is disabled. Please enter your Authentication Key and Project ID first before trying to import fonts.'));
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function fontscom_api_form_Font_settings_alter(&$form, FormStateInterface $form_state) {
@@ -30,7 +43,7 @@ function fontscom_api_form_Font_settings_alter(&$form, FormStateInterface $form_
   $form['fontscom_api']['fontscom_api_token'] = [
     '#type' => 'textfield',
     '#title' => t('Fonts.com Authentication Key'),
-    '#description' => t('Add your Fonts.com authentication key to import your projects. Available at !link', ['!link' => '<a target="_blank" href="https://www.fonts.com/account#authentification-section">https://www.fonts.com/account#authentification-section</a>']),
+    '#description' => t('Add your Fonts.com authentication key to import your projects. Available at <a target="_blank" href=":url">:url</a>', [':url' => 'https://www.fonts.com/account#authentification-section']),
     '#default_value' => $config->get('token'),
   ];
 
@@ -49,6 +62,11 @@ function fontscom_api_form_Font_settings_alter(&$form, FormStateInterface $form_
         '#default_value' => $config->get('project'),
         '#required' => TRUE,
       ];
+    }
+
+    if (!empty($config->get('project'))) {
+      $fontscom_api_fonts_count = fontscom_api_get_all_remote_fonts_count();
+      drupal_set_message(t('There are up to @count fonts.com fonts available for import', ['@count' => $fontscom_api_fonts_count]));
     }
   }
   $form['#submit'][] = 'fontscom_api_form_font_settings_submit';
@@ -71,7 +89,7 @@ function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form
 /**
  * Provides headers with api parameters.
  */
-function fonts_com_api_headers($path) {
+function fontscom_api_headers($path) {
   $config = \Drupal::config('fontscom_api.settings');
 
   $fontscom_token = $config->get('token');
@@ -96,12 +114,12 @@ function fontscom_api_get_projects() {
   $projects = [];
   try {
     $path = '/rest/json/Projects/?wfspstart=0&wfsplimit=100';
-    $uri = FONTSCOM_API_BASE_URL . '/rest/json/Projects/?wfspstart=0&wfsplimit=100';
-    $response = \Drupal::httpClient()->get($uri, ['headers' => fonts_com_api_headers($path), 'verify' => FALSE]);
+    $uri = FONTSCOM_API_BASE_URL . $path;
+    $response = \Drupal::httpClient()->get($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE]);
     $data = json_decode((string) $response->getBody());
   }
-  catch (RequestException $e) {
-    drupal_set_message(t('There was an error importing kit list from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
+  catch (Exception $e) {
+    drupal_set_message(t('There was an error retrieving project list from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
     return [];
   }
 
@@ -121,4 +139,29 @@ function fontscom_api_unknown_to_array($unknown) {
   }
 
   return [$unknown];
+}
+
+/**
+ * Retrieve a list of all fonts.
+ */
+function fontscom_api_get_all_fonts() {
+
+}
+
+/**
+ * Gets total font count.
+ */
+function fontscom_api_get_all_remote_fonts_count() {
+  try {
+    $path = '/rest/json/AllFonts/?wfspstart=0&wfsplimit=1';
+    $uri = FONTSCOM_API_BASE_URL . $path;
+    $response = \Drupal::httpClient()->get($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE]);
+    $data = json_decode((string) $response->getBody());
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('There was an error retrieving total Font count from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
+    return FALSE;
+  }
+
+  return $data->AllFonts->TotalRecords;
 }

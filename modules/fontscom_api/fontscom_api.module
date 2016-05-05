@@ -21,14 +21,26 @@ function fontscom_api_fontyourface_api() {
 /**
  * Implements hook_fontyourface_import().
  */
-function fontscom_api_fontyourface_import() {
+function fontscom_api_fontyourface_import($font_context = []) {
+  $context = $font_context;
   $config = \Drupal::config('fontscom_api.settings');
   // Only get all fonts when we have set a project and token.
   if (!empty($config->get('token')) && !empty($config->get('project'))) {
+    if (empty($context['sandbox'])) {
+      $context['sandbox']['progress'] = 0;
+      $context['sandbox']['max'] = 5;
+    }
+    sleep(5);
+    drupal_set_message('here!');
+    $context['sandbox']['progress']++;
+    if($context['context']['sandbox']['progress'] < $context['sandbox']['max']) {
+      $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+    }
   }
   else {
     drupal_set_message(t('Due to the number of fonts, automated import from install for Fonts.com is disabled. Please enter your Authentication Key and Project ID first before trying to import fonts.'));
   }
+  return $context;
 }
 
 /**

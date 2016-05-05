@@ -117,7 +117,7 @@ class FontSettingsForm extends ConfigFormBase {
    */
   public static function importFromProvider($module, &$context) {
     $module_handler = \Drupal::moduleHandler();
-    $module_handler->invoke($module, 'fontyourface_import');
+    $module_handler->invoke($module, 'fontyourface_import', $context);
   }
 
   /**

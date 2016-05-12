@@ -57,7 +57,19 @@ class FontSettingsForm extends ConfigFormBase {
       '#default_value' => (int) $config->get('load_all_enabled_fonts'),
       '#description' => $this->t('This will load all fonts that have been enabled regardless of theme. Warning: this may add considerable download weight to your pages depending on the number of enabled fonts'),
     ];
-    $form['import'] = [
+    $form['imports'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Import',
+      '#collapsible' => FALSE,
+    ];
+    foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
+      $form['imports']['import_' . $module_name] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Import from ' . $module_name),
+      ];
+    }
+
+    $form['imports']['import'] = [
       '#type' => 'submit',
       '#value' => $this->t('Import all fonts'),
       '#weight' => 10,
@@ -80,9 +92,9 @@ class FontSettingsForm extends ConfigFormBase {
       $batch = [
         'title' => $this->t('Importing...'),
         'operations' => [],
-        'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished'
+        'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished',
       ];
-      foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
+      foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
         $batch['operations'][] = [
           '\Drupal\fontyourface\Form\FontSettingsForm::importFromProvider',
           [
@@ -91,6 +103,23 @@ class FontSettingsForm extends ConfigFormBase {
         ];
       }
       batch_set($batch);
+    }
+    foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
+      if ($op == $this->t('Import from ' . $module_name)) {
+        $batch = [
+          'title' => $this->t('Importing...'),
+          'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished',
+          'operations' => [
+            [
+              '\Drupal\fontyourface\Form\FontSettingsForm::importFromProvider',
+              [
+                $module_name,
+              ]
+            ],
+          ],
+        ];
+        batch_set($batch);
+      }
     }
     if ($op == $this->t('Save configuration')) {
       $config = $this->config('fontyourface.settings')

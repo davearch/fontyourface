@@ -24,7 +24,6 @@ function fontscom_api_fontyourface_api() {
  * Implements hook_fontyourface_import().
  */
 function fontscom_api_fontyourface_import($font_context = []) {
-  $filter = fontscom_api_get_api_filters();
   $context = $font_context;
   $limit = 50;
   $config = \Drupal::config('fontscom_api.settings');
@@ -36,12 +35,12 @@ function fontscom_api_fontyourface_import($font_context = []) {
       $context['sandbox']['max'] = 5;
     }
     $fontcom_fonts = fontscom_api_get_all_fonts($context['sandbox']['progress'], $limit);
+    _dd($fontcom_fonts);
     $data = [];
     foreach ($fontcom_fonts as $fontcom_font) {
       $data[] = $fontcom_font->FontID;
     }
-    sleep(2);
-    drupal_set_message('here!');
+    $context['message'] = "Working on batch {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
     $context['sandbox']['progress']++;
     if($context['context']['sandbox']['progress'] < $context['sandbox']['max']) {
       $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
@@ -230,7 +229,7 @@ function fontscom_api_get_allowed_api_filters($reset = FALSE) {
     $data = json_decode((string) $response->getBody());
   }
   catch (Exception $e) {
-    drupal_set_message(t('There was an error retrieving Font filters from Fonts.com. Error: %error', ['%error' => Psr7\str($request->getResponse())]), 'error');
+    drupal_set_message(t('There was an error retrieving Font filters from Fonts.com. Error: %error', ['%error' => Psr7\str($response->getResponse())]), 'error');
     return FALSE;
   }
   \Drupal::cache()->set('fontscom_api_allowed_api_filters', $data->FilterValues);

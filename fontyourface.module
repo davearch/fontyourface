@@ -265,8 +265,8 @@ function fontyourface_font_css($font, $font_style = NULL) {
   }
 
   if ($font_style !== NULL) {
-    if ($font->css_fallbacks) {
-      $family_list .= ', ' . $font->css_fallbacks;
+    if ($font_style->css_fallbacks) {
+      $family_list .= ', ' . $font_style->css_fallbacks;
     }
   }
 

@@ -31,22 +31,43 @@ function fontscom_api_fontyourface_import($font_context = []) {
   if (!empty($config->get('token')) && !empty($config->get('project'))) {
     if (empty($context['sandbox'])) {
       $context['sandbox']['progress'] = 1;
-      // $context['sandbox']['max'] = ceil(fontscom_api_get_all_remote_fonts_count() / $limit);
-      $context['sandbox']['max'] = 5;
+      $context['sandbox']['max'] = ceil(fontscom_api_get_all_remote_fonts_count() / $limit);
     }
-    $fontcom_fonts = fontscom_api_get_all_fonts($context['sandbox']['progress'], $limit);
-    _dd($fontcom_fonts);
-    $data = [];
-    foreach ($fontcom_fonts as $fontcom_font) {
-      $data[] = $fontcom_font->FontID;
+    $fontscom_fonts = fontscom_api_get_all_fonts($context['sandbox']['progress'], $limit);
+    foreach ($fontscom_fonts as $fontscom_font) {
+      _fontscom_api_parse_imported_font($fontscom_font);
+      $font = new stdClass();
+      $font->metadata = [
+        'FontID' => $fontscom_font->FontID,
+        'eot' => $fontscom_font->EOTURL,
+        'svg' => $fontscom_font->SVGURL,
+        'ttf' => $fontscom_font->TTFURL,
+        'woff2' => $fontscom_font->WOFF2URL,
+        'woff' => $fontscom_font->WOFFURL,
+      ];
+      $font->provider = 'fontscom_api';
+      $font->name = $fontscom_font->name;
+      $font->url = 'https://www.fonts.com/fonts/' . $fontscom_font->FontID;
+      $font->css_family = $fontscom_font->FontCSSName;
+      $font->css_style = $fontscom_font->css_style;
+      $font->css_weight = $fontscom_font->css_weight;
+      $font->language = [
+        $fontscom_font->FontLanguage,
+      ];
+      $font->designer = $fontscom_font->Designer;
+      $font->foundry = $fontscom_font->FontFoundryName;
+      if (!empty($fontscom_font->Classification)) {
+        $font->classification = explode(',', $fontscom_font->Classification);
+      }
+      fontyourface_save_font($font);
     }
     $context['message'] = "Working on batch {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
     $context['sandbox']['progress']++;
-    if($context['context']['sandbox']['progress'] < $context['sandbox']['max']) {
+    if($context['sandbox']['progress'] < $context['sandbox']['max']) {
       $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
     }
   }
-  else {
+  elseif (empty($context)) {
     drupal_set_message(t('Due to the number of fonts, automated import from install for Fonts.com is disabled. Please enter your Authentication Key and Project ID first before trying to import fonts.'));
   }
   return $context;
@@ -105,6 +126,7 @@ function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form
   }
   $config->save();
   fontscom_api_get_allowed_api_filters(TRUE);
+  fontscom_api_get_all_remote_fonts_count(TRUE);
   drupal_set_message(t('Saved Fonts.com Authentication Key'));
 }
 
@@ -198,7 +220,11 @@ function fontscom_api_get_all_fonts($start = 0, $limit = 50) {
 /**
  * Gets total font count.
  */
-function fontscom_api_get_all_remote_fonts_count() {
+function fontscom_api_get_all_remote_fonts_count($reset = FALSE) {
+  $data = NULL;
+  if (!$reset && $cache = \Drupal::cache()->get('fontscom_api_remote_fonts_count')) {
+    return $cache->data;
+  }
   try {
     $filters = fontscom_api_get_allowed_api_filters();
     $path = '/rest/json/AllFonts/?wfspstart=0&wfsplimit=1';
@@ -213,7 +239,7 @@ function fontscom_api_get_all_remote_fonts_count() {
     drupal_set_message(t('There was an error retrieving total Font count from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
     return FALSE;
   }
-
+  \Drupal::cache()->set('fontscom_api_remote_fonts_count', $data->AllFonts->TotalRecords);
   return $data->AllFonts->TotalRecords;
 }
 
@@ -229,9 +255,49 @@ function fontscom_api_get_allowed_api_filters($reset = FALSE) {
     $data = json_decode((string) $response->getBody());
   }
   catch (Exception $e) {
-    drupal_set_message(t('There was an error retrieving Font filters from Fonts.com. Error: %error', ['%error' => Psr7\str($response->getResponse())]), 'error');
+    drupal_set_message(t('There was an error retrieving Font filters from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
     return FALSE;
   }
   \Drupal::cache()->set('fontscom_api_allowed_api_filters', $data->FilterValues);
   return $data->FilterValues;
+}
+
+function _fontscom_api_parse_imported_font($fontscom_font) {
+  $replacements = [];
+  for ($i = 0; $i < 100; $i++) {
+    $id = 'W' . str_pad($i, 2, '0');
+    $replacements[] = $id . ' ';
+    $replacements[] = $id . 'SC ';
+  }
+  $fontscom_font->name = str_replace($replacements, '', $fontscom_font->FontName);
+  $fontscom_font->css_style = 'normal';
+  if (stripos('Italic', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_style = 'italic';
+  }
+
+  $fontscom_font->css_weight = 400;
+  if (stripos('Extra Light', $fontscom_font->FontName) !== FALSE || stripos('Ultra Light', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 100;
+  }
+  if (stripos('Thin', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 200;
+  }
+  if (stripos('Light', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 300;
+  }
+  if (stripos('Medium', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 500;
+  }
+  elseif (stripos('SemiBold', $fontscom_font->FontName) !== FALSE || stripos('Semi Bold', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 600;
+  }
+  elseif (stripos('Bold', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 700;
+  }
+  elseif (stripos('Heavy', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 800;
+  }
+  elseif (stripos('Black', $fontscom_font->FontName) !== FALSE) {
+    $fontscom_font->css_weight = 900;
+  }
 }

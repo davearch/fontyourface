@@ -104,8 +104,6 @@ function fontscom_api_fontyourface_import($font_context = []) {
       $font_data->name = $fontscom_font->name;
       $font_data->url = 'https://www.fonts.com/fonts/' . $fontscom_font->FontID;
       $font_data->css_family = $fontscom_font->FontCSSName;
-      $font_data->css_style = $fontscom_font->css_style;
-      $font_data->css_weight = $fontscom_font->css_weight;
       $font_data->language = [
         $fontscom_font->FontLanguage,
       ];
@@ -385,8 +383,7 @@ function fontscom_api_publish_updated_project() {
 }
 
 function _fontscom_api_parse_imported_font($fontscom_font) {
-  $replacements = ['blahblahblah'];
-  $fontscom_font->name = str_replace($replacements, '', $fontscom_font->FontName);
+  $fontscom_font->name = $fontscom_font->FontName;
   $fontscom_font->css_style = 'normal';
   if (stripos('Italic', $fontscom_font->FontName) !== FALSE) {
     $fontscom_font->css_style = 'italic';

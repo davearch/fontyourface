@@ -53,12 +53,13 @@ function fontscom_api_fontyourface_import($font_context = []) {
       $context['sandbox']['progress'] = 1;
       $context['sandbox']['font_count'] = 0;
       $context['sandbox']['max'] = ceil(fontscom_api_get_all_remote_fonts_count() / $limit);
+      $context['sandbox']['enabled_fonts'] = fontscom_api_get_all_enabled_fonts();
     }
     $fontscom_fonts = fontscom_api_get_all_fonts($context['sandbox']['progress'], $limit);
     foreach ($fontscom_fonts as $fontscom_font) {
       _fontscom_api_parse_imported_font($fontscom_font);
-      $font = new stdClass();
-      $font->metadata = [
+      $font_data = new stdClass();
+      $font_data->metadata = [
         'FontID' => $fontscom_font->FontID,
         'eot' => $fontscom_font->EOTURL,
         'svg' => $fontscom_font->SVGURL,
@@ -66,21 +67,24 @@ function fontscom_api_fontyourface_import($font_context = []) {
         'woff2' => $fontscom_font->WOFF2URL,
         'woff' => $fontscom_font->WOFFURL,
       ];
-      $font->provider = 'fontscom_api';
-      $font->name = $fontscom_font->name;
-      $font->url = 'https://www.fonts.com/fonts/' . $fontscom_font->FontID;
-      $font->css_family = $fontscom_font->FontCSSName;
-      $font->css_style = $fontscom_font->css_style;
-      $font->css_weight = $fontscom_font->css_weight;
-      $font->language = [
+      $font_data->provider = 'fontscom_api';
+      $font_data->name = $fontscom_font->name;
+      $font_data->url = 'https://www.fonts.com/fonts/' . $fontscom_font->FontID;
+      $font_data->css_family = $fontscom_font->FontCSSName;
+      $font_data->css_style = $fontscom_font->css_style;
+      $font_data->css_weight = $fontscom_font->css_weight;
+      $font_data->language = [
         $fontscom_font->FontLanguage,
       ];
-      $font->designer = $fontscom_font->Designer;
-      $font->foundry = $fontscom_font->FontFoundryName;
+      $font_data->designer = $fontscom_font->Designer;
+      $font_data->foundry = $fontscom_font->FontFoundryName;
       if (!empty($fontscom_font->Classification)) {
-        $font->classification = explode(',', $fontscom_font->Classification);
+        $font_data->classification = explode(',', $fontscom_font->Classification);
       }
-      fontyourface_save_font($font);
+      $font = fontyourface_save_font($font_data);
+      if (isset($context['sandbox']['enabled_fonts'][$fontscom_font->FontID])) {
+        $font->enable();
+      }
       $context['sandbox']['font_count']++;
     }
     $context['message'] = "Working on batch {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
@@ -280,6 +284,25 @@ function fontscom_api_get_allowed_api_filters($reset = FALSE) {
   }
   \Drupal::cache()->set('fontscom_api_allowed_api_filters', $data->FilterValues);
   return $data->FilterValues;
+}
+
+function fontscom_api_get_all_enabled_fonts() {
+  try {
+    $config = \Drupal::config('fontscom_api.settings');
+    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project');
+    $uri = FONTSCOM_API_BASE_URL . $path;
+    $response = \Drupal::httpClient()->get($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE]);
+    $data = json_decode((string) $response->getBody());
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('There was an error retrieving total Font count from Fonts.com. Error: %error', ['%error' => $e->getMessage()]), 'error');
+    return FALSE;
+  }
+  $enabled_fonts = [];
+  foreach ($data->Fonts->Font as $font) {
+    $enabled_fonts[$font->FontID] = $font;
+  }
+  return $enabled_fonts;
 }
 
 function _fontscom_api_parse_imported_font($fontscom_font) {

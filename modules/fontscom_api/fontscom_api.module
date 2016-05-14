@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\fontyourface\Entity\Font;
 use Drupal\Component\Utility\Html;
@@ -27,6 +28,38 @@ function fontscom_api_page_attachments(&$page) {
         ],
       ], 'fontyourface-fontscom-api-' . $config->get('project'),
     ];
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function fontscom_api_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof Font) {
+    if ($entity->pid->value == 'fontscom_api' && $entity->isEnabled()) {
+      $metadata = $entity->getMetadata();
+      $config = \Drupal::config('fontscom_api.settings');
+      $enabled_fonts = fontscom_api_get_all_enabled_fonts();
+      if (isset($enabled_fonts[$metadata['FontID']])) {
+        // Do nothing
+      }
+      else {
+        fontscom_api_add_font_to_current_project($metadata['FontID']);
+      }
+    }
+    elseif ($entity->pid->value == 'fontscom_api' && $entity->isDisabled()) {
+      if (!empty($entity->original)) {
+        $original_entity = $entity->original;
+        if ($original_entity->enabled->value != $entity->enabled->value) {
+          $metadata = $entity->getMetadata();
+          $config = \Drupal::config('fontscom_api.settings');
+          $enabled_fonts = fontscom_api_get_all_enabled_fonts();
+          if (isset($enabled_fonts[$metadata['FontID']])) {
+            fontscom_api_remove_font_from_current_project($metadata['FontID']);
+          }
+        }
+      }
+    }
   }
 }
 
@@ -221,6 +254,7 @@ function fontscom_api_get_all_fonts($start = 0, $limit = 50) {
   $query = [
     'wfspstart' => $start,
     'wfsplimit' => $limit,
+    'wfsCSS' => 1,
   ];
 
   $filters = fontscom_api_get_allowed_api_filters();
@@ -305,13 +339,53 @@ function fontscom_api_get_all_enabled_fonts() {
   return $enabled_fonts;
 }
 
-function _fontscom_api_parse_imported_font($fontscom_font) {
-  $replacements = [];
-  for ($i = 0; $i < 100; $i++) {
-    $id = 'W' . str_pad($i, 2, '0');
-    $replacements[] = $id . ' ';
-    $replacements[] = $id . 'SC ';
+function fontscom_api_add_font_to_current_project($fid) {
+  try {
+    $config = \Drupal::config('fontscom_api.settings');
+    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project') . '&wfsnopublish=1';
+    $uri = FONTSCOM_API_BASE_URL . $path;
+    $response = \Drupal::httpClient()->post($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE, 'body' => 'wfsfid=' . $fid]);
+    $data = json_decode((string) $response->getBody());
+    fontscom_api_publish_updated_project();
+    return TRUE;
   }
+  catch (Exception $e) {
+    drupal_set_message(t('There was an error adding font to Fonts.com project. Error: %error', ['%error' => Psr7\str($e->getResponse())]), 'error');
+    return FALSE;
+  }
+}
+
+function fontscom_api_remove_font_from_current_project($fid) {
+  try {
+    $config = \Drupal::config('fontscom_api.settings');
+    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project') . '&wfsnopublish=1';
+    $uri = FONTSCOM_API_BASE_URL . $path;
+    $response = \Drupal::httpClient()->delete($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE]);
+    $data = json_decode((string) $response->getBody());
+    fontscom_api_publish_updated_project();
+    return TRUE;
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('There was an error removing font from Fonts.com project. Error: %error', ['%error' => Psr7\str($e->getResponse())]), 'error');
+    return FALSE;
+  }
+}
+
+function fontscom_api_publish_updated_project() {
+  try {
+    $path = '/rest/json/Publish/';
+    $uri = FONTSCOM_API_BASE_URL . $path;
+    $response = \Drupal::httpClient()->get($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE]);
+    return TRUE;
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('There was an error publishing project on Fonts.com. Error: %error', ['%error' => Psr7\str($e->getResponse())]), 'error');
+    return FALSE;
+  }
+}
+
+function _fontscom_api_parse_imported_font($fontscom_font) {
+  $replacements = ['blahblahblah'];
   $fontscom_font->name = str_replace($replacements, '', $fontscom_font->FontName);
   $fontscom_font->css_style = 'normal';
   if (stripos('Italic', $fontscom_font->FontName) !== FALSE) {

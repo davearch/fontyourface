@@ -29,6 +29,38 @@ function fontscom_api_page_attachments(&$page) {
       ], 'fontyourface-fontscom-api-' . $config->get('project'),
     ];
   }
+
+  $font_preview = &drupal_static('fontyourface_font_preview');
+  if (!empty($font_preview)) {
+    $enabled_fonts = &drupal_static('fontyourface_fonts', []);
+    $font_css = '';
+    foreach ($enabled_fonts as $font) {
+      if ($font->pid->value == 'fontscom_api') {
+        if ($font->isDisabled()) {
+          $font_css .= _fontscom_api_generate_font_css($font);
+        }
+      }
+    }
+    if (!empty($font_css)) {
+      $hash = hash('sha256', $font_css);
+      $directory_location = 'fontyourface/fontscom_api';
+      file_prepare_directory($directory_location, FILE_CREATE_DIRECTORY);
+      if (!file_exists($directory_location . '/fontyourface-stylesheet-' . $hash . '.css')) {
+        file_unmanaged_save_data($font_css, $directory_location . '/fontyourface-stylesheet-' . $hash . '.css', FILE_EXISTS_REPLACE);
+      }
+      $page['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'link',
+          '#attributes' => [
+            'rel' => 'stylesheet',
+            'href' => file_create_url($directory_location . '/fontyourface-stylesheet-' . $hash . '.css'),
+            'media' => 'all',
+          ],
+        ], 'fontyourface-fontscom-api-preview-fonts',
+      ];
+    }
+  }
 }
 
 /**
@@ -50,7 +82,7 @@ function fontscom_api_entity_presave(EntityInterface $entity) {
     elseif ($entity->pid->value == 'fontscom_api' && $entity->isDisabled()) {
       if (!empty($entity->original)) {
         $original_entity = $entity->original;
-        if ($original_entity->enabled->value != $entity->enabled->value) {
+        if ($original_entity->status->value != $entity->status->value) {
           $metadata = $entity->getMetadata();
           $config = \Drupal::config('fontscom_api.settings');
           $enabled_fonts = fontscom_api_get_all_enabled_fonts();
@@ -340,7 +372,7 @@ function fontscom_api_get_all_enabled_fonts() {
 function fontscom_api_add_font_to_current_project($fid) {
   try {
     $config = \Drupal::config('fontscom_api.settings');
-    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project') . '&wfsnopublish=1';
+    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project');
     $uri = FONTSCOM_API_BASE_URL . $path;
     $response = \Drupal::httpClient()->post($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE, 'body' => 'wfsfid=' . $fid]);
     $data = json_decode((string) $response->getBody());
@@ -356,7 +388,7 @@ function fontscom_api_add_font_to_current_project($fid) {
 function fontscom_api_remove_font_from_current_project($fid) {
   try {
     $config = \Drupal::config('fontscom_api.settings');
-    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project') . '&wfsnopublish=1';
+    $path = '/rest/json/Fonts/?wfspid=' . $config->get('project') . '&wfsfid=' . $fid;
     $uri = FONTSCOM_API_BASE_URL . $path;
     $response = \Drupal::httpClient()->delete($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE]);
     $data = json_decode((string) $response->getBody());
@@ -414,4 +446,30 @@ function _fontscom_api_parse_imported_font($fontscom_font) {
   elseif (stripos('Black', $fontscom_font->FontName) !== FALSE) {
     $fontscom_font->css_weight = 900;
   }
+}
+
+function _fontscom_api_generate_font_css($font) {
+  $metadata = $font->getMetadata();
+  $data = "@font-face {\n";
+  $data .= "font-family: '{$font->css_family->value}';\n";
+  $lines = [];
+
+  if ($metadata['eot']) {
+    $data .= "src: url('{$metadata['eot']}');\n";
+    $lines[] = "url('{$metadata['eot']}?#iefix') format('embedded-opentype')";
+  }
+  if ($metadata['ttf']) {
+    $lines[] = "url('{$metadata['ttf']}') format('truetype')";
+  }
+  if ($metadata['woff']) {
+    $lines[] = "url('{$metadata['woff']}') format('woff')";
+  }
+  if ($metadata['svg']) {
+    $lines[] = "url('{$metadata['svg']}#{$css_family}') format('svg')";
+  }
+
+  $data .= 'src: ' . implode(', ', $lines) . ";\n";
+  $data .= "font-weight: normal;\n";
+  $data .= "font-style: normal;\n";
+  return $data . "}\n";
 }

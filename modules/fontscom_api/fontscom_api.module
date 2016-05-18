@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Fonts.com API module file.
+ */
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\fontyourface\Entity\Font;
@@ -10,7 +15,6 @@ use GuzzleHttp\Psr7;
 
 define('FONTSCOM_API_BASE_URL', 'https://api.fonts.com');
 define('FONTSCOM_API_APP_KEY', '1fdb130c-d5c0-4fab-8e2b-271508570323932606');
-
 
 /**
  * Implements hook_page_attachments().
@@ -70,7 +74,7 @@ function fontscom_api_entity_presave(EntityInterface $entity) {
       $config = \Drupal::config('fontscom_api.settings');
       $enabled_fonts = fontscom_api_get_all_enabled_fonts();
       if (isset($enabled_fonts[$metadata['FontID']])) {
-        // Do nothing
+        // Do nothing.
       }
       else {
         fontscom_api_add_font_to_current_project($metadata['FontID']);
@@ -149,7 +153,7 @@ function fontscom_api_fontyourface_import($font_context = []) {
     }
     $context['message'] = "Working on batch {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
     $context['sandbox']['progress']++;
-    if($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
       $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
     }
     else {
@@ -165,7 +169,7 @@ function fontscom_api_fontyourface_import($font_context = []) {
 /**
  * Implements hook_form_alter().
  */
-function fontscom_api_form_Font_settings_alter(&$form, FormStateInterface $form_state) {
+function fontscom_api_form_font_settings_alter(&$form, FormStateInterface $form_state) {
   $config = \Drupal::config('fontscom_api.settings');
   $form['fontscom_api'] = [
     '#type' => 'fieldset',
@@ -214,6 +218,9 @@ function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form
   drupal_set_message(t('Saved Fonts.com Authentication Key'));
 }
 
+/**
+ * Implements hook_fontyourface_font_css().
+ */
 function fontscom_api_fontyourface_font_css($font, $font_style) {
   if ($font->pid->value == 'fontscom_api') {
     $css = [];
@@ -354,6 +361,9 @@ function fontscom_api_get_all_remote_fonts_count($reset = FALSE) {
   return $data->AllFonts->TotalRecords;
 }
 
+/**
+ * Retrieves list of allowed api filters.
+ */
 function fontscom_api_get_allowed_api_filters($reset = FALSE) {
   $data = NULL;
   if (!$reset && $cache = \Drupal::cache()->get('fontscom_api_allowed_api_filters')) {
@@ -373,6 +383,9 @@ function fontscom_api_get_allowed_api_filters($reset = FALSE) {
   return $data->FilterValues;
 }
 
+/**
+ * Retrieves list of all enabled fonts from Fonts.com.
+ */
 function fontscom_api_get_all_enabled_fonts() {
   try {
     $config = \Drupal::config('fontscom_api.settings');
@@ -392,12 +405,19 @@ function fontscom_api_get_all_enabled_fonts() {
   return $enabled_fonts;
 }
 
+/**
+ * Adds font to fonts.com project package.
+ */
 function fontscom_api_add_font_to_current_project($fid) {
   try {
     $config = \Drupal::config('fontscom_api.settings');
     $path = '/rest/json/Fonts/?wfspid=' . $config->get('project');
     $uri = FONTSCOM_API_BASE_URL . $path;
-    $response = \Drupal::httpClient()->post($uri, ['headers' => fontscom_api_headers($path), 'verify' => FALSE, 'body' => 'wfsfid=' . $fid]);
+    $response = \Drupal::httpClient()->post($uri, [
+      'headers' => fontscom_api_headers($path),
+      'verify' => FALSE,
+      'body' => 'wfsfid=' . $fid
+    ]);
     $data = json_decode((string) $response->getBody());
     fontscom_api_publish_updated_project();
     return TRUE;
@@ -408,6 +428,9 @@ function fontscom_api_add_font_to_current_project($fid) {
   }
 }
 
+/**
+ * Removes font from fonts.com project package.
+ */
 function fontscom_api_remove_font_from_current_project($fid) {
   try {
     $config = \Drupal::config('fontscom_api.settings');
@@ -424,6 +447,9 @@ function fontscom_api_remove_font_from_current_project($fid) {
   }
 }
 
+/**
+ * Updates fonts.com project package so updated font list is used.
+ */
 function fontscom_api_publish_updated_project() {
   try {
     $path = '/rest/json/Publish/';
@@ -437,6 +463,9 @@ function fontscom_api_publish_updated_project() {
   }
 }
 
+/**
+ * Parses and adds additional data to fonts.com font object.
+ */
 function _fontscom_api_parse_imported_font($fontscom_font) {
   $fontscom_font->name = $fontscom_font->FontName;
   $fontscom_font->css_style = 'normal';
@@ -471,6 +500,9 @@ function _fontscom_api_parse_imported_font($fontscom_font) {
   }
 }
 
+/**
+ * Generates @font-face css for fonts.com font.
+ */
 function _fontscom_api_generate_font_css($font) {
   $metadata = $font->getMetadata();
   $data = "@font-face {\n";

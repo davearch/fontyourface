@@ -96,7 +96,7 @@ function fontsquirrel_api_preprocess_font(array &$variables) {
   $font = $variables['elements']['#font'];
   $metadata = $font->getMetadata();
   if ($font->pid->value == 'fontsquirrel_api' && $font->isDisabled()) {
-    $variables['font_preview']['#markup'] = '<img style=\'max-width:100%;\' src="'. $metadata['preview_image'] . '" />';
+    $variables['font_preview']['#markup'] = '<img style=\'max-width:100%;\' src="' . $metadata['preview_image'] . '" />';
   }
 }
 

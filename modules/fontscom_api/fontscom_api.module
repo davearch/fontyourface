@@ -214,6 +214,32 @@ function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form
   drupal_set_message(t('Saved Fonts.com Authentication Key'));
 }
 
+function fontscom_api_fontyourface_font_css($font, $font_style) {
+  if ($font->pid->value == 'fontscom_api') {
+    $css = [];
+
+    // Enclose font family definition in single quotes if not already enclosed.
+    if ($font->css_family->value[0] === "'") {
+      $family_list = $font->css_family->value;
+    }
+    else {
+      $family_list = "'" . $font->css_family->value . "'";
+    }
+
+    if ($font_style !== NULL) {
+      if ($font_style->css_fallbacks) {
+        $family_list .= ', ' . $font_style->css_fallbacks;
+      }
+    }
+
+    $css[] = 'font-family: ' . $family_list . ';';
+    $css[] = 'font-style: 400;';
+    $css[] = 'font-weight: normal;';
+
+    return implode("\n", $css);
+  }
+}
+
 /**
  * Provides headers with api parameters.
  */

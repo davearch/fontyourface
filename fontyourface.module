@@ -253,6 +253,10 @@ function fontyourface_save_font($font_data) {
  * Creates CSS with any properties set on font.
  */
 function fontyourface_font_css($font, $font_style = NULL) {
+  $css = \Drupal::moduleHandler()->invokeAll('fontyourface_font_css', [$font, $font_style]);
+  if (!empty($css)) {
+    return implode("\n", $css);
+  }
   $css = [];
 
   // Enclose font family definition in single quotes if not already enclosed.
@@ -273,7 +277,7 @@ function fontyourface_font_css($font, $font_style = NULL) {
   $css[] = 'font-style: ' . $font->css_style->value . ';';
   $css[] = 'font-weight: ' . $font->css_weight->value . ';';
 
-  return implode(' ', $css);
+  return implode("\n", $css);
 }
 
 function fontyourface_delete($provider) {

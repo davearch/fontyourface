@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\Entity\Font.
- */
-
 namespace Drupal\fontyourface\Entity;
 
 use Drupal\views\EntityViewsData;

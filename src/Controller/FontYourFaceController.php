@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\Controller\FontYourFaceController.
- */
-
 namespace Drupal\fontyourface\Controller;
 
 use Drupal\Core\Url;

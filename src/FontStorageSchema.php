@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\FontStorageSchema.
- */
-
 namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\ContentEntityTypeInterface;

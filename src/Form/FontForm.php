@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\Form\FontForm.
- */
-
 namespace Drupal\fontyourface\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\Entity\FontDisplay.
- */
-
 namespace Drupal\fontyourface\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\Plugin\views\filter\FontYourFaceProviderFilter.
- */
-
 namespace Drupal\fontyourface\Plugin\views\filter;
 
 use Drupal\views\Plugin\views\filter\StringFilter;

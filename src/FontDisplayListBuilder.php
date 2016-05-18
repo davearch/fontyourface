@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\FontDisplayListBuilder.
- */
-
 namespace Drupal\fontyourface;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;

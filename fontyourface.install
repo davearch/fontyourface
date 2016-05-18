@@ -22,7 +22,13 @@ function fontyourface_install() {
  * Implements hook_uninstall().
  */
 function fontyourface_uninstall() {
-  $vids = ['font_classification', 'font_tags', 'languages_supported', 'font_designer', 'font_foundry'];
+  $vids = [
+    'font_classification',
+    'font_tags',
+    'languages_supported',
+    'font_designer',
+    'font_foundry'
+  ];
   foreach ($vids as $vid) {
     $vocabulary = Vocabulary::load($vid);
     if (!empty($vocabulary)) {
@@ -79,7 +85,6 @@ function fontyourface_update_8002() {
     'vid' => 'font_designer',
   ]);
   $designer->save();
-
 
   $field_name = 'field_classification';
   $classification_field_storage = FieldStorageConfig::create([

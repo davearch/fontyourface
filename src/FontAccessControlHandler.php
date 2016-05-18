@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\FontAccessControlHandler.
- */
-
 namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\EntityAccessControlHandler;

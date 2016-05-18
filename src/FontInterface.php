@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\FontInterface.
- */
-
 namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\ContentEntityInterface;

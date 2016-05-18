@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fontyourface\FontHtmlRouteProvider.
- */
-
 namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\EntityTypeInterface;

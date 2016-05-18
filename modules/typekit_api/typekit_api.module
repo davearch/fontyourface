@@ -101,7 +101,7 @@ function typekit_api_fontyourface_import() {
 /**
  * Implements hook_form_alter().
  */
-function typekit_api_form_Font_settings_alter(&$form, FormStateInterface $form_state) {
+function typekit_api_form_font_settings_alter(&$form, FormStateInterface $form_state) {
   $config = \Drupal::config('typekit_api.settings');
   $form['typekit_token'] = [
     '#type' => 'textfield',

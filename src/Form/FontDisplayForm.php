@@ -4,6 +4,7 @@ namespace Drupal\fontyourface\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\fontyourface\FontDisplayInterface;
 use Drupal\fontyourface\Entity\Font;
 
 /**
@@ -75,13 +76,28 @@ class FontDisplayForm extends EntityForm {
       '#default_value' => $font_display->getFallback(),
     ];
 
+    $preset_selectors = $this->getPresetSelectors();
+    $form['preset_selectors'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Preset Selectors'),
+      '#description' => $this->t('Use preset selectors to easily display your font.'),
+      '#options' => $preset_selectors,
+      '#default_value' => $this->getDefaultSelectorOption($font_display),
+      '#required' => TRUE,
+    ];
+
     $form['selectors'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Selectors'),
       '#description' => $this->t('Selects the selected font will apply to. Note that all pages will have a "fontyourface" class on the body tag. You can use that to specify a font.'),
       '#default_value' => $font_display->getSelectors(),
       '#maxlength' => 300,
-      '#required' => TRUE,
+      '#required' => FALSE,
+      '#states' => [
+        'visible' => [
+          'select[name="preset_selectors"]' => ['value' => 'other'],
+        ],
+      ],
     ];
 
     $form['theme'] = [
@@ -99,8 +115,26 @@ class FontDisplayForm extends EntityForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+    $preset_selectors = $form_state->getValue('preset_selectors');
+    $selectors = $form_state->getValue('selectors');
+    if ($preset_selectors == 'other' && empty($selectors)) {
+      $form_state->setError($form['selectors'], $this->t('A selector is required if \'other\' preset selector is selected'));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function save(array $form, FormStateInterface $form_state) {
     $font_display = $this->entity;
+    $preset_selectors = $form_state->getValue('preset_selectors');
+    $selectors = $form_state->getValue('selectors');
+    $font_display->setSelectors($preset_selectors);
+    if ($preset_selectors == 'other') {
+      $font_display->setSelectors($selectors);
+    }
     $status = $font_display->save();
 
     switch ($status) {
@@ -116,6 +150,46 @@ class FontDisplayForm extends EntityForm {
         ]));
     }
     $form_state->setRedirectUrl($font_display->urlInfo('collection'));
+  }
+
+  /**
+   * Get a list of preset selectors.
+   *
+   * @return array
+   *   List of key-value selectors for selecting css selector presets.
+   */
+  private function getPresetSelectors() {
+    return [
+      '' => '-- Select --',
+      '.fontyourface h1, .fontyourface h2, .fontyourface h3, .fontyourface h4, .fontyourface h5, .fontyourface h6' => 'All Headers (h1, h2, h3, h4, h5, h6)',
+      '.fontyourface h1' => 'h1',
+      '.fontyourface h2' => 'h2',
+      '.fontyourface h3' => 'h3',
+      '.fontyourface p, .fontyourface div' => 'standard text (p, div)',
+      '.fontyourface' => 'everything',
+      'other' => 'other',
+    ];
+  }
+
+  /**
+   * Return string that maps to selector.
+   *
+   * @param FontDisplayInterface $font_display
+   *   Current Font Display entity.
+   *
+   * @return string
+   *   String that maps to preset selector. 'Other' or empty string otherwise.
+   */
+  private function getDefaultSelectorOption(FontDisplayInterface $font_display) {
+    $preset_selectors = $this->getPresetSelectors();
+    $font_selector = $font_display->getSelectors();
+    if (!empty($preset_selectors[$font_selector])) {
+      return $font_selector;
+    }
+    elseif (!empty($font_selector)) {
+      return 'other';
+    }
+    return '';
   }
 
 }

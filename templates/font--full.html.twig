@@ -18,7 +18,7 @@
 <div{{ attributes.addClass('font') }}>
   {% if font_style %}
     <div>If you wish to use the font in your theme / css file, use:</div>
-    <code>
+    <code style="white-space: pre;">
       {{- font_style }}
     </code>
   {% endif %}
@@ -32,7 +32,7 @@
   </details>
   <detail open>
     <summary>Preview</summary>
-    <div class="fontyourface-preview" style="{{- font_style }}">
+    <div class="fontyourface-preview" style="{{- font_style_inline }}">
       {% if font_preview %}
         {{- font_preview }}
       {% else %}

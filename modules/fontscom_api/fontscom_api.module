@@ -221,7 +221,7 @@ function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form
 /**
  * Implements hook_fontyourface_font_css().
  */
-function fontscom_api_fontyourface_font_css($font, $font_style) {
+function fontscom_api_fontyourface_font_css($font, $font_style, $separator = ' ') {
   if ($font->pid->value == 'fontscom_api') {
     $css = [];
 
@@ -243,7 +243,7 @@ function fontscom_api_fontyourface_font_css($font, $font_style) {
     $css[] = 'font-style: 400;';
     $css[] = 'font-weight: normal;';
 
-    return implode("\n", $css);
+    return implode($separator, $css);
   }
 }
 

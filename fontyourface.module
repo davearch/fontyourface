@@ -124,7 +124,8 @@ function fontyourface_preprocess_font(array &$variables) {
   $font_preview = TRUE;
   $title = Html::escape($font->name->value);
 
-  $variables['font_style'] = fontyourface_font_css($font);
+  $variables['font_style'] = fontyourface_font_css($font, NULL, "\n");
+  $variables['font_style_inline'] = fontyourface_font_css($font);
   $variables['font_title'] = \Drupal::l($title, $font->urlInfo());
 
   // Helpful $content variable for templates.
@@ -252,8 +253,8 @@ function fontyourface_save_font($font_data) {
 /**
  * Creates CSS with any properties set on font.
  */
-function fontyourface_font_css($font, $font_style = NULL) {
-  $css = \Drupal::moduleHandler()->invokeAll('fontyourface_font_css', [$font, $font_style]);
+function fontyourface_font_css($font, $font_style = NULL, $separator = ' ') {
+  $css = \Drupal::moduleHandler()->invokeAll('fontyourface_font_css', [$font, $font_style, $separator]);
   if (!empty($css)) {
     return implode("\n", $css);
   }
@@ -277,7 +278,7 @@ function fontyourface_font_css($font, $font_style = NULL) {
   $css[] = 'font-style: ' . $font->css_style->value . ';';
   $css[] = 'font-weight: ' . $font->css_weight->value . ';';
 
-  return implode("\n", $css);
+  return implode($separator, $css);
 }
 
 /**

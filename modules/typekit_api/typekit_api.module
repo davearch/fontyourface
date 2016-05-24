@@ -124,6 +124,12 @@ function typekit_api_form_font_settings_submit(&$form, FormStateInterface $form_
 
 /**
  * Returns kits based on typekit id.
+ *
+ * @param string $token
+ *   The typekit api token.
+ *
+ * @return array
+ *   Array of typekit font objects.
  */
 function typekit_api_get_kits($token = NULL) {
   $kits = [];
@@ -141,6 +147,14 @@ function typekit_api_get_kits($token = NULL) {
 
 /**
  * Returns kit information.
+ *
+ * @param string $kit_id
+ *   The typekit kit id.
+ * @param string $token
+ *   The typekit api token.
+ *
+ * @return object
+ *   Typekit kit object.
  */
 function typekit_api_get_kit($kit_id, $token = NULL) {
   try {
@@ -157,6 +171,16 @@ function typekit_api_get_kit($kit_id, $token = NULL) {
 
 /**
  * Get a specific variant from API based on family and variant IDs.
+ *
+ * @param string $family_id
+ *   The typekit font family id.
+ * @param string $variant_id
+ *   The typekit font variant id.
+ * @param string $token
+ *   The typekit api token.
+ *
+ * @return object
+ *   Typekit font family variant object.
  */
 function typekit_api_get_variant($family_id, $variant_id, $token = NULL) {
   try {
@@ -178,6 +202,12 @@ function typekit_api_get_variant($family_id, $variant_id, $token = NULL) {
 
 /**
  * Provides header with token.
+ *
+ * @param string $token
+ *   The typekit api token.
+ *
+ * @return array
+ *   Header with typekit token for API request.
  */
 function typekit_api_token_headers($token = NULL) {
 
@@ -192,6 +222,14 @@ function typekit_api_token_headers($token = NULL) {
 
 /**
  * Checks if a kit is valid against a particular domain.
+ *
+ * @param string $kit
+ *   Typekit font kit project id.
+ * @param string $domain
+ *   Site domain.
+ *
+ * @return bool
+ *   TRUE if kit is valid against domain. FALSE otherwise.
  */
 function typekit_api_kit_matches_domain($kit, $domain) {
   $domain = Unicode::strtolower($domain);

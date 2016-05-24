@@ -102,6 +102,13 @@ function fontsquirrel_api_preprocess_font(array &$variables) {
 
 /**
  * Prepares variables for full font template preview.
+ *
+ * Default template: font--full.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
  */
 function fontsquirrel_api_preprocess_font__full(array &$variables) {
   fontsquirrel_api_preprocess_font($variables);
@@ -198,7 +205,7 @@ function fontsquirrel_api_fontyourface_import() {
  *   Initial font package data from Font Squirrel.
  *
  * @return object
- *   Font Family information from Font Squirrel.
+ *   Font family information from Font Squirrel.
  */
 function fontsquirrel_api_get_font_family_info($font_import) {
   try {

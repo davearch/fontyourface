@@ -69,6 +69,12 @@ function adobe_edge_fonts_fontyourface_import() {
 
 /**
  * Generates font family css for multiple fonts.
+ *
+ * @param array $fonts
+ *   Array of FontInterface objects.
+ *
+ * @return string
+ *   URL to load fonts on page.
  */
 function adobe_edge_fonts_generate_font_family_css($fonts) {
   $font_list = $families = [];
@@ -88,6 +94,12 @@ function adobe_edge_fonts_generate_font_family_css($fonts) {
 
 /**
  * Converts Adobe Edge Fonts json data into font-compatible format.
+ *
+ * @param array $json_fonts
+ *   Fonts returned from Adobe Edge json endpoint.
+ *
+ * @return array
+ *   Array of objects compatible with Fontyourface interface.
  */
 function _adobe_edge_fonts_convert_api_results($json_fonts) {
   $fonts = [];
@@ -147,6 +159,12 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
 
 /**
  * Returns list of human-readable languages.
+ *
+ * @param array $list
+ *   List of allowed languages.
+ *
+ * @return array
+ *   List of allowed lanaguages.
  */
 function _adobe_edge_fonts_human_languages($list) {
   $languages = [

@@ -7,11 +7,14 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\fontyourface\Entity\Font;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use GuzzleHttp\Psr7;
+
+use Drupal\fontyourface\FontInterface;
+use Drupal\fontyourface\FontDisplayInterface;
+use Drupal\fontyourface\Entity\Font;
 
 define('FONTSCOM_API_BASE_URL', 'https://api.fonts.com');
 define('FONTSCOM_API_APP_KEY', '1fdb130c-d5c0-4fab-8e2b-271508570323932606');
@@ -220,8 +223,18 @@ function fontscom_api_form_font_settings_submit(&$form, FormStateInterface $form
 
 /**
  * Implements hook_fontyourface_font_css().
+ *
+ * @param FontInterface $font
+ *   The font object.
+ * @param FontDisplayInterface $font_style
+ *   The font display object.
+ * @param string $separator
+ *   Approach to separating the resulting css.
+ *
+ * @return string
+ *   The font-family css.
  */
-function fontscom_api_fontyourface_font_css($font, $font_style, $separator = ' ') {
+function fontscom_api_fontyourface_font_css(FontInterface $font, FontDisplayInterface $font_style = NULL, $separator = ' ') {
   if ($font->pid->value == 'fontscom_api') {
     $css = [];
 
@@ -249,6 +262,12 @@ function fontscom_api_fontyourface_font_css($font, $font_style, $separator = ' '
 
 /**
  * Provides headers with api parameters.
+ *
+ * @param string $path
+ *   Fonts.com API endpoint.
+ *
+ * @return array
+ *   Header with fonts.com token for API request.
  */
 function fontscom_api_headers($path) {
   $config = \Drupal::config('fontscom_api.settings');
@@ -293,6 +312,13 @@ function fontscom_api_get_projects() {
 
 /**
  * Returns an array, regardless of input.
+ *
+ * @param mixed $unknown
+ *   A parameter of unknown type.
+ *
+ * @return array
+ *   If parameter is already an array, return as-is. Otherwise, return array
+ *   with param as first value.
  */
 function fontscom_api_unknown_to_array($unknown) {
   if (is_array($unknown)) {
@@ -304,6 +330,14 @@ function fontscom_api_unknown_to_array($unknown) {
 
 /**
  * Gets a list of all fonts, in given range.
+ *
+ * @param int $start
+ *   Pager request start value.
+ * @param int $limit
+ *   Pager request limit. Max 50.
+ *
+ * @return array
+ *   Array of fonts.com font objects.
  */
 function fontscom_api_get_all_fonts($start = 0, $limit = 50) {
   $result = [
@@ -337,6 +371,12 @@ function fontscom_api_get_all_fonts($start = 0, $limit = 50) {
 
 /**
  * Gets total font count.
+ *
+ * @param bool $reset
+ *   If the cache should be flushed and force an API request.
+ *
+ * @return int
+ *   Total number of fonts on fonts.com.
  */
 function fontscom_api_get_all_remote_fonts_count($reset = FALSE) {
   $data = NULL;
@@ -363,6 +403,12 @@ function fontscom_api_get_all_remote_fonts_count($reset = FALSE) {
 
 /**
  * Retrieves list of allowed api filters.
+ *
+ * @param bool $reset
+ *   If the cache should be flushed and force an API request.
+ *
+ * @return array
+ *   Key-value store of allowed filters from fonts.com.
  */
 function fontscom_api_get_allowed_api_filters($reset = FALSE) {
   $data = NULL;
@@ -385,6 +431,9 @@ function fontscom_api_get_allowed_api_filters($reset = FALSE) {
 
 /**
  * Retrieves list of all enabled fonts from Fonts.com.
+ *
+ * @return array
+ *   Array of enabled fonts.com font objects.
  */
 function fontscom_api_get_all_enabled_fonts() {
   try {
@@ -407,6 +456,12 @@ function fontscom_api_get_all_enabled_fonts() {
 
 /**
  * Adds font to fonts.com project package.
+ *
+ * @param int $fid
+ *   Fonts.com font ID.
+ *
+ * @return bool
+ *   True if font added successfully. FALSE otherwise.
  */
 function fontscom_api_add_font_to_current_project($fid) {
   try {
@@ -430,6 +485,12 @@ function fontscom_api_add_font_to_current_project($fid) {
 
 /**
  * Removes font from fonts.com project package.
+ *
+ * @param int $fid
+ *   Fonts.com font ID.
+ *
+ * @return bool
+ *   True if font removed successfully. FALSE otherwise.
  */
 function fontscom_api_remove_font_from_current_project($fid) {
   try {
@@ -449,6 +510,9 @@ function fontscom_api_remove_font_from_current_project($fid) {
 
 /**
  * Updates fonts.com project package so updated font list is used.
+ *
+ * @return bool
+ *   True if projects updated successfully. FALSE otherwise.
  */
 function fontscom_api_publish_updated_project() {
   try {
@@ -465,6 +529,9 @@ function fontscom_api_publish_updated_project() {
 
 /**
  * Parses and adds additional data to fonts.com font object.
+ *
+ * @param object $fontscom_font
+ *   Fonts.com font object.
  */
 function _fontscom_api_parse_imported_font($fontscom_font) {
   $fontscom_font->name = $fontscom_font->FontName;
@@ -502,8 +569,14 @@ function _fontscom_api_parse_imported_font($fontscom_font) {
 
 /**
  * Generates @font-face css for fonts.com font.
+ *
+ * @param FontInterface $font
+ *   Font compatible with FontInterface.
+ *
+ * @return string
+ *   CSS to load font.
  */
-function _fontscom_api_generate_font_css($font) {
+function _fontscom_api_generate_font_css(FontInterface $font) {
   $metadata = $font->getMetadata();
   $data = "@font-face {\n";
   $data .= "font-family: '{$font->css_family->value}';\n";

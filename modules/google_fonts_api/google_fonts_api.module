@@ -46,6 +46,12 @@ function google_fonts_api_fontyourface_api() {
 
 /**
  * Generates font family css for multiple fonts.
+ *
+ * @param array $fonts
+ *   Array of FontInterface objects.
+ *
+ * @return string
+ *   URL to load fonts on page.
  */
 function google_fonts_api_generate_font_family_css($fonts) {
   $fontlist = [];
@@ -98,9 +104,9 @@ function google_fonts_api_fontyourface_import() {
   // Return the JSON object with all available fonts
   // For now, it uses the API key of BarisW (co-maintainer of this module)
 
-  // This key is limited to 10.000 requests per day, which should
-  // be sufficient as it is only used when selecting fonts in the
-  // admin interface. After that, the fonts are cached in Drupal.
+  // This key is limited to 10.000 requests per day, which should be
+  // sufficient as it is only used when selecting fonts in the admin interface.
+  // After that, the fonts are stored in Drupal.
 
   try {
     $uri = 'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBgeqKlFdYj3Y7VwmrEXnXzpnx5TfKXG4o';

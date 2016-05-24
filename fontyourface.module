@@ -9,10 +9,13 @@ use Drupal\Core\Url;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\fontyourface\Entity\Font;
-use Drupal\fontyourface\Entity\FontDisplay;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
+
+use Drupal\fontyourface\FontInterface;
+use Drupal\fontyourface\FontDisplayInterface;
+use Drupal\fontyourface\Entity\Font;
+use Drupal\fontyourface\Entity\FontDisplay;
 
 /**
  * Implements hook_help().
@@ -174,7 +177,14 @@ function fontyourface_preprocess_font(array &$variables) {
 }
 
 /**
- * Prepares variables for full font template preview.
+ * Prepares variables for Font templates.
+ *
+ * Default template: font--full.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
  */
 function fontyourface_preprocess_font__full(array &$variables) {
   fontyourface_preprocess_font($variables);
@@ -195,7 +205,13 @@ function fontyourface_preprocess_font__teaser(array &$variables) {
 }
 
 /**
- * Saves a font.
+ * Saves/updates font.
+ *
+ * @param object $font_data
+ *   Simple stdclass rep of font for saving.
+ *
+ * @return Font
+ *   Newly saved/updated font.
  */
 function fontyourface_save_font($font_data) {
   $font = Font::loadByUrl($font_data->url);
@@ -252,9 +268,23 @@ function fontyourface_save_font($font_data) {
 
 /**
  * Creates CSS with any properties set on font.
+ *
+ * @param FontInterface $font
+ *   The font object.
+ * @param FontDisplayInterface $font_style
+ *   The font display object.
+ * @param string $separator
+ *   Approach to separating the resulting css.
+ *
+ * @return string
+ *   The font-family css.
  */
-function fontyourface_font_css($font, $font_style = NULL, $separator = ' ') {
-  $css = \Drupal::moduleHandler()->invokeAll('fontyourface_font_css', [$font, $font_style, $separator]);
+function fontyourface_font_css(FontInterface $font, FontDisplayInterface $font_style = NULL, $separator = ' ') {
+  $css = \Drupal::moduleHandler()->invokeAll('fontyourface_font_css', [
+    $font,
+    $font_style,
+    $separator,
+  ]);
   if (!empty($css)) {
     return implode("\n", $css);
   }
@@ -282,7 +312,10 @@ function fontyourface_font_css($font, $font_style = NULL, $separator = ' ') {
 }
 
 /**
- * API call for deleting fonts from a specific provider.
+ * Deletes fonts from a specific provider.
+ *
+ * @param string $provider
+ *   The providing submodule.
  */
 function fontyourface_delete($provider) {
 
@@ -320,6 +353,14 @@ function fontyourface_log($message, $arguments) {
 
 /**
  * Retrieves a tid for use from taxonomy.
+ *
+ * @param string $term_value
+ *   The taxonomy term string.
+ * @param string $vocabulary
+ *   The machine name of the vocabulary the term belongs to.
+ *
+ * @return int
+ *   The found/created taxonomy term id.
  */
 function _fontyourface_get_vocabulary_term($term_value, $vocabulary) {
   if ($terms = taxonomy_term_load_multiple_by_name($term_value, $vocabulary)) {

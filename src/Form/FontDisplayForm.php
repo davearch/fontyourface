@@ -69,6 +69,35 @@ class FontDisplayForm extends EntityForm {
       '#required' => TRUE,
     ];
 
+    foreach ($fonts as $font) {
+      $element_id = 'font_display_usage_' . $font->Id();
+      $form[$element_id] = [
+        '#type' => 'container',
+        '#states' => [
+          'visible' => [
+            'select[name="font_url"]' => ['value' => $font->url->value],
+          ],
+        ],
+      ];
+      $form[$element_id]['usage'] = [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#title' => 'Usage',
+      ];
+      $form[$element_id]['usage']['instructions'] = [
+        '#type' => 'item',
+        '#markup' => 'If you wish to skip using the font display and add the css directly to your theme, copy/paste the following for the font into your theme css file:',
+      ];
+      $form[$element_id]['usage']['preview'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'code',
+        '#attributes' => [
+          'style' => 'white-space: pre;'
+        ],
+        '#value' => fontyourface_font_css($font, NULL, "\n"),
+      ];
+    }
+
     $form['fallback'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Fallback fonts'),

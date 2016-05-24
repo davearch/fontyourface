@@ -19,30 +19,6 @@ function fontsquirrel_api_fontyourface_api() {
 }
 
 /**
- * Implements hook_page_attachments().
- */
-function fontsquirrel_api_page_attachments(&$page) {
-  $enabled_fonts = &drupal_static('fontyourface_fonts', []);
-  $kits = [];
-  foreach ($enabled_fonts as $font) {
-    if ($font->pid->value == 'fontsquirrel_api' && $font->isEnabled()) {
-      $directory_location = _fontsquirrel_api_get_font_directory_location($font);
-      $page['#attached']['html_head'][] = [
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'link',
-          '#attributes' => [
-            'rel' => 'stylesheet',
-            'href' => file_create_url($directory_location . '/fontyourface-stylesheet.css'),
-            'media' => 'all',
-          ],
-        ], 'fontsquirrel-api-' . $font->id(),
-      ];
-    }
-  }
-}
-
-/**
  * Implements hook_entity_presave().
  */
 function fontsquirrel_api_entity_presave(EntityInterface $entity) {
@@ -78,6 +54,30 @@ function fontsquirrel_api_entity_presave(EntityInterface $entity) {
         $css_file = _fontsquirrel_api_generate_fontfamily_css_stylesheet($entity->css_family->value, $files);
         file_unmanaged_save_data($css_file, $directory_location . '/fontyourface-stylesheet.css', FILE_EXISTS_REPLACE);
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function fontsquirrel_api_page_attachments(&$page) {
+  $enabled_fonts = &drupal_static('fontyourface_fonts', []);
+  $kits = [];
+  foreach ($enabled_fonts as $font) {
+    if ($font->pid->value == 'fontsquirrel_api' && $font->isEnabled()) {
+      $directory_location = _fontsquirrel_api_get_font_directory_location($font);
+      $page['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'link',
+          '#attributes' => [
+            'rel' => 'stylesheet',
+            'href' => file_create_url($directory_location . '/fontyourface-stylesheet.css'),
+            'media' => 'all',
+          ],
+        ], 'fontsquirrel-api-' . $font->id(),
+      ];
     }
   }
 }

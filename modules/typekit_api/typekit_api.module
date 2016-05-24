@@ -12,6 +12,40 @@ use Drupal\fontyourface\Entity\Font;
 use Drupal\Component\Utility\Unicode;
 
 /**
+ * Implements hook_fontyourface_api().
+ */
+function typekit_api_fontyourface_api() {
+  return [
+    'version' => '3',
+    'name' => 'Typekit',
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function typekit_api_form_font_settings_alter(&$form, FormStateInterface $form_state) {
+  $config = \Drupal::config('typekit_api.settings');
+  $form['typekit_token'] = [
+    '#type' => 'textfield',
+    '#title' => t('Typekit API Token'),
+    '#description' => t('Add your Typekit API token to import your kits. Available at https://typekit.com/account/tokens'),
+    '#default_value' => $config->get('token'),
+  ];
+  $form['#submit'][] = 'typekit_api_form_font_settings_submit';
+}
+
+/**
+ * Submits Font settings form data.
+ */
+function typekit_api_form_font_settings_submit(&$form, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+  $config = \Drupal::configFactory()->getEditable('typekit_api.settings');
+  $config->set('token', $values['typekit_token'])->save();
+  drupal_set_message(t('Saved Typekit API token'));
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function typekit_api_page_attachments(&$page) {
@@ -41,16 +75,6 @@ function typekit_api_page_attachments(&$page) {
       ], 'fontyourface-typekit-api-inline'
     ];
   }
-}
-
-/**
- * Implements hook_fontyourface_api().
- */
-function typekit_api_fontyourface_api() {
-  return [
-    'version' => '3',
-    'name' => 'Typekit',
-  ];
 }
 
 /**
@@ -96,30 +120,6 @@ function typekit_api_fontyourface_import() {
     }
   }
   drupal_set_message('Imported Typekit kits: @kits', array('@kits' => print_r($kits, TRUE)));
-}
-
-/**
- * Implements hook_form_alter().
- */
-function typekit_api_form_font_settings_alter(&$form, FormStateInterface $form_state) {
-  $config = \Drupal::config('typekit_api.settings');
-  $form['typekit_token'] = [
-    '#type' => 'textfield',
-    '#title' => t('Typekit API Token'),
-    '#description' => t('Add your Typekit API token to import your kits. Available at https://typekit.com/account/tokens'),
-    '#default_value' => $config->get('token'),
-  ];
-  $form['#submit'][] = 'typekit_api_form_font_settings_submit';
-}
-
-/**
- * Submits Font settings form data.
- */
-function typekit_api_form_font_settings_submit(&$form, FormStateInterface $form_state) {
-  $values = $form_state->getValues();
-  $config = \Drupal::configFactory()->getEditable('typekit_api.settings');
-  $config->set('token', $values['typekit_token'])->save();
-  drupal_set_message(t('Saved Typekit API token'));
 }
 
 /**

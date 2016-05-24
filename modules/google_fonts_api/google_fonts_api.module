@@ -8,6 +8,16 @@
 use Drupal\fontyourface\Entity\Font;
 
 /**
+ * Implements hook_fontyourface_api()
+ */
+function google_fonts_api_fontyourface_api() {
+  return [
+    'version' => '3',
+    'name' => 'Google Fonts',
+  ];
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function google_fonts_api_page_attachments(&$page) {
@@ -32,16 +42,6 @@ function google_fonts_api_page_attachments(&$page) {
       ], 'fontyourface-google-fonts-api'
     ];
   }
-}
-
-/**
- * Implements hook_fontyourface_api()
- */
-function google_fonts_api_fontyourface_api() {
-  return [
-    'version' => '3',
-    'name' => 'Google Fonts',
-  ];
 }
 
 /**

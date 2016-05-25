@@ -83,13 +83,14 @@ class FontSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $op = (string) $values['op'];
-    if ($op == $this->t('Import all fonts')) {
-      $batch = [
-        'title' => $this->t('Importing...'),
-        'operations' => [],
-        'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished',
-      ];
-      foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
+
+    $batch = [
+      'title' => $this->t('Importing...'),
+      'operations' => [],
+      'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished',
+    ];
+    foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
+      if ($op == $this->t('Import all fonts') || $op == $this->t('Import from @module', ['@module' => $module_name])) {
         $batch['operations'][] = [
           '\Drupal\fontyourface\Form\FontSettingsForm::importFromProvider',
           [
@@ -97,31 +98,18 @@ class FontSettingsForm extends ConfigFormBase {
           ],
         ];
       }
+    }
+    if (!empty($batch['operations'])) {
       batch_set($batch);
     }
-    foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
-      if ($op == $this->t('Import from @module', ['@module' => $module_name])) {
-        $batch = [
-          'title' => $this->t('Importing...'),
-          'finished' => '\Drupal\fontyourface\Form\FontSettingsForm::importFinished',
-          'operations' => [
-            [
-              '\Drupal\fontyourface\Form\FontSettingsForm::importFromProvider',
-              [
-                $module_name,
-              ]
-            ],
-          ],
-        ];
-        batch_set($batch);
-      }
-    }
+
     if ($op == $this->t('Save configuration')) {
       $config = $this->config('fontyourface.settings')
         ->set('load_all_enabled_fonts', $values['load_all_enabled_fonts'])
         ->save();
       parent::submitForm($form, $form_state);
     }
+
     // Resave enabled fonts.
     $fonts = Font::loadEnabledFonts();
     foreach ($fonts as $font) {

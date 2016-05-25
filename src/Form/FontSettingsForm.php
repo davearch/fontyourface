@@ -61,6 +61,11 @@ class FontSettingsForm extends ConfigFormBase {
       $form['imports']['import_' . $module_name] = [
         '#type' => 'submit',
         '#value' => $this->t('Import from @module', ['@module' => $module_name]),
+        '#attributes' => [
+          'style' => 'margin: 10px;',
+        ],
+        '#prefix' => '<div>',
+        '#suffix' => '</div>',
       ];
     }
 

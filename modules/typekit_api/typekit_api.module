@@ -82,7 +82,6 @@ function typekit_api_page_attachments(&$page) {
  */
 function typekit_api_fontyourface_import() {
   $success = TRUE;
-  $kits = typekit_api_get_kits();
   $config = \Drupal::config('typekit_api.settings');
   if (empty($config->get('token'))) {
     drupal_set_message(t('Typekit token not set. Cannot import typekit kits.'));

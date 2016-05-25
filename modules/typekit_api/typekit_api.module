@@ -26,10 +26,14 @@ function typekit_api_fontyourface_api() {
  */
 function typekit_api_form_font_settings_alter(&$form, FormStateInterface $form_state) {
   $config = \Drupal::config('typekit_api.settings');
-  $form['typekit_token'] = [
+  $form['typekit_api'] = [
+    '#type' => 'fieldset',
+    '#title' => t('TYPEKIT SETTINGS'),
+  ];
+  $form['typekit_api']['typekit_token'] = [
     '#type' => 'textfield',
     '#title' => t('Typekit API Token'),
-    '#description' => t('Add your Typekit API token to import your kits. Available at https://typekit.com/account/tokens'),
+    '#description' => t('Add your Typekit API token to import your kits. Available at <a target="_blank" href=":url">:url</a>', [':url' => 'https://typekit.com/account/tokens']),
     '#default_value' => $config->get('token'),
   ];
   $form['#submit'][] = 'typekit_api_form_font_settings_submit';

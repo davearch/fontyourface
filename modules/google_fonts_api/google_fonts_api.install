@@ -9,9 +9,9 @@
  * Implements hook_install().
  */
 function google_fonts_api_install() {
-  // Import google fonts.
-  google_fonts_api_fontyourface_import();
   module_set_weight('google_fonts_api', 10);
+  $url = \Drupal\Core\Url::fromRoute('font.settings');
+  drupal_set_message(t('Due to the number of fonts, automated import from install for Google Fonts is disabled. Please use @link to import Google Fonts.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
 }
 
 /**

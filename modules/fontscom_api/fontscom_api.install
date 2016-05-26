@@ -10,7 +10,8 @@
  */
 function fontscom_api_install() {
   module_set_weight('fontscom_api', 10);
-  drupal_set_message(t('Due to the number of fonts, automated import from install for Fonts.com is disabled. Please use @font-your-face settings to import Fonts.com fonts.'));
+  $url = \Drupal\Core\Url::fromRoute('font.settings');
+  drupal_set_message(t('Fonts.com settings needs to be set up in order to import fonts from Fonts.com. Please use @link to import Fonts.com fonts.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
 }
 
 /**

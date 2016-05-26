@@ -10,6 +10,8 @@
  */
 function typekit_api_install() {
   module_set_weight('typekit_api', 10);
+  $url = \Drupal\Core\Url::fromRoute('font.settings');
+  drupal_set_message(t('Typekit needs to be set up in order for fonts to be imported. Please use @link to import Fonts.com fonts.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
 }
 
 /**

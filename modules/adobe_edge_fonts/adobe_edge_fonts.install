@@ -9,9 +9,9 @@
  * Implements hook_install().
  */
 function adobe_edge_fonts_install() {
-  // Import Adobe Edge Fonts.
-  adobe_edge_fonts_fontyourface_import();
   module_set_weight('adobe_edge_fonts', 10);
+  $url = \Drupal\Core\Url::fromRoute('font.settings');
+  drupal_set_message(t('Due to the number of fonts, automated import from install for Adobe Edge Fonts is disabled. Please use @link to import Adobe Edge Fonts.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
 }
 
 /**

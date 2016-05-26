@@ -47,9 +47,6 @@ function adobe_edge_fonts_page_attachments(&$page) {
  */
 function adobe_edge_fonts_fontyourface_import($font_context = []) {
   $context = $font_context;
-  foreach ($fonts as $font) {
-    fontyourface_save_font($font);
-  }
   if (empty($context['sandbox'])) {
     $context['sandbox']['fonts'] = _adobe_edge_fonts_get_fonts_from_api();
     $context['sandbox']['progress'] = 0;
@@ -93,6 +90,12 @@ function adobe_edge_fonts_generate_font_family_css($fonts) {
   return $url;
 }
 
+/**
+ * Retrieves fonts from api and parses them for consumption.
+ *
+ * @return array
+ *   List of fonts ready for ingesting as FontInterface objects.
+ */
 function _adobe_edge_fonts_get_fonts_from_api() {
   try {
     $uri = 'https://edgewebfonts.adobe.com/data/fontData.json';

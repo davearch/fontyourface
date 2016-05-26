@@ -45,26 +45,27 @@ function adobe_edge_fonts_page_attachments(&$page) {
 /**
  * Implements hook_fontyourface_import().
  */
-function adobe_edge_fonts_fontyourface_import() {
-  // Return the JSON object with all available fonts.
-
-  try {
-    $uri = 'https://edgewebfonts.adobe.com/data/fontData.json';
-    $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain'], 'verify' => FALSE]);
-    $data = (string) $response->getBody();
-  }
-  catch (RequestException $e) {
-    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', array('%error' => $result->error)), 'error');
-    return FALSE;
-  }
-
-  $json_fonts_results = json_decode($data);
-  $fonts = _adobe_edge_fonts_convert_api_results($json_fonts_results->families);
-
+function adobe_edge_fonts_fontyourface_import($font_context = []) {
+  $context = $font_context;
   foreach ($fonts as $font) {
     fontyourface_save_font($font);
   }
-  drupal_set_message(t('Imported @count Adobe Edge Fonts', ['@count' => count($fonts)]));
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['fonts'] = _adobe_edge_fonts_get_fonts_from_api();
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['max'] = count($context['sandbox']['fonts']);
+  }
+  $font = array_pop($context['sandbox']['fonts']);
+  if (!empty($font)) {
+    fontyourface_save_font($font);
+    $context['message'] = "Imported {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
+    $context['sandbox']['progress']++;
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+  else {
+    drupal_set_message(t('Imported @count fonts from Adobe Edge', ['@count' => $context['sandbox']['progress']]));
+  }
+  return $context;
 }
 
 /**
@@ -90,6 +91,21 @@ function adobe_edge_fonts_generate_font_family_css($fonts) {
     $url = 'https://use.edgefonts.net/' . implode(';', $families) . '.js';
   }
   return $url;
+}
+
+function _adobe_edge_fonts_get_fonts_from_api() {
+  try {
+    $uri = 'https://edgewebfonts.adobe.com/data/fontData.json';
+    $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain'], 'verify' => FALSE]);
+    $data = (string) $response->getBody();
+  }
+  catch (RequestException $e) {
+    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', array('%error' => $result->error)), 'error');
+    return FALSE;
+  }
+
+  $json_fonts_results = json_decode($data);
+  return _adobe_edge_fonts_convert_api_results($json_fonts_results->families);
 }
 
 /**

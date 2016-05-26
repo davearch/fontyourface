@@ -135,13 +135,19 @@ function fontsquirrel_api_preprocess_font__teaser(array &$variables) {
 /**
  * Implements hook_fontyourface_import().
  */
-function fontsquirrel_api_fontyourface_import() {
-  // Until we figure out batch api for D8.
+function fontsquirrel_api_fontyourface_import($font_context = []) {
+  // Individual font could take a lot of time.
   @set_time_limit(3600);
+  $context = $font_context;
 
-  $fonts = _fontsquirrel_api_get_fonts_from_api();
-  $count = 0;
-  foreach ($fonts as $font_import) {
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['fonts'] = _fontsquirrel_api_get_fonts_from_api();
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['max'] = count($context['sandbox']['fonts']);
+  }
+
+  $font_import = array_pop($context['sandbox']['fonts']);
+  if (!empty($font_import)) {
     $metadata = [
       'id' => $font_import->id,
       'path' => $font_import->family_urlname,
@@ -180,10 +186,14 @@ function fontsquirrel_api_fontyourface_import() {
       $variant_font->metadata = $variant_metadata;
       fontyourface_save_font($variant_font);
     }
+    $context['message'] = "Imported {$context['sandbox']['progress']} (plus variants) of {$context['sandbox']['max']}";
+    $context['sandbox']['progress']++;
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   }
-  if ($count) {
-    drupal_set_message(t('Imported @count Font Squirrel fonts (and variants).', ['@count' => $count]));
+  else {
+    drupal_set_message(t('Imported @count Font Squirrel fonts (and variants).', ['@count' => $context['sandbox']['max']]));
   }
+  return $context;
 }
 
 /**

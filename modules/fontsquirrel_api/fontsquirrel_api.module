@@ -174,7 +174,6 @@ function fontsquirrel_api_fontyourface_import($font_context = []) {
     $font->metadata = $metadata;
     $variants = fontsquirrel_api_get_font_family_info($font_import);
     foreach ($variants as $key => $variant) {
-      $count++;
       $variant_metadata = $metadata;
       $variant_metadata['font_filename'] = $variant->filename;
       $variant_metadata['checksum'] = $variant->checksum;

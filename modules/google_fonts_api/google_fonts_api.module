@@ -100,7 +100,36 @@ function google_fonts_api_generate_font_family_css($fonts) {
 /**
  * Implements hook_fontyourface_import().
  */
-function google_fonts_api_fontyourface_import() {
+function google_fonts_api_fontyourface_import($font_context = []) {
+  $context = $font_context;
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['fonts'] = _google_fonts_api_get_fonts_from_api();
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['max'] = count($context['sandbox']['fonts']);
+  }
+  $font = array_pop($context['sandbox']['fonts']);
+  if (!empty($font)) {
+    if (!isset($font->tags)) {
+      $font->tags = array();
+    }
+    fontyourface_save_font($font);
+    $context['message'] = "Imported {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
+    $context['sandbox']['progress']++;
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+  else {
+    drupal_set_message(t('Imported @count fonts from Google Fonts', ['@count' => $context['sandbox']['progress']]));
+  }
+  return $context;
+}
+
+/**
+ * Retrieves fonts from api and parses them for consumption.
+ *
+ * @return array
+ *   List of fonts ready for ingesting as FontInterface objects.
+ */
+function _google_fonts_api_get_fonts_from_api() {
   // Return the JSON object with all available fonts
   // For now, it uses the API key of BarisW (co-maintainer of this module)
 
@@ -120,20 +149,7 @@ function google_fonts_api_fontyourface_import() {
 
   $json_results = json_decode($data);
 
-  $fonts = _google_fonts_api_convert_api_results($json_results->items);
-
-  foreach ($fonts as $font) {
-
-    if (!isset($font->tags)) {
-      $font->tags = array();
-    }
-    fontyourface_save_font($font);
-
-  }
-  drupal_set_message(t('Imported @count Google Fonts', ['@count' => count($fonts)]));
-
-  return TRUE;
-
+  return _google_fonts_api_convert_api_results($json_results->items);
 }
 
 /**

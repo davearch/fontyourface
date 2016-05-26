@@ -84,12 +84,12 @@ function typekit_api_page_attachments(&$page) {
 /**
  * Implements hook_fontyourface_import().
  */
-function typekit_api_fontyourface_import() {
+function typekit_api_fontyourface_import($font_context = []) {
   $success = TRUE;
   $config = \Drupal::config('typekit_api.settings');
   if (empty($config->get('token'))) {
     drupal_set_message(t('Typekit token not set. Cannot import typekit kits.'));
-    return;
+    return $font_context;
   }
 
   $kits = typekit_api_get_kits($config->get('token'));
@@ -123,6 +123,7 @@ function typekit_api_fontyourface_import() {
     }
   }
   drupal_set_message('Imported Typekit kits: @kits', array('@kits' => print_r($kits, TRUE)));
+  return $font_context;
 }
 
 /**

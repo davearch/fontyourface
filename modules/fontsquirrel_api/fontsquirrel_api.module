@@ -139,20 +139,9 @@ function fontsquirrel_api_fontyourface_import() {
   // Until we figure out batch api for D8.
   @set_time_limit(3600);
 
-  try {
-    $uri = 'https://www.fontsquirrel.com/api/fontlist/all';
-    $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain']]);
-    $data = json_decode($response->getBody());
-  }
-  catch (RequestException $e) {
-    drupal_set_message(t('There was an error downloading font list from Font Squirrel.'), 'error');
-    fontyourface_log('Invalid drupal_http_request response: @response', ['@response' => $e->getMessage()]);
-    return FALSE;
-  }
-
-  $fonts = [];
+  $fonts = _fontsquirrel_api_get_fonts_from_api();
   $count = 0;
-  foreach ($data as $font_import) {
+  foreach ($fonts as $font_import) {
     $metadata = [
       'id' => $font_import->id,
       'path' => $font_import->family_urlname,
@@ -189,13 +178,32 @@ function fontsquirrel_api_fontyourface_import() {
       $variant_font->url = $font->url . '#' . $variant->fontface_name;
       $variant_font->css_family = $variant->fontface_name;
       $variant_font->metadata = $variant_metadata;
-      $fonts[] = $variant_font;
       fontyourface_save_font($variant_font);
     }
   }
   if ($count) {
     drupal_set_message(t('Imported @count Font Squirrel fonts (and variants).', ['@count' => $count]));
   }
+}
+
+/**
+ * Retrieves fonts from api and parses them for consumption.
+ *
+ * @return array
+ *   List of fonts ready for ingesting as FontInterface objects.
+ */
+function _fontsquirrel_api_get_fonts_from_api() {
+  try {
+    $uri = 'https://www.fontsquirrel.com/api/fontlist/all';
+    $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain']]);
+    $data = json_decode($response->getBody());
+  }
+  catch (RequestException $e) {
+    drupal_set_message(t('There was an error downloading font list from Font Squirrel.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', ['@response' => $e->getMessage()]);
+    return FALSE;
+  }
+  return $data;
 }
 
 /**

@@ -56,6 +56,7 @@ function google_fonts_api_page_attachments(&$page) {
 function google_fonts_api_generate_font_family_css($fonts) {
   $fontlist = [];
   $url = '';
+  $paths = [];
   foreach ($fonts as $font) {
     if ($font->pid->value == 'google_fonts_api') {
       $metadata = $font->getMetadata();

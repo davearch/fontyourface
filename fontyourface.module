@@ -319,16 +319,17 @@ function fontyourface_font_css(FontInterface $font, FontDisplayInterface $font_s
  */
 function fontyourface_delete($provider) {
 
-  // Delete fonts, 100 at a time.
+  // Delete fonts, 50 at a time.
   @set_time_limit(3600);
   while (TRUE) {
-    \Drupal::entityManager()->getStorage('font')->resetCache();
+    $storage_handler = \Drupal::entityManager()->getStorage('font');
     $fids = \Drupal::entityQuery('font')
       ->condition('pid', $provider)
-      ->range(0, 100)
+      ->range(0, 50)
       ->execute();
     if (!empty($fids)) {
-      entity_delete_multiple('font', array_keys($fids));
+      $fonts = $storage_handler->loadMultiple(array_keys($fids));
+      $storage_handler->delete($fonts);
     }
     else {
       break;

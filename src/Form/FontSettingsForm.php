@@ -57,6 +57,11 @@ class FontSettingsForm extends ConfigFormBase {
       '#title' => 'Import',
       '#collapsible' => FALSE,
     ];
+    // Set the module weight. There is some general Drupal funk around module weights.
+    module_set_weight('fontyourface', 1);
+    foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
+      module_set_weight($module_name, 10);
+    }
     foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_import') as $module_name) {
       $form['imports']['import_' . $module_name] = [
         '#type' => 'submit',

@@ -206,3 +206,14 @@ function fontyourface_update_8002() {
   ]);
   $tags_field->save();
 }
+
+/**
+ * Updates fontyourface and submodule weights since there are issues around ordering.
+ */
+function fontyourface_update_8003() {
+  // Set the module weight. There is some general Drupal funk around module weights during install.
+  module_set_weight('fontyourface', 1);
+  foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
+    module_set_weight($module_name, 10);
+  }
+}

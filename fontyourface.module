@@ -299,7 +299,7 @@ function fontyourface_font_css(FontInterface $font, FontDisplayInterface $font_s
   }
 
   if ($font_style !== NULL) {
-    if ($font_style->css_fallbacks) {
+    if (!empty($font_style->css_fallbacks)) {
       $family_list .= ', ' . $font_style->css_fallbacks;
     }
   }

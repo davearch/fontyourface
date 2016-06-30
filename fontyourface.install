@@ -16,8 +16,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
  */
 function fontyourface_install() {
   module_set_weight('fontyourface', 1);
-  $url = \Drupal\Core\Url::fromRoute('font.settings');
-  drupal_set_message(t('If you have not yet enabled any @font-your-face provider modules, please do so. If you have already enabled @font-your-face provider modules, please use @link to import fonts from them.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
+  drupal_set_message(t('If you have not yet enabled any @font-your-face provider modules, please do so. If you have already enabled @font-your-face provider modules, please use the font settings page in the appearance section to import fonts from them.'));
 }
 
 /**

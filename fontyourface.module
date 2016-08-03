@@ -71,14 +71,16 @@ function fontyourface_page_attachments(&$page) {
     $styles = FontDisplay::loadByTheme($theme);
     foreach ($styles as $style) {
       $font = $style->getFont();
-      $fonts[$font->url->value] = $font;
-      $page['#attached']['html_head'][] = [
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'style',
-          '#value' => $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }',
-        ], $style->id() . '-fontyourface-full'
-      ];
+      if (!empty($font)) {
+        $fonts[$font->url->value] = $font;
+        $page['#attached']['html_head'][] = [
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'style',
+            '#value' => $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }',
+          ], $style->id() . '-fontyourface-full'
+        ];
+      }
     }
   }
 }

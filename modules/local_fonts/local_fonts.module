@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Local Fonts module file.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\fontyourface\Entity\Font;
+
+/**
+ * Implements hook_fontyourface_api()
+ */
+function local_fonts_fontyourface_api() {
+  return [
+    'version' => '3',
+    'name' => 'Local Fonts',
+  ];
+}

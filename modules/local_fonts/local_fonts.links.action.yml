@@ -1,0 +1,5 @@
+local_fonts.upload_font_form:
+  route_name: 'local_fonts.local_font_add_font'
+  title: 'Upload Font'
+  appears_on:
+    - entity.font.collection

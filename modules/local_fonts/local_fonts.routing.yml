@@ -1,0 +1,9 @@
+
+local_fonts.local_font_add_font:
+  path: '/admin/appearance/font/local-fonts/add'
+  defaults:
+    _form: '\Drupal\local_fonts\Form\LocalFontAddFont'
+    _title: 'LocalFontAddFont'
+  requirements:
+    _permission: 'administer font entities'
+  

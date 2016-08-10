@@ -19,3 +19,4 @@ font.admin.appearance.settings:
   description: '@font-your-face settings'
   route_name: font.settings
   parent: entity.font.collection
+  weight: 100

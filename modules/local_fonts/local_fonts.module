@@ -92,3 +92,24 @@ function local_fonts_entity_presave(Drupal\Core\Entity\EntityInterface $entity) 
     $font_entity = fontyourface_save_font($font_data);
   }
 }
+
+/**
+ * Implements hook_entity_delete().
+ */
+function local_fonts_entity_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity instanceof LocalFontConfigEntity) {
+    $font_id = 'local_fonts://' . $entity->id();
+    $fids = \Drupal::entityQuery('font')
+      ->condition('url', $font_id)
+      ->range(0, 50)
+      ->execute();
+    if (!empty($fids)) {
+      $storage_handler = \Drupal::entityManager()->getStorage('font');
+      $fonts = $storage_handler->loadMultiple(array_keys($fids));
+      $storage_handler->delete($fonts);
+    }
+    else {
+      break;
+    }
+  }
+}

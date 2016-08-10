@@ -1,5 +1,5 @@
-local_fonts.upload_font_form:
-  route_name: 'local_fonts.local_font_add_font'
-  title: 'Upload Font'
+entity.local_font_config_entity.add_form:
+  route_name: 'entity.local_font_config_entity.add_form'
+  title: 'Add Custom Font'
   appears_on:
-    - entity.font.collection
+    - entity.local_font_config_entity.collection

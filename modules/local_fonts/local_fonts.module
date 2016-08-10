@@ -14,6 +14,6 @@ use Drupal\fontyourface\Entity\Font;
 function local_fonts_fontyourface_api() {
   return [
     'version' => '3',
-    'name' => 'Local Fonts',
+    'name' => 'Custom Fonts',
   ];
 }

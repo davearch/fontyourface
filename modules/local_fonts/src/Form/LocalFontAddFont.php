@@ -34,6 +34,7 @@ class LocalFontAddFont extends FormBase {
     $form['font_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Font name'),
+      '#description' => $this->t('The CSS Font label. This is mostly for filtering. Note that checking for duplicates will be based on the text entered here.'),
       '#default_value' => '',
       '#size' => 60,
       '#maxlength' => 128,
@@ -43,6 +44,7 @@ class LocalFontAddFont extends FormBase {
     $form['font_family'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Font family'),
+      '#description' => $this->t('The CSS Font Family. The @font-face name will be based on this.'),
       '#default_value' => '',
       '#size' => 60,
       '#maxlength' => 128,
@@ -54,7 +56,7 @@ class LocalFontAddFont extends FormBase {
       '#title' => $this->t('Font Style'),
       '#options' => [
         'normal' => $this->t('Normal'),
-        'italic' => $this->t('Italic'),
+        'italic' => $this->t('Italics'),
       ],
     ];
 
@@ -87,6 +89,25 @@ class LocalFontAddFont extends FormBase {
       ],
     ];
 
+    $form['font_override'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Override?'),
+      '#description' => $this->t('Select yes if you wish to override an existing font'),
+      '#default_value' => 0,
+      '#options' => [0 => $this->t('No'), 1 => $this->t('Yes')],
+    ];
+
+    $form['font_file'] = [
+      '#type' => 'file',
+      '#title' => $this->t('Font File'),
+      '#description' => $this->t('The font file must be in WOFF format since that is accepted by all modern browsers.'),
+      '#size' => 50,
+      '#upload_validators' => [
+        'file_validate_extensions' => ['woff'],
+        'file_validate_size' => [file_upload_max_size()],
+      ],
+    ];
+
     $form['submit'] = [
         '#type' => 'submit',
         '#value' => t('Submit'),
@@ -108,29 +129,22 @@ class LocalFontAddFont extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Display result.
     $values = $form_state->getValues();
-    $font = new \stdClass();
-    $font->name = $values['font_name'];
-    $font->url = 'local_fonts://' . $font->name;
-    $font->provider = 'local_fonts';
-    $font->css_family = $values['font_family'];
-    // Font Squirrel fonts have no concept of normal/bold/light/italics fonts.
-    $font->css_weight = $values['font_weight'];
-    $font->css_style = $values['font_style'];
-    $font->foundry = '';
-    $font->foundry_url = '';
-    $font->license = '';
-    $font->license_url = '';
-    $font->license = 'See Font Squirrel license page';
-    $font->classification = [
-      str_replace(' ', '-', strtolower($font_import->classification)),
-    ];
-    $font->language = [
+    $font_data = new \stdClass();
+    $font_data->name = $values['font_name'];
+    $font_data->url = 'local_fonts://' . $values['font_family'];
+    $font_data->provider = 'local_fonts';
+    $font_data->css_family = $values['font_family'];
+    $font_data->css_weight = $values['font_weight'];
+    $font_data->css_style = $values['font_style'];
+    $font_data->classification = array_filter($values['font_classification']);
+    $font_data->language = [
       'English',
     ];
-    drupal_set_message(print_r($values['font_classification'], TRUE));
+    $font_data->metadata = [];
     foreach ($form_state->getValues() as $key => $value) {
         drupal_set_message($key . ': ' . $value);
     }
+    $font = fontyourface_save_font($font_data);
 
   }
 

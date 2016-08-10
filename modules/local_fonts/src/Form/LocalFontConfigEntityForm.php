@@ -42,7 +42,6 @@ class LocalFontConfigEntityForm extends EntityForm {
       '#title' => $this->t('Font family'),
       '#default_value' => $local_font_config_entity->font_family,
       '#description' => $this->t('The CSS Font Family. The @font-face name will be based on this.'),
-      '#default_value' => '',
       '#size' => 60,
       '#maxlength' => 128,
       '#required' => TRUE,
@@ -55,7 +54,7 @@ class LocalFontConfigEntityForm extends EntityForm {
         'normal' => $this->t('Normal'),
         'italic' => $this->t('Italics'),
       ],
-      '#default_value' => 'normal',
+      '#default_value' => (isset($local_font_config_entity->font_style)) ? $local_font_config_entity->font_style : 'normal',
     ];
 
     $form['font_weight'] = [
@@ -72,7 +71,7 @@ class LocalFontConfigEntityForm extends EntityForm {
         '800' => '800',
         '900' => '900',
       ],
-      '#default_value' => '400',
+      '#default_value' => (isset($local_font_config_entity->font_weight)) ? $local_font_config_entity->font_weight : '400',
     ];
 
     $form['font_classification'] = [
@@ -87,18 +86,19 @@ class LocalFontConfigEntityForm extends EntityForm {
         'decorative' => $this->t('Decorative'),
         'monospace' => $this->t('Monospace'),
       ],
+      '#default_value' => (isset($local_font_config_entity->font_classification)) ? $local_font_config_entity->font_classification : [],
     ];
 
     $form['font_file'] = [
-      '#type' => 'file',
+      '#type' => 'managed_file',
       '#title' => $this->t('Font File'),
       '#description' => $this->t('The font file must be in WOFF format since that is accepted by all modern browsers.'),
       '#size' => 50,
       '#upload_validators' => [
         'file_validate_extensions' => ['woff'],
         'file_validate_size' => [file_upload_max_size()],
+        'file_validate_name_length'
       ],
-      '#required' => TRUE,
     ];
 
     return $form;
@@ -107,11 +107,54 @@ class LocalFontConfigEntityForm extends EntityForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $local_font_config_entity = $this->entity;
+
+    $values = $form_state->getValues();
+    if (empty($values['font_file']) && empty($local_font_config_entity->getFontWoffData())) {
+      $form_state->setErrorByName('font_file', $this->t('WOFF file must be uploaded'));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function save(array $form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
-    _dd($values);
+
+    // Save Custom Font Config Entity
     $local_font_config_entity = $this->entity;
+    if (!empty($values['font_file'])) {
+      // Get contents of Font File.
+      $font_file = \Drupal\file\Entity\File::load($values['font_file'][0]);
+      $font_file_data = base64_encode(file_get_contents($font_file->getFileUri()));
+      $local_font_config_entity->setFontWoffData($font_file_data);
+    }
     $status = $local_font_config_entity->save();
+
+    // Save and generate necessary font files.
+    local_fonts_save_and_generate_css($local_font_config_entity);
+
+    // Save Font in FYF DB storage.
+    $font_data = new \stdClass();
+    $font_data->name = $local_font_config_entity->label();
+    $font_data->url = 'local_fonts://' . $local_font_config_entity->id();
+    $font_data->provider = 'local_fonts';
+    $font_data->css_family = $values['font_family'];
+    $font_data->css_weight = $values['font_weight'];
+    $font_data->css_style = $values['font_style'];
+    $font_data->classification = array_filter($values['font_classification']);
+    $font_data->language = [
+      'English',
+    ];
+    $font_data->metadata = [
+      'id' => $local_font_config_entity->id(),
+    ];
+    foreach ($form_state->getValues() as $key => $value) {
+        drupal_set_message($key . ': ' . $value);
+    }
+    $font_entity = fontyourface_save_font($font_data);
+
 
     switch ($status) {
       case SAVED_NEW:

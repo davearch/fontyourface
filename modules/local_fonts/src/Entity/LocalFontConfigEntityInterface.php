@@ -10,4 +10,23 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 interface LocalFontConfigEntityInterface extends ConfigEntityInterface {
 
   // Add get/set methods for your configuration properties here.
+
+  /**
+   * Gets the Font Woff File Data.
+   *
+   * @return string
+   *   Woff Font File Data.
+   */
+  public function getFontWoffData();
+
+  /**
+   * Sets the Font Woff File Data.
+   *
+   * @param string $data
+   *   Woff Font File Data.
+   *
+   * @return \Drupal\local_fonts\Entity\LocalFontConfigEntityInterface
+   *   The called Local Font Entity Interface.
+   */
+  public function setFontWoffData($data);
 }

@@ -26,7 +26,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
  *     "font_family" = "font_family"
  *   },
  *   links = {
@@ -53,5 +53,20 @@ class LocalFontConfigEntity extends ConfigEntityBase implements LocalFontConfigE
    * @var string
    */
   protected $label;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFontWoffData() {
+    return $this->get('font_woff_data');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFontWoffData($data) {
+    $this->set('font_woff_data', $data);
+    return $this;
+  }
 
 }

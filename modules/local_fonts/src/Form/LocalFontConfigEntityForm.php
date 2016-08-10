@@ -132,30 +132,6 @@ class LocalFontConfigEntityForm extends EntityForm {
     }
     $status = $local_font_config_entity->save();
 
-    // Save and generate necessary font files.
-    local_fonts_save_and_generate_css($local_font_config_entity);
-
-    // Save Font in FYF DB storage.
-    $font_data = new \stdClass();
-    $font_data->name = $local_font_config_entity->label();
-    $font_data->url = 'local_fonts://' . $local_font_config_entity->id();
-    $font_data->provider = 'local_fonts';
-    $font_data->css_family = $values['font_family'];
-    $font_data->css_weight = $values['font_weight'];
-    $font_data->css_style = $values['font_style'];
-    $font_data->classification = array_filter($values['font_classification']);
-    $font_data->language = [
-      'English',
-    ];
-    $font_data->metadata = [
-      'id' => $local_font_config_entity->id(),
-    ];
-    foreach ($form_state->getValues() as $key => $value) {
-        drupal_set_message($key . ': ' . $value);
-    }
-    $font_entity = fontyourface_save_font($font_data);
-
-
     switch ($status) {
       case SAVED_NEW:
         drupal_set_message($this->t('Created the %label Custom Font.', [

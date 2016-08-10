@@ -65,3 +65,30 @@ function local_fonts_save_and_generate_css(LocalFontConfigEntity $font_entity) {
   file_unmanaged_save_data($css_file_data, $css_file, FILE_EXISTS_REPLACE);
   return $file_name;
 }
+
+/**
+ * Implements hook_entity_presave().
+ */
+function local_fonts_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity instanceof LocalFontConfigEntity) {
+    // Save and generate necessary font files.
+    local_fonts_save_and_generate_css($entity);
+
+    // Save Font in FYF DB storage.
+    $font_data = new \stdClass();
+    $font_data->name = $entity->label();
+    $font_data->url = 'local_fonts://' . $entity->id();
+    $font_data->provider = 'local_fonts';
+    $font_data->css_family = $entity->font_family;
+    $font_data->css_weight = $entity->font_weight;
+    $font_data->css_style = $entity->font_style;
+    $font_data->classification = array_filter($entity->font_classification);
+    $font_data->language = [
+      'English',
+    ];
+    $font_data->metadata = [
+      'id' => $entity->id(),
+    ];
+    $font_entity = fontyourface_save_font($font_data);
+  }
+}

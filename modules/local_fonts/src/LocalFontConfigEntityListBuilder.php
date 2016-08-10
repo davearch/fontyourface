@@ -27,7 +27,6 @@ class LocalFontConfigEntityListBuilder extends ConfigEntityListBuilder {
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
     $row['font_family'] = $entity->font_family;
-    // You probably want a few more properties here...
     return $row + parent::buildRow($entity);
   }
 

@@ -20,3 +20,4 @@ font.settings_tab:
   route_name: font.settings
   title: 'Settings'
   parent_id: entity.font.collection
+  weight: 100

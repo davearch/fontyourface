@@ -4,3 +4,4 @@ entity.local_font_config_entity.collection:
   route_name: entity.local_font_config_entity.collection
   description: 'List Custom Font (bundles)'
   parent_id: entity.font.collection
+  weight: 10

@@ -44,6 +44,7 @@ function local_fonts_page_attachments(&$page) {
     }
   }
 }
+
 /**
  * Saves and generates font file based on data.
  */

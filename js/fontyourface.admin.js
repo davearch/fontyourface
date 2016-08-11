@@ -18,7 +18,7 @@
           $(this).addClass('disabled');
           $(font_status).text(Drupal.t('Enable'));
         }
-      })
+      });
     }
   };
 })(jQuery);

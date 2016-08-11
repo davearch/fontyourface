@@ -16,6 +16,6 @@ Known issues:
 =============
 - Note that Internet Explorer has a limit of 32 CSS files, so using @font-your-face on CSS-heavy sites may require 
   turning on CSS aggregation under Administer È Configuration È Development È Performance (admin/config/development/performance).
-- Note that not all modules from Drupal 7 have been ported (namely, local fonts). Help is much appreciated.
+- Note that not all modules from Drupal 7 have been ported (font reference, fontyourface wysiwyg). Help is much appreciated.
 - Fonts.com api has some quirks. You may have to use the fonts.com website for enabling all your fonts instead.
 - See http://drupal.org/project/fontyourface#support for support options on any issues not mentioned here.

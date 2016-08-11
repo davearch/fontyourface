@@ -108,8 +108,5 @@ function local_fonts_entity_delete(Drupal\Core\Entity\EntityInterface $entity) {
       $fonts = $storage_handler->loadMultiple(array_keys($fids));
       $storage_handler->delete($fonts);
     }
-    else {
-      break;
-    }
   }
 }

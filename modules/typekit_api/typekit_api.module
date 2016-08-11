@@ -22,7 +22,7 @@ function typekit_api_fontyourface_api() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function typekit_api_form_font_settings_alter(&$form, FormStateInterface $form_state) {
   $config = \Drupal::config('typekit_api.settings');
@@ -85,7 +85,6 @@ function typekit_api_page_attachments(&$page) {
  * Implements hook_fontyourface_import().
  */
 function typekit_api_fontyourface_import($font_context = []) {
-  $success = TRUE;
   $config = \Drupal::config('typekit_api.settings');
   if (empty($config->get('token'))) {
     drupal_set_message(t('Typekit token not set. Cannot import typekit kits.'));
@@ -119,10 +118,10 @@ function typekit_api_fontyourface_import($font_context = []) {
       }
     }
     else {
-      drupal_set_message('Typekit kit did not match current domain, @domain', array('@domain' => $_SERVER['HTTP_HOST']));
+      drupal_set_message(t('Typekit kit did not match current domain, @domain', array('@domain' => $_SERVER['HTTP_HOST'])));
     }
   }
-  drupal_set_message('Imported Typekit kits: @kits', array('@kits' => print_r($kits, TRUE)));
+  drupal_set_message(t('Imported Typekit kits: @kits', array('@kits' => print_r($kits, TRUE))));
   return $font_context;
 }
 
@@ -136,7 +135,6 @@ function typekit_api_fontyourface_import($font_context = []) {
  *   Array of typekit font objects.
  */
 function typekit_api_get_kits($token = NULL) {
-  $kits = [];
   try {
     $uri = TYPEKIT_API_BASE_URL . 'kits';
     $response = \Drupal::httpClient()->get($uri, ['headers' => typekit_api_token_headers($token), 'verify' => FALSE]);
@@ -195,7 +193,7 @@ function typekit_api_get_variant($family_id, $variant_id, $token = NULL) {
   catch (RequestException $e) {
     drupal_set_message(t('There was an error importing a variant (@kit, @variant) from Typekit: %error',
       [
-        '@kit' => $kit_id,
+        '@kit' => $family_id,
         '@variant' => $variant_id,
         '%error' => $e->getMessage()
       ]), 'error');

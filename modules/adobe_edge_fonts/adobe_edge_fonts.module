@@ -103,7 +103,7 @@ function _adobe_edge_fonts_get_fonts_from_api() {
     $data = (string) $response->getBody();
   }
   catch (RequestException $e) {
-    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', array('%error' => $result->error)), 'error');
+    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', array('%error' => $e->error)), 'error');
     return FALSE;
   }
 

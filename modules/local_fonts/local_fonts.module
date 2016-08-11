@@ -24,7 +24,6 @@ function local_fonts_fontyourface_api() {
  */
 function local_fonts_page_attachments(&$page) {
   $enabled_fonts = &drupal_static('fontyourface_fonts', []);
-  $fonts = [];
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'local_fonts') {
       $metadata = $font->getMetadata();
@@ -68,7 +67,7 @@ function local_fonts_entity_presave(Drupal\Core\Entity\EntityInterface $entity) 
     $font_data->metadata = [
       'id' => $entity->id(),
     ];
-    $font_entity = fontyourface_save_font($font_data);
+    fontyourface_save_font($font_data);
   }
 }
 

@@ -63,7 +63,6 @@ function fontsquirrel_api_entity_presave(EntityInterface $entity) {
  */
 function fontsquirrel_api_page_attachments(&$page) {
   $enabled_fonts = &drupal_static('fontyourface_fonts', []);
-  $kits = [];
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'fontsquirrel_api' && $font->isEnabled()) {
       $directory_location = _fontsquirrel_api_get_font_directory_location($font);
@@ -173,7 +172,7 @@ function fontsquirrel_api_fontyourface_import($font_context = []) {
     ];
     $font->metadata = $metadata;
     $variants = fontsquirrel_api_get_font_family_info($font_import);
-    foreach ($variants as $key => $variant) {
+    foreach ($variants as $variant) {
       $variant_metadata = $metadata;
       $variant_metadata['font_filename'] = $variant->filename;
       $variant_metadata['checksum'] = $variant->checksum;

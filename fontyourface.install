@@ -87,7 +87,7 @@ function fontyourface_update_8002() {
   ]);
   $designer->save();
 
-  $field_name = 'field_classification';
+  // field_classification
   $classification_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_classification',
     'entity_type' => 'font',
@@ -126,7 +126,7 @@ function fontyourface_update_8002() {
   ]);
   $classification_field->save();
 
-  $field_name = 'field_supported_languages';
+  // field_supported_languages
   $supported_languages_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_supported_languages',
     'entity_type' => 'font',
@@ -165,7 +165,7 @@ function fontyourface_update_8002() {
   ]);
   $supported_languages_field->save();
 
-  $field_name = 'field_tags';
+  // field_tags
   $tags_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_tags',
     'entity_type' => 'font',

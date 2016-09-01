@@ -1,8 +1,8 @@
-name: @fontyourface
+name: '@fontyourface'
 type: module
 description: Web font management tools.
 core: 8.x
-package: @font-your-face
+package: '@font-your-face'
 dependencies:
   - taxonomy
   - views

@@ -17,6 +17,27 @@ use Drupal\fontyourface\FontDisplayInterface;
 use Drupal\fontyourface\Entity\Font;
 use Drupal\fontyourface\Entity\FontDisplay;
 
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function fontyourface_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'page_attachments') {
+    // Move the fontyourface and submodules to be among the last to build on page.
+    $list = array('fontyourface');
+    foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
+      if (isset($implementations[$module_name])) {
+        $list[] = $module_name;
+      }
+    }
+    foreach ($list as $module_name) {
+      $group = $implementations[$module_name];
+      unset($implementations[$module_name]);
+      $implementations[$module_name] = $group;
+    }
+  }
+}
+
 /**
  * Implements hook_help().
  */

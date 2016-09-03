@@ -24,7 +24,7 @@ use Drupal\fontyourface\Entity\Font;
  *     },
  *   },
  *   config_prefix = "font_display",
- *   admin_permission = "administer site configuration",
+ *   admin_permission = "administer font entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

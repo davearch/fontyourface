@@ -16,6 +16,26 @@ function websafe_fonts_test_fontyourface_api() {
 }
 
 /**
+ * Implements hook_page_attachments().
+ */
+function websafe_fonts_test_page_attachments(&$page) {
+  $enabled_fonts = &drupal_static('fontyourface_fonts', []);
+  $fonts = [];
+  foreach ($enabled_fonts as $font) {
+    if ($font->pid->value == 'websafe_fonts_test') {
+      $page['#attached']['html_head'][] = [
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => 'Websafe Font',
+          'content' => $font->label(),
+        ],
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_fontyourface_import().
  */
 function websafe_fonts_test_fontyourface_import($font_context = []) {

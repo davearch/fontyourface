@@ -3,7 +3,7 @@ fontyourface.settings:
   label: '@fontyourface settings'
   mapping:
     load_all_enabled_fonts:
-      type: boolean
+      type: integer
       label: 'Load fonts regardless of font display'
     enabled_fonts:
       type: sequence

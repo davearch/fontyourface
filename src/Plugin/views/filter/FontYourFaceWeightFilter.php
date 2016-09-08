@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Filter handler which allows to search based on font weight.
  *
- * @ingroup views_field_handlers
+ * @ingroup views_filter_handlers
  *
  * @ViewsFilter("fontyourface_font_weight")
  */
@@ -50,7 +50,7 @@ class FontYourFaceWeightFilter extends StringFilter {
 
     $form['value'] = array(
       '#type' => 'select',
-      '#title' => $this->t('Font Provider'),
+      '#title' => $this->t('Font Weight'),
       '#options' => $options,
       '#default_value' => $this->value,
     );

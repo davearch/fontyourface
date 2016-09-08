@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Filter handler which allows to search based on font providers.
  *
- * @ingroup views_field_handlers
+ * @ingroup views_filter_handlers
  *
  * @ViewsFilter("fontyourface_font_pid")
  */
@@ -47,7 +47,7 @@ class FontYourFaceProviderFilter extends StringFilter {
 
     $form['value'] = array(
       '#type' => 'select',
-      '#title' => $this->t('Font Weight'),
+      '#title' => $this->t('Font Provider'),
       '#options' => $options,
       '#default_value' => $this->value,
     );

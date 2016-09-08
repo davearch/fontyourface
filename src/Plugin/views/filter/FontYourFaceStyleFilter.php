@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Filter handler which allows to search based on font styles.
  *
- * @ingroup views_field_handlers
+ * @ingroup views_filter_handlers
  *
  * @ViewsFilter("fontyourface_font_style")
  */

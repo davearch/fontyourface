@@ -6,11 +6,11 @@ use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Tests that installing @font-your-face provides access to the necessary sections.
+ * Tests that installing @font-your-face submodules is not broken.
  *
  * @group fontyourface
  */
-class FontYourFaceInstallTest extends BrowserTestBase {
+class FontYourFaceSubmoduleInstallTest extends BrowserTestBase {
 
   /**
    * Modules to install.
@@ -31,7 +31,7 @@ class FontYourFaceInstallTest extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    \Drupal::service('module_installer')->install(array('views', 'fontyourface'));
+    \Drupal::service('module_installer')->install(array('views', 'fontyourface', 'websafe_fonts_test'));
 
     // Create and log in an administrative user.
     $this->adminUser = $this->drupalCreateUser([

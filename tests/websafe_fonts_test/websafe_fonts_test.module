@@ -24,12 +24,14 @@ function websafe_fonts_test_page_attachments(&$page) {
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'websafe_fonts_test') {
       $page['#attached']['html_head'][] = [
-        '#type' => 'html_tag',
-        '#tag' => 'meta',
-        '#attributes' => [
-          'name' => 'Websafe Font',
-          'content' => $font->label(),
-        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => [
+            'name' => 'Websafe Font',
+            'content' => $font->label(),
+          ],
+        ], 'fontyourface-websafe-fonts-test-' . $font->id()
       ];
     }
   }

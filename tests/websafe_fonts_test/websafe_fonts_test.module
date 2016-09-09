@@ -47,7 +47,7 @@ function websafe_fonts_test_fontyourface_import($font_context = []) {
     $context['sandbox']['progress'] = 0;
     $context['sandbox']['max'] = count($context['sandbox']['fonts']);
   }
-  $font = array_pop($context['sandbox']['fonts']);
+  $font = array_shift($context['sandbox']['fonts']);
   if (!empty($font)) {
     fontyourface_save_font($font);
     $context['message'] = "Imported {$context['sandbox']['progress']} of {$context['sandbox']['max']}";

@@ -3,21 +3,21 @@
 namespace Drupal\Tests\fontyourface\Functional;
 
 use Drupal\Core\Url;
-use Drupal\Tests\BrowserTestBase;
+use Drupal\simpletest\WebTestBase;
 
 /**
  * Tests that installing @font-your-face submodules is not broken.
  *
  * @group fontyourface
  */
-class FontYourFaceSubmoduleInstallTest extends BrowserTestBase {
+class FontYourFaceSubmoduleInstallTest extends WebTestBase {
 
   /**
    * Modules to install.
    *
    * @var array
    */
-  public static $modules = array();
+  public static $modules = ['views', 'fontyourface', 'websafe_fonts_test'];
 
   /**
    * A test user with permission to access the @font-your-face sections.
@@ -31,8 +31,6 @@ class FontYourFaceSubmoduleInstallTest extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    \Drupal::service('module_installer')->install(array('views', 'fontyourface', 'websafe_fonts_test'));
-
     // Create and log in an administrative user.
     $this->adminUser = $this->drupalCreateUser([
       'administer font entities',
@@ -46,15 +44,42 @@ class FontYourFaceSubmoduleInstallTest extends BrowserTestBase {
   public function testFontYourFaceSections() {
     // Main font selection page.
     $this->drupalGet(Url::fromRoute('entity.font.collection'));
-    $this->assertSession()->pageTextContains(t('Font Selector'));
-    // Font settings page.
-    $this->drupalGet(Url::fromRoute('font.settings'));
-    $this->assertSession()->pageTextContains(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
+    $this->assertText(t('Font Selector'));
+
     // Font display page.
     $this->drupalGet(Url::fromRoute('entity.font_display.collection'));
-    $this->assertSession()->pageTextContains(t('There is no Font display yet.'));
+    $this->assertText(t('There is no Font display yet.'));
+
     // Font display add page.
     $this->drupalGet(Url::fromRoute('entity.font_display.add_form'));
-    $this->assertSession()->pageTextContains(t('Please select atleast one font before picking a font style.'));
+    $this->assertText(t('Please select atleast one font before picking a font style.'));
+
+    // Font settings page.
+    $this->drupalGet(Url::fromRoute('font.settings'));
+    $this->assertText(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
+    $this->assertRaw(t('Import all fonts'));
+    $this->assertRaw(t('Import from websafe_fonts_test'));
   }
+
+  /**
+   * Tests importing fonts from websafe_fonts_test.
+   */
+  public function testImportWebSafeFonts() {
+    // Assert no fonts exist to start
+    $this->drupalGet(Url::fromRoute('entity.font.collection'));
+    $this->assertNoText('Arial');
+
+    $this->drupalPostForm(Url::fromRoute('font.settings'), [], t('Import from websafe_fonts_test'));
+    $this->assertResponse(200);
+    $this->assertUrl(Url::fromRoute('font.settings'));
+    $this->assertRaw(t('Finished importing fonts.'));
+
+    // Assert all fonts were imported.
+    $this->drupalGet(Url::fromRoute('entity.font.collection'));
+    $this->assertRaw('Arial');
+    $this->assertRaw('Verdana');
+    $this->assertRaw('Courier New');
+    $this->assertRaw('Georgia');
+  }
+
 }

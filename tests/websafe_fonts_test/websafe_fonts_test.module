@@ -9,10 +9,10 @@
  * Implements hook_fontyourface_api().
  */
 function websafe_fonts_test_fontyourface_api() {
-  return [
+  return array(
     'version' => '3',
     'name' => 'Websafe Fonts',
-  ];
+  );
 }
 
 /**
@@ -82,7 +82,9 @@ function _websafe_fonts_test_get_fonts_from_api() {
         'sans-serif',
         'Neo-grotesque',
       ),
-      'language' => 'en',
+      'language' => array(
+        'en',
+      ),
       'tags' => array(
         'Sans-serif',
         'Robin Nocholas',
@@ -106,7 +108,9 @@ function _websafe_fonts_test_get_fonts_from_api() {
         'Modern Humanist',
         'sans-serif',
       ),
-      'language' => 'en',
+      'language' => array(
+        'en',
+      ),
       'tags' => array(),
     ),
     (object) array(
@@ -126,7 +130,9 @@ function _websafe_fonts_test_get_fonts_from_api() {
         'monospace',
         'slab-serif'
       ),
-      'language' => 'en',
+      'language' => array(
+        'en',
+      ),
       'tags' => array(),
     ),
     (object) array(
@@ -145,7 +151,9 @@ function _websafe_fonts_test_get_fonts_from_api() {
       'classification' => array(
         'serif',
       ),
-      'language' => 'en',
+      'language' => array(
+        'en',
+      ),
       'tags' => array(
         'Scotch Roman',
         'Transitional',

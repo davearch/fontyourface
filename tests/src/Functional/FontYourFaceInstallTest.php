@@ -3,14 +3,14 @@
 namespace Drupal\Tests\fontyourface\Functional;
 
 use Drupal\Core\Url;
-use Drupal\Tests\BrowserTestBase;
+use Drupal\simpletest\WebTestBase;
 
 /**
  * Tests that installing @font-your-face provides access to the necessary sections.
  *
  * @group fontyourface
  */
-class FontYourFaceInstallTest extends BrowserTestBase {
+class FontYourFaceInstallTest extends WebTestBase {
 
   /**
    * Modules to install.
@@ -46,15 +46,18 @@ class FontYourFaceInstallTest extends BrowserTestBase {
   public function testFontYourFaceSections() {
     // Main font selection page.
     $this->drupalGet(Url::fromRoute('entity.font.collection'));
-    $this->assertSession()->pageTextContains(t('Font Selector'));
-    // Font settings page.
-    $this->drupalGet(Url::fromRoute('font.settings'));
-    $this->assertSession()->pageTextContains(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
+    $this->assertText(t('Font Selector'));
+
     // Font display page.
     $this->drupalGet(Url::fromRoute('entity.font_display.collection'));
-    $this->assertSession()->pageTextContains(t('There is no Font display yet.'));
+    $this->assertText(t('There is no Font display yet.'));
+
     // Font display add page.
     $this->drupalGet(Url::fromRoute('entity.font_display.add_form'));
-    $this->assertSession()->pageTextContains(t('Please select atleast one font before picking a font style.'));
+    $this->assertText(t('Please select atleast one font before picking a font style.'));
+
+    // Font settings page.
+    $this->drupalGet(Url::fromRoute('font.settings'));
+    $this->assertText(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
   }
 }

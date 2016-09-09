@@ -280,7 +280,7 @@ function fontyourface_save_font($font_data) {
       'target_id' => _fontyourface_get_vocabulary_term($font_data->designer, 'font_designer'),
     ];
   }
-  $font->setMetadata($font_data->metadata);
+  $font->setMetadata(!empty($font_data->metadata) ? $font_data->metadata : array());
   $font->status = FALSE;
   if ($font->isEnabled()) {
     $font->status = TRUE;

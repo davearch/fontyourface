@@ -43,7 +43,7 @@ class FontDisplayForm extends EntityForm {
 
     $fonts = Font::loadEnabledFonts();
     if (empty($fonts)) {
-      drupal_set_message($this->t('Please select atleast one font before picking a font style.'));
+      drupal_set_message($this->t('Please select at least one font before picking a font style.'));
       $form_state->setRedirect('entity.font.collection');
     }
     $available_fonts = [];

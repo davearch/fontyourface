@@ -42,22 +42,9 @@ class FontYourFaceSubmoduleInstallTest extends WebTestBase {
    * Tests @font-your-face install and admin page shows up.
    */
   public function testFontYourFaceSections() {
-    // Main font selection page.
-    $this->drupalGet(Url::fromRoute('entity.font.collection'));
-    $this->assertText(t('Font Selector'));
-
-    // Font display page.
-    $this->drupalGet(Url::fromRoute('entity.font_display.collection'));
-    $this->assertText(t('There is no Font display yet.'));
-
-    // Font display add page.
-    $this->drupalGet(Url::fromRoute('entity.font_display.add_form'));
-    $this->assertText(t('Please select atleast one font before picking a font style.'));
-
     // Font settings page.
     $this->drupalGet(Url::fromRoute('font.settings'));
     $this->assertText(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
-    $this->assertRaw(t('Import all fonts'));
     $this->assertRaw(t('Import from websafe_fonts_test'));
   }
 

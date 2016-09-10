@@ -54,10 +54,11 @@ class FontYourFaceInstallTest extends WebTestBase {
 
     // Font display add page.
     $this->drupalGet(Url::fromRoute('entity.font_display.add_form'));
-    $this->assertText(t('Please select atleast one font before picking a font style.'));
+    $this->assertText(t('Please select at least one font before picking a font style.'));
 
     // Font settings page.
     $this->drupalGet(Url::fromRoute('font.settings'));
     $this->assertText(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
+    $this->assertRaw(t('Import all fonts'));
   }
 }

@@ -5,6 +5,7 @@ namespace Drupal\fontyourface\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\fontyourface\Entity\Font;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Class FontSettingsForm.
@@ -136,7 +137,7 @@ class FontSettingsForm extends ConfigFormBase {
    *   Context batch array.
    */
   public static function importFromProvider($module, &$context) {
-    $context['message'] = t('Importing from @module', ['@module' => $module]);
+    $context['message'] = StringTranslationTrait::t('Importing from @module', ['@module' => $module]);
     $module_handler = \Drupal::moduleHandler();
     $new_context = $module_handler->invoke($module, 'fontyourface_import', [$context]);
     if (!empty($new_context)) {

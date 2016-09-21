@@ -10,13 +10,10 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\taxonomy\Entity\Vocabulary;
 
 use Drupal\fontyourface\FontInterface;
 use Drupal\fontyourface\FontDisplayInterface;
 use Drupal\fontyourface\Entity\Font;
-use Drupal\fontyourface\Entity\FontDisplay;
-
 
 /**
  * Implements hook_module_implements_alter().
@@ -99,7 +96,7 @@ function fontyourface_page_attachments(&$page) {
             '#type' => 'html_tag',
             '#tag' => 'style',
             '#value' => $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }',
-          ], $style->id() . '-fontyourface-full'
+          ], $style->id() . '-fontyourface-full',
         ];
       }
     }
@@ -107,7 +104,7 @@ function fontyourface_page_attachments(&$page) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for HTML document templates.
+ * Implements hook_preprocess_HOOK().
  *
  * Adds body classes if certain regions have content.
  */
@@ -170,9 +167,9 @@ function fontyourface_preprocess_font(array &$variables) {
             'font-status',
             'disabled',
             'use-ajax'
-          ]
-        ]
-      ]
+          ],
+        ],
+      ],
     );
     $text = t('Enable');
     $variables['attributes']['class'][] = 'disabled';
@@ -187,9 +184,9 @@ function fontyourface_preprocess_font(array &$variables) {
             'font-status',
             'enabled',
             'use-ajax'
-          ]
-        ]
-      ]
+          ],
+        ],
+      ],
     );
     $text = t('Disable');
     $variables['attributes']['class'][] = 'enabled';

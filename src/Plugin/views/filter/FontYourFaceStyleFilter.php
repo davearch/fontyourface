@@ -16,6 +16,8 @@ class FontYourFaceStyleFilter extends StringFilter {
 
   /**
    * Exposed filter options.
+   *
+   * @var boolean
    */
   protected $alwaysMultiple = TRUE;
 

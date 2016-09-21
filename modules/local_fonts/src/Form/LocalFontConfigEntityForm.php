@@ -98,7 +98,7 @@ class LocalFontConfigEntityForm extends EntityForm {
       '#upload_validators' => [
         'file_validate_extensions' => ['woff'],
         'file_validate_size' => [file_upload_max_size()],
-        'file_validate_name_length',
+        'file_validate_name_length' => [],
       ],
     ];
 

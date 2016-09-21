@@ -186,7 +186,7 @@ function fontyourface_preprocess_font(array &$variables) {
             'use-ajax'
           ],
         ],
-      ],
+      ]
     );
     $text = t('Disable');
     $variables['attributes']['class'][] = 'enabled';

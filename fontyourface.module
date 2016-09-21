@@ -14,6 +14,7 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\fontyourface\FontInterface;
 use Drupal\fontyourface\FontDisplayInterface;
 use Drupal\fontyourface\Entity\Font;
+use Drupal\fontyourface\Entity\FontDisplay;
 
 /**
  * Implements hook_module_implements_alter().

@@ -166,7 +166,7 @@ function fontyourface_preprocess_font(array &$variables) {
           'class' => [
             'font-status',
             'disabled',
-            'use-ajax'
+            'use-ajax',
           ],
         ],
       ]
@@ -183,7 +183,7 @@ function fontyourface_preprocess_font(array &$variables) {
           'class' => [
             'font-status',
             'enabled',
-            'use-ajax'
+            'use-ajax',
           ],
         ],
       ]

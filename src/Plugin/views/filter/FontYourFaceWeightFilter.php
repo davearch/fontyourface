@@ -17,7 +17,7 @@ class FontYourFaceWeightFilter extends StringFilter {
   /**
    * Exposed filter options.
    *
-   * @var boolean
+   * @var bool
    */
   protected $alwaysMultiple = TRUE;
 

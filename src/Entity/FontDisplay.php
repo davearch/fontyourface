@@ -4,7 +4,6 @@ namespace Drupal\fontyourface\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\fontyourface\FontDisplayInterface;
-use Drupal\fontyourface\Entity\Font;
 
 /**
  * Defines the Font display entity.

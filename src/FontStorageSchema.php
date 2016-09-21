@@ -4,7 +4,6 @@ namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Defines the font schema handler.

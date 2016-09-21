@@ -82,9 +82,6 @@ class FontYourFaceSubmoduleInstallTest extends WebTestBase {
   /**
    * Tests enabling and seeing fonts load.
    */
-  /**
-   * Tests importing fonts from websafe_fonts_test.
-   */
   public function testEnableWebSafeFonts() {
     // Assert no fonts load to start.
     $this->drupalGet('/node');

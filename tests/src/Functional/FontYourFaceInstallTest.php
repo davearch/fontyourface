@@ -61,4 +61,5 @@ class FontYourFaceInstallTest extends WebTestBase {
     $this->assertText(t('Settings form for @font-your-face. Support modules can use this form for settings or to import fonts.'));
     $this->assertRaw(t('Import all fonts'));
   }
+
 }

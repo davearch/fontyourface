@@ -4,7 +4,6 @@ namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
-use Drupal\user\EntityOwnerInterface;
 
 /**
  * Provides an interface for defining Font entities.
@@ -12,7 +11,6 @@ use Drupal\user\EntityOwnerInterface;
  * @ingroup fontyourface
  */
 interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
-  // Add get/set methods for your configuration properties here.
 
   /**
    * Gets the Font provider ID.

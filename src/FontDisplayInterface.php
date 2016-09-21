@@ -8,7 +8,6 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
  * Provides an interface for defining Font display entities.
  */
 interface FontDisplayInterface extends ConfigEntityInterface {
-  // Add get/set methods for your configuration properties here.
 
   /**
    * Gets the Font.

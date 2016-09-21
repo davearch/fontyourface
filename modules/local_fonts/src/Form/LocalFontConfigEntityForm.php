@@ -4,6 +4,7 @@ namespace Drupal\local_fonts\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Class LocalFontConfigEntityForm.
@@ -97,7 +98,7 @@ class LocalFontConfigEntityForm extends EntityForm {
       '#upload_validators' => [
         'file_validate_extensions' => ['woff'],
         'file_validate_size' => [file_upload_max_size()],
-        'file_validate_name_length'
+        'file_validate_name_length',
       ],
     ];
 
@@ -122,11 +123,11 @@ class LocalFontConfigEntityForm extends EntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
 
-    // Save Custom Font Config Entity
+    // Save Custom Font Config Entity.
     $local_font_config_entity = $this->entity;
     if (!empty($values['font_file'])) {
       // Get contents of Font File.
-      $font_file = \Drupal\file\Entity\File::load($values['font_file'][0]);
+      $font_file = File::load($values['font_file'][0]);
       $font_file_data = base64_encode(file_get_contents($font_file->getFileUri()));
       $local_font_config_entity->setFontWoffData($font_file_data);
     }

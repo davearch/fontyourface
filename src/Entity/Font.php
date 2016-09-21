@@ -8,7 +8,6 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\fontyourface\FontInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Defines the Font entity.

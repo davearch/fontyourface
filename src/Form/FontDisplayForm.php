@@ -92,7 +92,7 @@ class FontDisplayForm extends EntityForm {
         '#type' => 'html_tag',
         '#tag' => 'code',
         '#attributes' => [
-          'style' => 'white-space: pre;'
+          'style' => 'white-space: pre;',
         ],
         '#value' => fontyourface_font_css($font, NULL, "\n"),
       ];
@@ -149,7 +149,7 @@ class FontDisplayForm extends EntityForm {
     $preset_selectors = $form_state->getValue('preset_selectors');
     $selectors = $form_state->getValue('selectors');
     if ($preset_selectors == 'other' && empty($selectors)) {
-      $form_state->setError($form['selectors'], $this->t('A selector is required if \'other\' preset selector is selected'));
+      $form_state->setError($form['selectors'], $this->t("A selector is required if 'other' preset selector is selected"));
     }
   }
 

@@ -14,7 +14,9 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class FontYourFaceWeightFilter extends StringFilter {
 
-  // Exposed filter options.
+  /**
+   * Exposed filter options.
+   */
   protected $alwaysMultiple = TRUE;
 
   /**

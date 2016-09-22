@@ -8,8 +8,8 @@
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\fontyourface\Entity\Font;
 
 /**
  * Implements hook_install().
@@ -28,7 +28,7 @@ function fontyourface_uninstall() {
     'font_tags',
     'languages_supported',
     'font_designer',
-    'font_foundry'
+    'font_foundry',
   ];
   foreach ($vids as $vid) {
     $vocabulary = Vocabulary::load($vid);
@@ -42,7 +42,7 @@ function fontyourface_uninstall() {
  * Updates fonts which are enabled to have enabled property in Font status.
  */
 function fontyourface_update_8001() {
-  $fonts = \Drupal\fontyourface\Entity\Font::loadEnabledFonts();
+  $fonts = Font::loadEnabledFonts();
   foreach ($fonts as $font) {
     $font->enable();
   }
@@ -87,7 +87,7 @@ function fontyourface_update_8002() {
   ]);
   $designer->save();
 
-  // field_classification
+  // field_classification.
   $classification_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_classification',
     'entity_type' => 'font',
@@ -119,14 +119,14 @@ function fontyourface_update_8002() {
         'auto_create_bundle' => FALSE,
         'sort' => [
           'field' => '_none',
-        ]
+        ],
       ],
     ],
     'translatable' => FALSE,
   ]);
   $classification_field->save();
 
-  // field_supported_languages
+  // field_supported_languages.
   $supported_languages_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_supported_languages',
     'entity_type' => 'font',
@@ -158,14 +158,14 @@ function fontyourface_update_8002() {
         'auto_create_bundle' => FALSE,
         'sort' => [
           'field' => '_none',
-        ]
+        ],
       ],
     ],
     'translatable' => FALSE,
   ]);
   $supported_languages_field->save();
 
-  // field_tags
+  // field_tags.
   $tags_field_storage = FieldStorageConfig::create([
     'field_name' => 'field_tags',
     'entity_type' => 'font',
@@ -199,7 +199,7 @@ function fontyourface_update_8002() {
         'auto_create_bundle' => FALSE,
         'sort' => [
           'field' => '_none',
-        ]
+        ],
       ],
     ],
     'translatable' => FALSE,

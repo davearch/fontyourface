@@ -5,6 +5,8 @@
  * Google Fonts install file.
  */
 
+use \Drupal\Core\Url;
+
 /**
  * Implements hook_requirements().
  */

@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Local Fonts install file.
+ */
+
+/**
  * Implements hook_install().
  */
 function local_fonts_install() {

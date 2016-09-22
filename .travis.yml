@@ -128,7 +128,6 @@ script:
   - phpcs --standard=phpcs.xml tests -s
   - find . -name "*.module" | xargs phpcs --standard=phpcs.xml
   - find . -name "*.install" | xargs phpcs --standard=phpcs.xml
-  - find . -name "*.inc" | xargs phpcs --standard=phpcs.xml
   - drupal-ti script
 
 after_script:

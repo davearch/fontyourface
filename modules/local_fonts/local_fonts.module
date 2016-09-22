@@ -94,7 +94,7 @@ function local_fonts_entity_delete(EntityInterface $entity) {
  * @param LocalFontConfigEntity $font_entity
  *   Custom config font entity.
  *
- * @return boolean
+ * @return bool
  *   TRUE if files save successfully. Throw any errors otherwise.
  */
 function local_fonts_save_and_generate_css(LocalFontConfigEntity $font_entity) {

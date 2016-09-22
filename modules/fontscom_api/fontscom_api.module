@@ -8,7 +8,6 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use GuzzleHttp\Psr7;
 
@@ -125,7 +124,7 @@ function fontscom_api_page_attachments(&$page) {
         '#type' => 'html_tag',
         '#tag' => 'script',
         '#attributes' => [
-          'src' => 'https://fast.fonts.net/jsapi/' . $config->get('project') . '.js'
+          'src' => 'https://fast.fonts.net/jsapi/' . $config->get('project') . '.js',
         ],
       ], 'fontyourface-fontscom-api-' . $config->get('project'),
     ];
@@ -163,16 +162,6 @@ function fontscom_api_page_attachments(&$page) {
 
 /**
  * Implements hook_fontyourface_font_css().
- *
- * @param FontInterface $font
- *   The font object.
- * @param FontDisplayInterface $font_style
- *   The font display object.
- * @param string $separator
- *   Approach to separating the resulting css.
- *
- * @return string
- *   The font-family css.
  */
 function fontscom_api_fontyourface_font_css(FontInterface $font, FontDisplayInterface $font_style = NULL, $separator = ' ') {
   if ($font->pid->value == 'fontscom_api') {
@@ -471,7 +460,7 @@ function fontscom_api_add_font_to_current_project($fid) {
     $response = \Drupal::httpClient()->post($uri, [
       'headers' => fontscom_api_headers($path),
       'verify' => FALSE,
-      'body' => 'wfsfid=' . $fid
+      'body' => 'wfsfid=' . $fid,
     ]);
     $data = json_decode((string) $response->getBody());
     fontscom_api_publish_updated_project();

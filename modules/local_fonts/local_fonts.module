@@ -6,11 +6,10 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\fontyourface\Entity\Font;
 use Drupal\local_fonts\Entity\LocalFontConfigEntity;
 
 /**
- * Implements hook_fontyourface_api()
+ * Implements hook_fontyourface_api().
  */
 function local_fonts_fontyourface_api() {
   return [
@@ -47,7 +46,7 @@ function local_fonts_page_attachments(&$page) {
 /**
  * Implements hook_entity_presave().
  */
-function local_fonts_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+function local_fonts_entity_presave(EntityInterface $entity) {
   if ($entity instanceof LocalFontConfigEntity) {
     // Save and generate necessary font files.
     local_fonts_save_and_generate_css($entity);
@@ -74,7 +73,7 @@ function local_fonts_entity_presave(Drupal\Core\Entity\EntityInterface $entity) 
 /**
  * Implements hook_entity_delete().
  */
-function local_fonts_entity_delete(Drupal\Core\Entity\EntityInterface $entity) {
+function local_fonts_entity_delete(EntityInterface $entity) {
   if ($entity instanceof LocalFontConfigEntity) {
     $font_id = 'local_fonts://' . $entity->id();
     $fids = \Drupal::entityQuery('font')
@@ -95,7 +94,8 @@ function local_fonts_entity_delete(Drupal\Core\Entity\EntityInterface $entity) {
  * @param LocalFontConfigEntity $font_entity
  *   Custom config font entity.
  *
- * @return boolean TRUE if files save successfully. Throw any errors otherwise.
+ * @return boolean
+ *   TRUE if files save successfully. Throw any errors otherwise.
  */
 function local_fonts_save_and_generate_css(LocalFontConfigEntity $font_entity) {
   $directory = file_build_uri('fontyourface/local_fonts/' . $font_entity->id());

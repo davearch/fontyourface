@@ -5,10 +5,8 @@
  * Adobe Edge Fonts module file.
  */
 
-use Drupal\fontyourface\Entity\Font;
-
 /**
- * Implements hook_fontyourface_api()
+ * Implements hook_fontyourface_api().
  */
 function adobe_edge_fonts_fontyourface_api() {
   return [
@@ -37,7 +35,7 @@ function adobe_edge_fonts_page_attachments(&$page) {
         '#attributes' => [
           'src' => $url,
         ],
-      ], 'fontyourface-adobe-edge-fonts'
+      ], 'fontyourface-adobe-edge-fonts',
     ];
   }
 }
@@ -198,7 +196,7 @@ function _adobe_edge_fonts_human_languages($list) {
     'pl' => 'Polish',
     'pt' => 'Portuguese',
     'ru' => 'Russian',
-    'sv' => 'Swedish'
+    'sv' => 'Swedish',
   ];
   $new_list = [];
   foreach ($list as $item) {

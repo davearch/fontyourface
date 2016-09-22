@@ -5,10 +5,8 @@
  * Google Fonts module file.
  */
 
-use Drupal\fontyourface\Entity\Font;
-
 /**
- * Implements hook_fontyourface_api()
+ * Implements hook_fontyourface_api().
  */
 function google_fonts_api_fontyourface_api() {
   return [
@@ -39,7 +37,7 @@ function google_fonts_api_page_attachments(&$page) {
           'href' => $url,
           'media' => 'all',
         ],
-      ], 'fontyourface-google-fonts-api'
+      ], 'fontyourface-google-fonts-api',
     ];
   }
 }
@@ -223,7 +221,7 @@ function _google_fonts_api_convert_api_results($json_font_list) {
         ];
         $fonts[$font_id]->metadata = [
           'path' => $json_font->family . ':' . $json_font_variant,
-          'subset' => $json_font_subset
+          'subset' => $json_font_subset,
         ];
       }
     }

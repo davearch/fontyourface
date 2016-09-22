@@ -31,7 +31,7 @@ function websafe_fonts_test_page_attachments(&$page) {
             'name' => 'Websafe Font',
             'content' => $font->label(),
           ],
-        ], 'fontyourface-websafe-fonts-test-' . $font->id()
+        ], 'fontyourface-websafe-fonts-test-' . $font->id(),
       ];
     }
   }
@@ -128,7 +128,7 @@ function _websafe_fonts_test_get_fonts_from_api() {
       'license_url' => '',
       'classification' => array(
         'monospace',
-        'slab-serif'
+        'slab-serif',
       ),
       'language' => array(
         'en',

@@ -8,7 +8,6 @@
 define('TYPEKIT_API_BASE_URL', 'https://typekit.com/api/v1/json/');
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\fontyourface\Entity\Font;
 use Drupal\Component\Utility\Unicode;
 
 /**
@@ -67,7 +66,7 @@ function typekit_api_page_attachments(&$page) {
         '#type' => 'html_tag',
         '#tag' => 'script',
         '#attributes' => [
-          'src' => 'https://use.typekit.com/' . $kit . '.js'
+          'src' => 'https://use.typekit.com/' . $kit . '.js',
         ],
       ], 'fontyourface-typekit-api-' . $kit,
     ];
@@ -76,7 +75,7 @@ function typekit_api_page_attachments(&$page) {
         '#type' => 'html_tag',
         '#tag' => 'script',
         '#value' => 'try{Typekit.load({ async: true });}catch(e){}',
-      ], 'fontyourface-typekit-api-inline'
+      ], 'fontyourface-typekit-api-inline',
     ];
   }
 }
@@ -195,7 +194,7 @@ function typekit_api_get_variant($family_id, $variant_id, $token = NULL) {
       [
         '@kit' => $family_id,
         '@variant' => $variant_id,
-        '%error' => $e->getMessage()
+        '%error' => $e->getMessage(),
       ]), 'error');
     return FALSE;
   }

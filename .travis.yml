@@ -11,6 +11,7 @@ language: php
 sudo: false
 
 php:
+  - 5.5
   - 5.6
   - 7
 
@@ -125,11 +126,11 @@ script:
   - phpcs --standard=phpcs.xml src -s
   - phpcs --standard=phpcs.xml modules -s
   - phpcs --standard=phpcs.xml tests -s
-  - phpcs --standard=phpcs.xml fontyourface.module
+  - find . -name "*.module" | xargs phpcs --standard=phpcs.xml
   - drupal-ti script
 
 after_script:
   - drupal-ti after_script
 
 notifications:
-  email: false
+  email: true

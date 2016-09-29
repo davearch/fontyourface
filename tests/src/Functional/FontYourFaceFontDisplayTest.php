@@ -19,7 +19,7 @@ class FontYourFaceFontDisplayTest extends WebTestBase {
    */
   public static $modules = ['views', 'fontyourface', 'websafe_fonts_test'];
 
-    /**
+  /**
    * A test user with permission to access the @font-your-face sections.
    *
    * @var \Drupal\user\UserInterface

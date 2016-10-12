@@ -53,6 +53,26 @@ function fontyourface_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_library_info_build().
+ */
+function fontyourface_library_info_build() {
+  $libraries = [];
+  $drupal_themes = \Drupal::service('theme_handler')->listInfo();
+  foreach ($drupal_themes as $key => $theme) {
+    $styles = FontDisplay::loadByTheme($key);
+    if (!empty($styles)) {
+      foreach ($styles as $style) {
+        $file_url = file_build_uri('fontyourface/font_display/' . $style->id() . '.css');
+        $libraries['font_display_' . $key]['css']['base'][$file_url] = [
+          'basename' => $file_url,
+        ];
+      }
+    }
+  }
+  return $libraries;
+}
+
+/**
  * Implements hook_theme().
  */
 function fontyourface_theme() {
@@ -88,21 +108,13 @@ function fontyourface_page_attachments(&$page) {
     // We are dealing with a regular page.
     $theme = \Drupal::theme()->getActiveTheme()->getName();
     $styles = FontDisplay::loadByTheme($theme);
-    foreach ($styles as $style) {
-      $font = $style->getFont();
-      if (!empty($font)) {
-        $fonts[$font->url->value] = $font;
-        $page['#attached']['html_head'][] = [
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'link',
-            '#attributes' => [
-              'rel' => 'stylesheet',
-              'href' => file_build_uri('fontyourface/font_display/' . $style->id() . '.css'),
-              'media' => 'all',
-            ],
-          ], $style->id() . '-fontyourface-full',
-        ];
+    if (!empty($styles)) {
+      $page['#attached']['library'][] = 'fontyourface/font_display_' . $theme;
+      foreach ($styles as $style) {
+        $font = $style->getFont();
+        if (!empty($font)) {
+          $fonts[$font->url->value] = $font;
+        }
       }
     }
   }

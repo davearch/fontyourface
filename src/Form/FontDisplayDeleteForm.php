@@ -47,6 +47,7 @@ class FontDisplayDeleteForm extends EntityConfirmFormBase {
         )
     );
 
+    drupal_flush_all_caches();
     $form_state->setRedirectUrl($this->getCancelUrl());
   }
 

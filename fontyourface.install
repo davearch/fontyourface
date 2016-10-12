@@ -240,3 +240,10 @@ function fontyourface_update_8004() {
     $pager++;
   }
 }
+
+/**
+ * Ensure to flush all caches.
+ */
+function fontyourface_update_8005() {
+  drupal_flush_all_caches();
+}

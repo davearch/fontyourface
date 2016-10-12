@@ -179,6 +179,7 @@ class FontDisplayForm extends EntityForm {
         ]));
     }
     fontyourface_save_and_generate_font_display_css($font_display);
+    drupal_flush_all_caches();
     $form_state->setRedirectUrl($font_display->urlInfo('collection'));
   }
 

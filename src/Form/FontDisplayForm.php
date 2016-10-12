@@ -178,6 +178,7 @@ class FontDisplayForm extends EntityForm {
           '%label' => $font_display->label(),
         ]));
     }
+    fontyourface_save_and_generate_font_display_css($font_display);
     $form_state->setRedirectUrl($font_display->urlInfo('collection'));
   }
 

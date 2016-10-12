@@ -217,3 +217,26 @@ function fontyourface_update_8003() {
     module_set_weight($module_name, 10);
   }
 }
+
+/**
+ * Updates fontyourface font displays to be stored in files.
+ */
+function fontyourface_update_8004() {
+  $pager = 0;
+  while (TRUE) {
+    $storage_handler = \Drupal::entityManager()->getStorage('font_display');
+    $fdids = \Drupal::entityQuery('font_display')
+      ->range($pager, 50)
+      ->execute();
+    if (!empty($fdids)) {
+      $styles = $storage_handler->loadMultiple(array_keys($fdids));
+      foreach ($styles as $style) {
+        fontyourface_save_and_generate_font_display_css($style);
+      }
+    }
+    else {
+      break;
+    }
+    $pager++;
+  }
+}

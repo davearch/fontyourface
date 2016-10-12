@@ -95,8 +95,12 @@ function fontyourface_page_attachments(&$page) {
         $page['#attached']['html_head'][] = [
           [
             '#type' => 'html_tag',
-            '#tag' => 'style',
-            '#value' => $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }',
+            '#tag' => 'link',
+            '#attributes' => [
+              'rel' => 'stylesheet',
+              'href' => file_build_uri('fontyourface/font_display/' . $style->id() . '.css'),
+              'media' => 'all',
+            ],
           ], $style->id() . '-fontyourface-full',
         ];
       }
@@ -373,6 +377,28 @@ function fontyourface_log($message, $arguments) {
     watchdog('@font-your-face', $message, $arguments, WATCHDOG_INFO);
   }
 }
+
+/**
+ * Saves and generates font file based on font config entity data.
+ *
+ * @param LocalFontConfigEntity $font_entity
+ *   Custom config font entity.
+ *
+ * @return bool
+ *   TRUE if files save successfully. Throw any errors otherwise.
+ */
+function fontyourface_save_and_generate_font_display_css(FontDisplayInterface $style) {
+  $directory = file_build_uri('fontyourface/font_display');
+  file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+
+  $font = $style->getFont();
+  $css_file = $directory . '/' . $style->id() . '.css';
+  $css_file_data = $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }';
+  file_unmanaged_save_data($css_file_data, $css_file, FILE_EXISTS_REPLACE);
+
+  return TRUE;
+}
+
 
 /**
  * Retrieves a tid for use from taxonomy.

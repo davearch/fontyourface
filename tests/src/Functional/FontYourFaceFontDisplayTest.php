@@ -82,7 +82,7 @@ class FontYourFaceFontDisplayTest extends WebTestBase {
     // Assert Arial loads in general bartik section.
     $this->drupalGet('/node');
     $this->assertRaw('<meta name="Websafe Font" content="Arial" />');
-    $this->assertRaw("<style>.fontyourface h1, .fontyourface h2, .fontyourface h3, .fontyourface h4, .fontyourface h5, .fontyourface h6 { font-family: 'Arial'; font-style: normal; font-weight: 400; }</style>");
+    $this->assertRaw("fontyourface/font_display/headers.css");
   }
 
 }

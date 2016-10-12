@@ -381,7 +381,7 @@ function fontyourface_log($message, $arguments) {
 /**
  * Saves and generates font file based on font config entity data.
  *
- * @param LocalFontConfigEntity $font_entity
+ * @param LocalFontConfigEntity $style
  *   Custom config font entity.
  *
  * @return bool
@@ -398,7 +398,6 @@ function fontyourface_save_and_generate_font_display_css(FontDisplayInterface $s
 
   return TRUE;
 }
-
 
 /**
  * Retrieves a tid for use from taxonomy.

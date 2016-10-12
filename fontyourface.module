@@ -379,10 +379,10 @@ function fontyourface_log($message, $arguments) {
 }
 
 /**
- * Saves and generates font file based on font config entity data.
+ * Saves and generates font file based on font display config entity data.
  *
- * @param LocalFontConfigEntity $style
- *   Custom config font entity.
+ * @param FontDisplayInterface $style
+ *   Custom config font display entity.
  *
  * @return bool
  *   TRUE if files save successfully. Throw any errors otherwise.

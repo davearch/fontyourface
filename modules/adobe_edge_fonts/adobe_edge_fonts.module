@@ -54,7 +54,7 @@ function adobe_edge_fonts_fontyourface_import($font_context = []) {
   if (!empty($font)) {
     fontyourface_save_font($font);
     $context['message'] = "Imported {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
-    $context['sandbox']['progress']++;
+    $context['sandbox']['progress'] = $context['sandbox']['max'] - count($context['sandbox']['fonts']);
     $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   }
   else {

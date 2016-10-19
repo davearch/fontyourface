@@ -185,7 +185,7 @@ function fontsquirrel_api_fontyourface_import($font_context = []) {
       fontyourface_save_font($variant_font);
     }
     $context['message'] = "Imported {$context['sandbox']['progress']} (plus variants) of {$context['sandbox']['max']}";
-    $context['sandbox']['progress']++;
+    $context['sandbox']['progress'] = $context['sandbox']['max'] - count($context['sandbox']['fonts']);
     $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   }
   else {

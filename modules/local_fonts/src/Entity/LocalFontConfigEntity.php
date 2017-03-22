@@ -22,7 +22,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     },
  *   },
  *   config_prefix = "local_font_config_entity",
- *   admin_permission = "administer site configuration",
+ *   admin_permission = "administer font entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

@@ -41,7 +41,7 @@ class LocalFontConfigEntityForm extends EntityForm {
     $form['font_family'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Font family'),
-      '#default_value' => $local_font_config_entity->font_family,
+      '#default_value' => (isset($local_font_config_entity->font_family)) ? $local_font_config_entity->font_family : '',
       '#description' => $this->t('The CSS Font Family. The @font-face name will be based on this.'),
       '#size' => 60,
       '#maxlength' => 128,

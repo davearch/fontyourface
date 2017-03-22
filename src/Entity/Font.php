@@ -57,13 +57,6 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
-  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
-    parent::preCreate($storage_controller, $values);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getProvider() {
     return $this->get('pid')->value;
   }

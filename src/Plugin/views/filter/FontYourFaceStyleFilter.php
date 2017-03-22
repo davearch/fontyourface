@@ -45,12 +45,12 @@ class FontYourFaceStyleFilter extends StringFilter {
       'italic' => $this->t('Italics'),
     ];
 
-    $form['value'] = array(
+    $form['value'] = [
       '#type' => 'select',
       '#title' => $this->t('Font Style'),
       '#options' => $options,
       '#default_value' => $this->value,
-    );
+    ];
 
     if ($exposed = $form_state->get('exposed')) {
       $identifier = $this->options['expose']['identifier'];

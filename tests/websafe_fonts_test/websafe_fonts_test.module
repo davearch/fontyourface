@@ -9,10 +9,10 @@
  * Implements hook_fontyourface_api().
  */
 function websafe_fonts_test_fontyourface_api() {
-  return array(
+  return [
     'version' => '3',
     'name' => 'Websafe Fonts',
-  );
+  ];
 }
 
 /**
@@ -20,7 +20,6 @@ function websafe_fonts_test_fontyourface_api() {
  */
 function websafe_fonts_test_page_attachments(&$page) {
   $enabled_fonts = &drupal_static('fontyourface_fonts', []);
-  $fonts = [];
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'websafe_fonts_test') {
       $page['#attached']['html_head'][] = [
@@ -64,8 +63,8 @@ function websafe_fonts_test_fontyourface_import($font_context = []) {
  * Retrieves all Websafe fonts.
  */
 function _websafe_fonts_test_get_fonts_from_api() {
-  return array(
-    (object) array(
+  return [
+    (object) [
       'name' => 'Arial',
       'url' => 'https://en.wikipedia.org/wiki/Arial',
       'provider' => 'websafe_fonts_test',
@@ -78,20 +77,20 @@ function _websafe_fonts_test_get_fonts_from_api() {
       'foundry_url' => '',
       'license' => 'Proprietary',
       'license_url' => '',
-      'classification' => array(
+      'classification' => [
         'sans-serif',
         'Neo-grotesque',
-      ),
-      'language' => array(
+      ],
+      'language' => [
         'en',
-      ),
-      'tags' => array(
+      ],
+      'tags' => [
         'Sans-serif',
         'Robin Nocholas',
         'Patricia Saunders',
-      ),
-    ),
-    (object) array(
+      ],
+    ],
+    (object) [
       'name' => 'Verdana',
       'url' => 'https://en.wikipedia.org/wiki/Verdana',
       'provider' => 'websafe_fonts_test',
@@ -104,16 +103,16 @@ function _websafe_fonts_test_get_fonts_from_api() {
       'foundry_url' => 'https://www.microsoft.com',
       'license' => '',
       'license_url' => '',
-      'classification' => array(
+      'classification' => [
         'Modern Humanist',
         'sans-serif',
-      ),
-      'language' => array(
+      ],
+      'language' => [
         'en',
-      ),
-      'tags' => array(),
-    ),
-    (object) array(
+      ],
+      'tags' => [],
+    ],
+    (object) [
       'name' => 'Courier New',
       'url' => 'https://en.wikipedia.org/wiki/Courier_(typeface)',
       'provider' => 'websafe_fonts_test',
@@ -126,16 +125,16 @@ function _websafe_fonts_test_get_fonts_from_api() {
       'foundry_url' => '',
       'license' => '',
       'license_url' => '',
-      'classification' => array(
+      'classification' => [
         'monospace',
         'slab-serif',
-      ),
-      'language' => array(
+      ],
+      'language' => [
         'en',
-      ),
-      'tags' => array(),
-    ),
-    (object) array(
+      ],
+      'tags' => [],
+    ],
+    (object) [
       'name' => 'Georgia',
       'url' => 'https://en.wikipedia.org/wiki/Georgia_(typeface)',
       'provider' => 'websafe_fonts_test',
@@ -148,17 +147,17 @@ function _websafe_fonts_test_get_fonts_from_api() {
       'foundry_url' => 'https://www.microsoft.com',
       'license' => '',
       'license_url' => '',
-      'classification' => array(
+      'classification' => [
         'serif',
-      ),
-      'language' => array(
+      ],
+      'language' => [
         'en',
-      ),
-      'tags' => array(
+      ],
+      'tags' => [
         'Scotch Roman',
         'Transitional',
         'Didone',
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }

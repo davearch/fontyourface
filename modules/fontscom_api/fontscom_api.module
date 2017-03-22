@@ -559,7 +559,7 @@ function _fontscom_api_parse_imported_font($fontscom_font) {
 /**
  * Generates @font-face css for fonts.com font.
  *
- * @param FontInterface $font
+ * @param Drupal\fontyourface\FontInterface $font
  *   Font compatible with FontInterface.
  *
  * @return string

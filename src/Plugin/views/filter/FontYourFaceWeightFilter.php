@@ -52,12 +52,12 @@ class FontYourFaceWeightFilter extends StringFilter {
       '900' => $this->t('900'),
     ];
 
-    $form['value'] = array(
+    $form['value'] = [
       '#type' => 'select',
       '#title' => $this->t('Font Weight'),
       '#options' => $options,
       '#default_value' => $this->value,
-    );
+    ];
 
     if ($exposed = $form_state->get('exposed')) {
       $identifier = $this->options['expose']['identifier'];

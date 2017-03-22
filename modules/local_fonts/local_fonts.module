@@ -91,7 +91,7 @@ function local_fonts_entity_delete(EntityInterface $entity) {
 /**
  * Saves and generates font file based on font config entity data.
  *
- * @param LocalFontConfigEntity $font_entity
+ * @param Drupal\local_fonts\Entity\LocalFontConfigEntity $font_entity
  *   Custom config font entity.
  *
  * @return bool

@@ -49,12 +49,12 @@ class FontYourFaceProviderFilter extends StringFilter {
       $options[$module_name] = $module_info['name'];
     }
 
-    $form['value'] = array(
+    $form['value'] = [
       '#type' => 'select',
       '#title' => $this->t('Font Provider'),
       '#options' => $options,
       '#default_value' => $this->value,
-    );
+    ];
 
     if ($exposed = $form_state->get('exposed')) {
       $identifier = $this->options['expose']['identifier'];

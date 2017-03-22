@@ -136,7 +136,7 @@ class FontSettingsForm extends ConfigFormBase {
    * @param array $context
    *   Context batch array.
    */
-  public static function importFromProvider($module, &$context) {
+  public static function importFromProvider($module, array &$context) {
     $context['message'] = new TranslatableMarkup('Importing from @module', ['@module' => $module]);
     $module_handler = \Drupal::moduleHandler();
     $new_context = $module_handler->invoke($module, 'fontyourface_import', [$context]);
@@ -155,7 +155,7 @@ class FontSettingsForm extends ConfigFormBase {
    * @param array $operations
    *   List of batch operations run.
    */
-  public static function importFinished($success, $results, $operations) {
+  public static function importFinished($success, array $results, array $operations) {
     drupal_set_message(new TranslatableMarkup('Finished importing fonts.'));
   }
 

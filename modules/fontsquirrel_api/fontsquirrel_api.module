@@ -240,7 +240,7 @@ function fontsquirrel_api_get_font_family_info($font_import) {
 /**
  * Returns directory location of font package from Font Squirrel.
  *
- * @param Font $font
+ * @param Drupal\fontyourface\Entity\Font $font
  *   Font entity with downloaded package.
  *
  * @return string
@@ -274,7 +274,7 @@ function _fontsquirrel_api_get_sanitized_css_family($css_family) {
  * @return string
  *   CSS Definition for @font-face.
  */
-function _fontsquirrel_api_generate_fontfamily_css_stylesheet($css_family, $files) {
+function _fontsquirrel_api_generate_fontfamily_css_stylesheet($css_family, array $files) {
   $data = "@font-face {\n";
   $data .= "font-family: '{$css_family}';\n";
   $lines = [];

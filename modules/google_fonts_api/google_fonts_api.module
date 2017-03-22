@@ -51,7 +51,7 @@ function google_fonts_api_page_attachments(&$page) {
  * @return string
  *   URL to load fonts on page.
  */
-function google_fonts_api_generate_font_family_css($fonts) {
+function google_fonts_api_generate_font_family_css(array $fonts) {
   $url = '';
   $paths = [];
   foreach ($fonts as $font) {
@@ -62,7 +62,7 @@ function google_fonts_api_generate_font_family_css($fonts) {
       $all_subsets[$metadata['subset']] = $metadata['subset'];
 
       if (!isset($paths[$path_parts[0]])) {
-        $paths[$path_parts[0]] = array();
+        $paths[$path_parts[0]] = [];
       }
 
       if (count($path_parts) > 1) {
@@ -76,7 +76,7 @@ function google_fonts_api_generate_font_family_css($fonts) {
 
   if (count($paths) > 0) {
 
-    $families = array();
+    $families = [];
 
     foreach ($paths as $family => $variants) {
       $families[$family] = urlencode($family) . ':' . implode(',', $variants);
@@ -107,7 +107,7 @@ function google_fonts_api_fontyourface_import($font_context = []) {
   $font = array_pop($context['sandbox']['fonts']);
   if (!empty($font)) {
     if (!isset($font->tags)) {
-      $font->tags = array();
+      $font->tags = [];
     }
     fontyourface_save_font($font);
     $context['message'] = "Imported {$context['sandbox']['progress']} of {$context['sandbox']['max']}";
@@ -138,7 +138,7 @@ function _google_fonts_api_get_fonts_from_api() {
     $data = (string) $response->getBody();
   }
   catch (RequestException $e) {
-    drupal_set_message(t('The list of Google Fonts could not be fetched. Verify that your server can connect the Google Servers (https://www.googleapis.com). Error: %error', array('%error' => $response->error)), 'error');
+    drupal_set_message(t('The list of Google Fonts could not be fetched. Verify that your server can connect the Google Servers (https://www.googleapis.com). Error: %error', ['%error' => $response->error]), 'error');
     return FALSE;
   }
 
@@ -156,8 +156,8 @@ function _google_fonts_api_get_fonts_from_api() {
  * @return array
  *   Array of objects compatible with Fontyourface interface.
  */
-function _google_fonts_api_convert_api_results($json_font_list) {
-  $fonts = array();
+function _google_fonts_api_convert_api_results(array $json_font_list) {
+  $fonts = [];
   foreach ($json_font_list as $json_font) {
     foreach ($json_font->variants as $json_font_variant) {
       foreach ($json_font->subsets as $json_font_subset) {

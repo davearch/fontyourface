@@ -72,7 +72,7 @@ function adobe_edge_fonts_fontyourface_import($font_context = []) {
  * @return string
  *   URL to load fonts on page.
  */
-function adobe_edge_fonts_generate_font_family_css($fonts) {
+function adobe_edge_fonts_generate_font_family_css(array $fonts) {
   $font_list = $families = [];
   $url = '';
   foreach ($fonts as $font) {
@@ -101,7 +101,7 @@ function _adobe_edge_fonts_get_fonts_from_api() {
     $data = (string) $response->getBody();
   }
   catch (RequestException $e) {
-    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', array('%error' => $e->error)), 'error');
+    drupal_set_message(t('The list of Adobe Edge Fonts could not be fetched. Verify that your server can connect the Adobe Edge Servers (https://edgewebfonts.adobe.com). Error: %error', ['%error' => $e->error]), 'error');
     return FALSE;
   }
 
@@ -118,7 +118,7 @@ function _adobe_edge_fonts_get_fonts_from_api() {
  * @return array
  *   Array of objects compatible with Fontyourface interface.
  */
-function _adobe_edge_fonts_convert_api_results($json_fonts) {
+function _adobe_edge_fonts_convert_api_results(array $json_fonts) {
   $fonts = [];
   foreach ($json_fonts as $json_font) {
     foreach ($json_font->variations as $json_font_variant) {
@@ -183,7 +183,7 @@ function _adobe_edge_fonts_convert_api_results($json_fonts) {
  * @return array
  *   List of allowed lanaguages.
  */
-function _adobe_edge_fonts_human_languages($list) {
+function _adobe_edge_fonts_human_languages(array $list) {
   $languages = [
     'ca' => 'Catalan',
     'cs' => 'Czech',

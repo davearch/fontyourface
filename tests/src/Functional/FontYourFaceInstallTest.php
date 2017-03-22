@@ -17,7 +17,7 @@ class FontYourFaceInstallTest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array();
+  public static $modules = [];
 
   /**
    * A test user with permission to access the @font-your-face sections.
@@ -31,7 +31,7 @@ class FontYourFaceInstallTest extends WebTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    \Drupal::service('module_installer')->install(array('views', 'fontyourface'));
+    \Drupal::service('module_installer')->install(['views', 'fontyourface']);
 
     // Create and log in an administrative user.
     $this->adminUser = $this->drupalCreateUser([

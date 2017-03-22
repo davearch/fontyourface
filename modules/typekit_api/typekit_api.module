@@ -117,10 +117,10 @@ function typekit_api_fontyourface_import($font_context = []) {
       }
     }
     else {
-      drupal_set_message(t('Typekit kit did not match current domain, @domain', array('@domain' => $_SERVER['HTTP_HOST'])));
+      drupal_set_message(t('Typekit kit did not match current domain, @domain', ['@domain' => $_SERVER['HTTP_HOST']]));
     }
   }
-  drupal_set_message(t('Imported Typekit kits: @kits', array('@kits' => print_r($kits, TRUE))));
+  drupal_set_message(t('Imported Typekit kits: @kits', ['@kits' => print_r($kits, TRUE)]));
   return $font_context;
 }
 
@@ -140,7 +140,7 @@ function typekit_api_get_kits($token = NULL) {
     $data = json_decode((string) $response->getBody());
   }
   catch (RequestException $e) {
-    drupal_set_message(t('There was an error importing kit list from Typekit. Error: %error', array('%error' => $e->getMessage())), 'error');
+    drupal_set_message(t('There was an error importing kit list from Typekit. Error: %error', ['%error' => $e->getMessage()]), 'error');
     return FALSE;
   }
   return $data->kits;
@@ -164,7 +164,7 @@ function typekit_api_get_kit($kit_id, $token = NULL) {
     $data = json_decode((string) $response->getBody());
   }
   catch (RequestException $e) {
-    drupal_set_message(t('There was an error importing kit list from Typekit. Error: %error', array('%error' => $e->getMessage())), 'error');
+    drupal_set_message(t('There was an error importing kit list from Typekit. Error: %error', ['%error' => $e->getMessage()]), 'error');
     return FALSE;
   }
   return $data->kit;
@@ -238,7 +238,7 @@ function typekit_api_kit_matches_domain($kit, $domain) {
     if ($kit_domain == $domain) {
       return TRUE;
     }
-    return preg_match('#' . str_replace(array('.', '*'), array('\.', '.*'), $kit_domain) . '#', $domain);
+    return preg_match('#' . str_replace(['.', '*'], ['\.', '.*'], $kit_domain) . '#', $domain);
   });
   return !empty($domains);
 }

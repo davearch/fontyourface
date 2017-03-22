@@ -5,7 +5,7 @@
  * Fonts.com API install file.
  */
 
-use \Drupal\Core\Url;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_install().

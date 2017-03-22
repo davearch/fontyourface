@@ -208,8 +208,8 @@ class FontDisplayForm extends EntityForm {
    * @param \Drupal\fontyourface\FontDisplayInterface $font_display
    *   Current Font Display entity.
    *
-   * @return string String that maps to preset selector. 'Other' or empty string otherwise.
-   * String that maps to preset selector. 'Other' or empty string otherwise.
+   * @return string
+   *   String that maps to preset selector. 'Other' or empty string otherwise.
    */
   private function getDefaultSelectorOption(FontDisplayInterface $font_display) {
     $preset_selectors = $this->getPresetSelectors();

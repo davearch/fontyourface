@@ -22,7 +22,7 @@ use Drupal\fontyourface\Entity\FontDisplay;
 function fontyourface_module_implements_alter(&$implementations, $hook) {
   if ($hook == 'page_attachments') {
     // Move the fontyourface and submodules to be among the last to build on page.
-    $list = array('fontyourface');
+    $list = ['fontyourface'];
     foreach (\Drupal::moduleHandler()->getImplementations('fontyourface_api') as $module_name) {
       if (isset($implementations[$module_name])) {
         $list[] = $module_name;
@@ -247,7 +247,7 @@ function fontyourface_preprocess_font__teaser(array &$variables) {
  * @param object $font_data
  *   Simple stdclass rep of font for saving.
  *
- * @return Font
+ * @return Drupal\fontyourface\Entity\Font
  *   Newly saved/updated font.
  */
 function fontyourface_save_font($font_data) {
@@ -294,7 +294,7 @@ function fontyourface_save_font($font_data) {
       'target_id' => _fontyourface_get_vocabulary_term($font_data->designer, 'font_designer'),
     ];
   }
-  $font->setMetadata(!empty($font_data->metadata) ? $font_data->metadata : array());
+  $font->setMetadata(!empty($font_data->metadata) ? $font_data->metadata : []);
   $font->status = FALSE;
   if ($font->isEnabled()) {
     $font->status = TRUE;
@@ -306,9 +306,9 @@ function fontyourface_save_font($font_data) {
 /**
  * Creates CSS with any properties set on font.
  *
- * @param FontInterface $font
+ * @param Drupal\fontyourface\FontInterface $font
  *   The font object.
- * @param FontDisplayInterface $font_style
+ * @param Drupal\fontyourface\FontDisplayInterface $font_style
  *   The font display object.
  * @param string $separator
  *   Approach to separating the resulting css.
@@ -383,7 +383,7 @@ function fontyourface_delete($provider) {
  * @param array $arguments
  *   Arguments to replace placeholders, if there are any, in $message.
  */
-function fontyourface_log($message, $arguments) {
+function fontyourface_log($message, array $arguments) {
   $config = \Drupal::config('fontyourface.settings');
   if ($config->get('fontyourface_detailed_logging')) {
     watchdog('@font-your-face', $message, $arguments, WATCHDOG_INFO);
@@ -393,7 +393,7 @@ function fontyourface_log($message, $arguments) {
 /**
  * Saves and generates font file based on font display config entity data.
  *
- * @param FontDisplayInterface $style
+ * @param Drupal\fontyourface\FontDisplayInterface $style
  *   Custom config font display entity.
  *
  * @return bool

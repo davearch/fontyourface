@@ -39,7 +39,7 @@ class LocalFontConfigEntityListBuilder extends ConfigEntityListBuilder {
         'font' => $font->id(),
       ];
       $options = [
-        'query' => \Drupal::destination()->getAsArray()
+        'query' => \Drupal::destination()->getAsArray(),
       ];
       $row['font_view'] = Link::fromTextAndUrl($this->t('View Font'), $font->toUrl('canonical'));
       if ($font->isEnabled()) {

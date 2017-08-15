@@ -104,12 +104,12 @@ function typekit_api_fontyourface_import($font_context = []) {
           ];
           $font_data = new stdClass();
           $font_data->name = $variant->name;
-          $font_data->url = 'http://typekit.com/fonts/' . $family->slug . '#' . $variant_id;
+          $font_data->url = 'https://typekit.com/fonts/' . $family->slug . '#' . $variant_id;
           $font_data->provider = 'typekit_api';
           $font_data->css_family = "'" . implode("', '", $family->css_names) . "'";
           $font_data->css_style = $variant->font_style;
           $font_data->css_weight = $variant->font_weight;
-          $font_data->foundry_url = 'http://typekit.com/foundries/' . $variant->foundry->slug;
+          $font_data->foundry_url = 'https://typekit.com/foundries/' . $variant->foundry->slug;
           $font_data->metadata = $metadata;
           $font = fontyourface_save_font($font_data);
           $font->enable();

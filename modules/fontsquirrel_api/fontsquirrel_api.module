@@ -29,7 +29,7 @@ function fontsquirrel_api_entity_presave(EntityInterface $entity) {
       file_prepare_directory($directory_location, FILE_CREATE_DIRECTORY);
       $zip_location = file_build_uri('fontyourface/fontsquirrel/' . $metadata['path'] . '-fontfacekit.zip');
       // Throw an exception; make it hard if this fails.
-      $uri = 'http://www.fontsquirrel.com/fontfacekit/' . $metadata['path'];
+      $uri = 'https://www.fontsquirrel.com/fontfacekit/' . $metadata['path'];
       $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain']]);
       if (!file_exists(drupal_realpath($zip_location))) {
         file_unmanaged_save_data($response->getBody(), $zip_location);
@@ -225,7 +225,7 @@ function _fontsquirrel_api_get_fonts_from_api() {
  */
 function fontsquirrel_api_get_font_family_info($font_import) {
   try {
-    $uri = 'http://www.fontsquirrel.com/api/familyinfo/' . $font_import->family_urlname;
+    $uri = 'https://www.fontsquirrel.com/api/familyinfo/' . $font_import->family_urlname;
     $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain']]);
     $data = json_decode($response->getBody());
   }

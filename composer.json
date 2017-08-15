@@ -7,7 +7,7 @@
   "homepage": "https://www.drupal.org/project/fontyourface",
   "minimum-stability": "dev",
   "support": {
-    "issues": "http://drupal.org/project/issues/fontyourface",
+    "issues": "https://drupal.org/project/issues/fontyourface",
     "source": "http://cgit.drupalcode.org/fontyourface"
   },
   "require": {

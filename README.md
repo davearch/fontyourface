@@ -22,4 +22,4 @@ Known issues:
   turning on CSS aggregation under Administer > Configuration > Development > Performance (admin/config/development/performance).
 - Note that not all modules from Drupal 7 have been ported (font reference, fontyourface wysiwyg). Help is much appreciated.
 - Fonts.com api has some quirks. You may have to use the fonts.com website for enabling all your fonts instead.
-- See http://drupal.org/project/fontyourface#support for support options on any issues not mentioned here.
+- See https://drupal.org/project/fontyourface#support for support options on any issues not mentioned here.

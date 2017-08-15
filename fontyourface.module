@@ -379,7 +379,7 @@ function fontyourface_delete($provider) {
  *
  * @param string $message
  *   Log message. This should be a literal string; see
- *   http://drupal.org/node/323101 for more details.
+ *   https://drupal.org/node/323101 for more details.
  * @param array $arguments
  *   Arguments to replace placeholders, if there are any, in $message.
  */

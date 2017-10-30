@@ -122,9 +122,9 @@ class FontSettingsForm extends ConfigFormBase {
     }
 
     // Resave enabled fonts.
-    $fonts = Font::loadEnabledFonts();
+    $fonts = Font::loadActivatedFonts();
     foreach ($fonts as $font) {
-      $font->enable();
+      $font->activate();
     }
   }
 

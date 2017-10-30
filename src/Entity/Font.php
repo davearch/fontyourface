@@ -116,7 +116,7 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
-  public function isEnabled() {
+  public function isActivated() {
     $config = \Drupal::config('fontyourface.settings');
     $enabled_fonts = $config->get('enabled_fonts');
     return in_array($this->url->value, $enabled_fonts);
@@ -125,16 +125,16 @@ class Font extends ContentEntityBase implements FontInterface {
   /**
    * {@inheritdoc}
    */
-  public function isDisabled() {
-    return !$this->isEnabled();
+  public function isDeactivated() {
+    return !$this->isActivated();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function enable() {
+  public function activate() {
     $config = \Drupal::configFactory()->getEditable('fontyourface.settings');
-    if (!$this->isEnabled()) {
+    if (!$this->isActivated()) {
       $enabled_fonts = $config->get('enabled_fonts');
       $enabled_fonts[] = $this->url->value;
       $config->set('enabled_fonts', $enabled_fonts)
@@ -142,13 +142,13 @@ class Font extends ContentEntityBase implements FontInterface {
     }
     $this->status->value = TRUE;
     $this->save();
-    return $this->isEnabled();
+    return $this->isActivated();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function disable() {
+  public function deactivate() {
     $config = \Drupal::configFactory()->getEditable('fontyourface.settings');
     $enabled_fonts = $config->get('enabled_fonts');
     $enabled_fonts = array_diff($enabled_fonts, [$this->url->value]);
@@ -156,13 +156,13 @@ class Font extends ContentEntityBase implements FontInterface {
       ->save();
     $this->status->value = FALSE;
     $this->save();
-    return $this->isDisabled();
+    return $this->isDeactivated();
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function loadEnabledFonts() {
+  public static function loadActivatedFonts() {
     $config = \Drupal::config('fontyourface.settings');
     $enabled_fonts = $config->get('enabled_fonts');
     $fonts = [];

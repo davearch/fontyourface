@@ -42,7 +42,7 @@ function fontyourface_uninstall() {
  * Updates fonts which are enabled to have enabled property in Font status.
  */
 function fontyourface_update_8001() {
-  $fonts = Font::loadEnabledFonts();
+  $fonts = Font::loadActivatedFonts();
   foreach ($fonts as $font) {
     $font->enable();
   }

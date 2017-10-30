@@ -42,12 +42,12 @@ class LocalFontConfigEntityListBuilder extends ConfigEntityListBuilder {
         'query' => \Drupal::destination()->getAsArray(),
       ];
       $row['font_view'] = Link::fromTextAndUrl($this->t('View Font'), $font->toUrl('canonical'));
-      if ($font->isEnabled()) {
-        $url = Url::fromRoute('entity.font.disable', $parameters, $options);
+      if ($font->isActivated()) {
+        $url = Url::fromRoute('entity.font.deactivate', $parameters, $options);
         $row['font_manage'] = Link::fromTextAndUrl($this->t('Disable'), $url);
       }
       else {
-        $url = Url::fromRoute('entity.font.enable', $parameters, $options);
+        $url = Url::fromRoute('entity.font.activate', $parameters, $options);
         $row['font_manage'] = Link::fromTextAndUrl($this->t('Enable'), $url);
       }
     }

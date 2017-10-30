@@ -42,7 +42,7 @@ class FontDisplayForm extends EntityForm {
 
     /* You will need additional form elements for your custom properties. */
 
-    $fonts = Font::loadEnabledFonts();
+    $fonts = Font::loadActivatedFonts();
     if (empty($fonts)) {
       drupal_set_message($this->t('Please enable at least one font before creating/updating a font style.'), 'warning');
       $this->redirect('entity.font.collection')->send();

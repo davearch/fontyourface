@@ -112,7 +112,7 @@ function typekit_api_fontyourface_import($font_context = []) {
           $font_data->foundry_url = 'https://typekit.com/foundries/' . $variant->foundry->slug;
           $font_data->metadata = $metadata;
           $font = fontyourface_save_font($font_data);
-          $font->enable();
+          $font->activate();
         }
       }
     }

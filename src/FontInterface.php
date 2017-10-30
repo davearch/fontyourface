@@ -94,7 +94,7 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    * @return bool
    *   TRUE is font is enabled. FALSE otherwise.
    */
-  public function isEnabled();
+  public function isActivated();
 
   /**
    * Checks if the font is disabled.
@@ -102,7 +102,7 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    * @return bool
    *   TRUE is font is disabled. FALSE otherwise.
    */
-  public function isDisabled();
+  public function isDeactivated();
 
   /**
    * Enable a font.
@@ -110,7 +110,7 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    * @return bool
    *   TRUE is font is enabled. FALSE otherwise.
    */
-  public function enable();
+  public function activate();
 
   /**
    * Disable a font.
@@ -118,7 +118,7 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    * @return bool
    *   TRUE is font is disabled. FALSE otherwise.
    */
-  public function disable();
+  public function deactivate();
 
   /**
    * Returns list of enabled fonts.
@@ -126,7 +126,7 @@ interface FontInterface extends ContentEntityInterface, EntityChangedInterface {
    * @return array
    *   Array of fonts.
    */
-  public static function loadEnabledFonts();
+  public static function loadActivatedFonts();
 
   /**
    * Returns font by url.

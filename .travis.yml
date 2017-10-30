@@ -17,7 +17,7 @@ php:
 
 branches:
   only:
-    - "8.x-3.x"
+    - "8.x-4.x"
 
 matrix:
   fast_finish: true

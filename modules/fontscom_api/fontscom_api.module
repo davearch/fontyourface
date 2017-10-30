@@ -33,7 +33,7 @@ function fontscom_api_fontyourface_api() {
  */
 function fontscom_api_entity_presave(EntityInterface $entity) {
   if ($entity instanceof Font) {
-    if ($entity->pid->value == 'fontscom_api' && $entity->isEnabled()) {
+    if ($entity->pid->value == 'fontscom_api' && $entity->isActivated()) {
       $metadata = $entity->getMetadata();
       $config = \Drupal::config('fontscom_api.settings');
       $enabled_fonts = fontscom_api_get_all_enabled_fonts();
@@ -44,7 +44,7 @@ function fontscom_api_entity_presave(EntityInterface $entity) {
         fontscom_api_add_font_to_current_project($metadata['FontID']);
       }
     }
-    elseif ($entity->pid->value == 'fontscom_api' && $entity->isDisabled()) {
+    elseif ($entity->pid->value == 'fontscom_api' && $entity->isDeactivated()) {
       if (!empty($entity->original)) {
         $original_entity = $entity->original;
         if ($original_entity->status->value != $entity->status->value) {
@@ -134,7 +134,7 @@ function fontscom_api_page_attachments(&$page) {
   $font_css = '';
   foreach ($enabled_fonts as $font) {
     if ($font->pid->value == 'fontscom_api') {
-      if ($font->isDisabled()) {
+      if ($font->isDeactivated()) {
         $font_css .= _fontscom_api_generate_font_css($font);
       }
     }
@@ -230,7 +230,7 @@ function fontscom_api_fontyourface_import($font_context = []) {
       }
       $font = fontyourface_save_font($font_data);
       if (isset($context['sandbox']['enabled_fonts'][$fontscom_font->FontID])) {
-        $font->enable();
+        $font->activate();
       }
       $context['sandbox']['font_count']++;
     }

@@ -16,11 +16,11 @@ class FontYourFaceController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function enableFont(Font $font, $js) {
+  public function activateFont(Font $font, $js) {
     try {
-      $font->enable();
+      $font->activate();
       if ($js == 'ajax') {
-        $url = Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
+        $url = Url::fromRoute('entity.font.deactivate', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
         $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'enabled', 'use-ajax']]]);
         $text = $this->t('Enable');
         $link = \Drupal::l($text, $url);
@@ -51,11 +51,11 @@ class FontYourFaceController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function disableFont(Font $font, $js) {
+  public function deactivateFont(Font $font, $js) {
     try {
-      $font->disable();
+      $font->deactivate();
       if ($js == 'ajax') {
-        $url = Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
+        $url = Url::fromRoute('entity.font.activate', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
         $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'disabled', 'use-ajax']]]);
         $text = $this->t('Enable');
         $link = \Drupal::l($text, $url);

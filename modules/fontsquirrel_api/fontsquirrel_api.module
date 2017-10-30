@@ -23,7 +23,7 @@ function fontsquirrel_api_fontyourface_api() {
  */
 function fontsquirrel_api_entity_presave(EntityInterface $entity) {
   if ($entity instanceof Font) {
-    if ($entity->pid->value == 'fontsquirrel_api' && $entity->isEnabled()) {
+    if ($entity->pid->value == 'fontsquirrel_api' && $entity->isActivated()) {
       $metadata = $entity->getMetadata();
       $directory_location = _fontsquirrel_api_get_font_directory_location($entity);
       file_prepare_directory($directory_location, FILE_CREATE_DIRECTORY);
@@ -64,7 +64,7 @@ function fontsquirrel_api_entity_presave(EntityInterface $entity) {
 function fontsquirrel_api_page_attachments(&$page) {
   $enabled_fonts = &drupal_static('fontyourface_fonts', []);
   foreach ($enabled_fonts as $font) {
-    if ($font->pid->value == 'fontsquirrel_api' && $font->isEnabled()) {
+    if ($font->pid->value == 'fontsquirrel_api' && $font->isActivated()) {
       $directory_location = _fontsquirrel_api_get_font_directory_location($font);
       $page['#attached']['html_head'][] = [
         [
@@ -94,7 +94,7 @@ function fontsquirrel_api_page_attachments(&$page) {
 function fontsquirrel_api_preprocess_font(array &$variables) {
   $font = $variables['elements']['#font'];
   $metadata = $font->getMetadata();
-  if ($font->pid->value == 'fontsquirrel_api' && $font->isDisabled()) {
+  if ($font->pid->value == 'fontsquirrel_api' && $font->isDeactivated()) {
     $variables['font_preview']['#markup'] = '<img style=\'max-width:100%;\' src="' . $metadata['preview_image'] . '" />';
   }
 }
@@ -126,7 +126,7 @@ function fontsquirrel_api_preprocess_font__full(array &$variables) {
 function fontsquirrel_api_preprocess_font__teaser(array &$variables) {
   $font = $variables['elements']['#font'];
   $metadata = $font->getMetadata();
-  if ($font->pid->value == 'fontsquirrel_api' && $font->isDisabled()) {
+  if ($font->pid->value == 'fontsquirrel_api' && $font->isDeactivated()) {
     $variables['font_preview']['#markup'] = '<img width="160px" src="https://www.fontsquirrel.com/widgets/test_drive/' . $metadata['checksum'] . '?s=144&t=AaGg" />';
   }
 }

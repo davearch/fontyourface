@@ -97,7 +97,7 @@ function fontyourface_page_attachments(&$page) {
   $fonts = &drupal_static('fontyourface_fonts', []);
   // Load all enabled fonts regardless of theme if setting allows it.
   if ($config->get('load_all_enabled_fonts')) {
-    foreach (Font::loadEnabledFonts() as $font) {
+    foreach (Font::loadActivatedFonts() as $font) {
       $fonts[$font->url->value] = $font;
     }
   }
@@ -174,8 +174,8 @@ function fontyourface_preprocess_font(array &$variables) {
   }
 
   $variables['attributes']['class'] = ['font'];
-  if ($font->isDisabled()) {
-    $url = Url::fromRoute('entity.font.enable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
+  if ($font->isDeactivated()) {
+    $url = Url::fromRoute('entity.font.activate', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
     $url->setOptions(
       [
         'attributes' => [
@@ -191,8 +191,8 @@ function fontyourface_preprocess_font(array &$variables) {
     $text = t('Enable');
     $variables['attributes']['class'][] = 'disabled';
   }
-  if ($font->isEnabled()) {
-    $url = Url::fromRoute('entity.font.disable', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
+  if ($font->isActivated()) {
+    $url = Url::fromRoute('entity.font.deactivate', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
     $url->setOptions(
       [
         'attributes' => [
@@ -296,7 +296,7 @@ function fontyourface_save_font($font_data) {
   }
   $font->setMetadata(!empty($font_data->metadata) ? $font_data->metadata : []);
   $font->status = FALSE;
-  if ($font->isEnabled()) {
+  if ($font->isActivated()) {
     $font->status = TRUE;
   }
   $font->save();

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
 use Drupal\fontyourface\Entity\Font;
 
 /**
@@ -16,6 +17,18 @@ function fontsquirrel_api_fontyourface_api() {
     'version' => '3',
     'name' => 'Font Squirrel',
   ];
+}
+
+/**
+ * Implements hook_modules_installed().
+ *
+ * Use this hook instead of hook_install, because the route "font.settings" is
+ * not defined otherwise.
+ */
+function fontsquirrel_api_modules_installed($modules) {
+  if (in_array('fontsquirrel_api', $modules)) {
+    drupal_set_message(t('Due to the number of fonts, automated import from install for Font Squirrel is disabled. Please use @link to import Font Squirrel Fonts.', ['@link' => Link::createFromRoute('@font-your-face settings', 'font.settings')->toString()]));
+  }
 }
 
 /**

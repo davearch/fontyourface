@@ -5,6 +5,8 @@
  * Adobe Edge Fonts module file.
  */
 
+use Drupal\Core\Link;
+
 /**
  * Implements hook_fontyourface_api().
  */
@@ -13,6 +15,18 @@ function adobe_edge_fonts_fontyourface_api() {
     'version' => '3',
     'name' => 'Adobe Edge',
   ];
+}
+
+/**
+ * Implements hook_modules_installed().
+ *
+ * Use this hook instead of hook_install, because the route "font.settings" is
+ * not defined otherwise.
+ */
+function adobe_edge_fonts_modules_installed($modules) {
+  if (in_array('adobe_edge_fonts', $modules)) {
+    drupal_set_message(t('Due to the number of fonts, automated import from install for Adobe Edge Fonts is disabled. Please use @link to import Adobe Edge Fonts.', ['@link' => Link::createFromRoute('@font-your-face settings', 'font.settings')->toString()]));
+  }
 }
 
 /**

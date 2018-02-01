@@ -5,8 +5,6 @@
  * Google Fonts install file.
  */
 
-use Drupal\Core\Url;
-
 /**
  * Implements hook_requirements().
  */
@@ -27,8 +25,6 @@ function fontsquirrel_api_requirements($phase) {
  */
 function fontsquirrel_api_install() {
   module_set_weight('fontsquirrel_api', 10);
-  $url = Url::fromRoute('font.settings');
-  drupal_set_message(t('Due to the number of fonts, automated import from install for Font Squirrel is disabled. Please use @link to import Font Squirrel Fonts.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
 }
 
 /**

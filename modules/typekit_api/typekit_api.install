@@ -5,15 +5,11 @@
  * Typekit API install file.
  */
 
-use Drupal\Core\Url;
-
 /**
  * Implements hook_install().
  */
 function typekit_api_install() {
   module_set_weight('typekit_api', 10);
-  $url = Url::fromRoute('font.settings');
-  drupal_set_message(t('Typekit needs to be set up in order for fonts to be imported. Please use @link to import Typekit fonts.', ['@link' => \Drupal::l('@font-your-face settings', $url)]));
 }
 
 /**

@@ -5,6 +5,8 @@
  * Google Fonts module file.
  */
 
+use Drupal\Core\Link;
+
 /**
  * Implements hook_fontyourface_api().
  */
@@ -13,6 +15,18 @@ function google_fonts_api_fontyourface_api() {
     'version' => '3',
     'name' => 'Google Fonts',
   ];
+}
+
+/**
+ * Implements hook_modules_installed().
+ *
+ * Use this hook instead of hook_install, because the route "font.settings" is
+ * not defined otherwise.
+ */
+function google_fonts_api_modules_installed($modules) {
+  if (in_array('google_fonts_api', $modules)) {
+    drupal_set_message(t('Due to the number of fonts, automated import from install for Google Fonts is disabled. Please use @link to import Google Fonts.', ['@link' => Link::createFromRoute('@font-your-face settings', 'font.settings')->toString()]));
+  }
 }
 
 /**

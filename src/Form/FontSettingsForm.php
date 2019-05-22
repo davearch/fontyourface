@@ -53,6 +53,25 @@ class FontSettingsForm extends ConfigFormBase {
       '#default_value' => (int) $config->get('load_all_enabled_fonts'),
       '#description' => $this->t('This will load all fonts that have been enabled regardless of theme. Warning: this may add considerable download weight to your pages depending on the number of enabled fonts'),
     ];
+    $themes = [];
+    foreach (\Drupal::service('theme_handler')->listInfo() as $name => $theme) {
+      if ($theme->status === 1) {
+        $themes[$name] = $theme->info['name'];
+      }
+    }
+    $form['load_on_themes'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Load fonts only on selected themes'),
+      '#options' => $themes,
+      '#default_value' => $config->get('load_on_themes'),
+      '#description' => $this->t('Select only the themes on which you need to enable all fonts. Leave blank to load it on all themes.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="load_all_enabled_fonts"]' => ['checked' => TRUE],
+        ],
+      ],
+      '#multiple' => TRUE,
+    ];
     $form['imports'] = [
       '#type' => 'fieldset',
       '#title' => 'Import',
@@ -117,6 +136,7 @@ class FontSettingsForm extends ConfigFormBase {
     if ($op == $this->t('Save configuration')) {
       $config = $this->config('fontyourface.settings')
         ->set('load_all_enabled_fonts', $values['load_all_enabled_fonts'])
+        ->set('load_on_themes', $values['load_on_themes'])
         ->save();
       parent::submitForm($form, $form_state);
     }

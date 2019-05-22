@@ -95,10 +95,12 @@ function fontyourface_theme() {
 function fontyourface_page_attachments(&$page) {
   $config = \Drupal::config('fontyourface.settings');
   $fonts = &drupal_static('fontyourface_fonts', []);
-  // Load all enabled fonts regardless of theme if setting allows it.
+  // Load all enabled fonts for theme if setting allows it.
   if ($config->get('load_all_enabled_fonts')) {
-    foreach (Font::loadActivatedFonts() as $font) {
-      $fonts[$font->url->value] = $font;
+    if (empty($config->get('load_on_themes')) || in_array(\Drupal::theme()->getActiveTheme()->getName(), $config->get('load_on_themes'))) {
+      foreach (Font::loadActivatedFonts() as $font) {
+        $fonts[$font->url->value] = $font;
+      }
     }
   }
 

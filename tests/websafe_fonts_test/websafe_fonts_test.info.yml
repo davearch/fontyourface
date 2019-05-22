@@ -4,4 +4,4 @@ description: '@font-your-face provider with Web Safe Fonts. For testing purposes
 core: 8.x
 package: Testing
 dependencies:
-  - fontyourface
+  - fontyourface:fontyourface

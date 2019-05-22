@@ -2,6 +2,7 @@
 
 namespace Drupal\fontyourface\Form;
 
+use Drupal;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -44,7 +45,7 @@ class FontDisplayForm extends EntityForm {
 
     $fonts = Font::loadActivatedFonts();
     if (empty($fonts)) {
-      drupal_set_message($this->t('Please enable at least one font before creating/updating a font style.'), 'warning');
+      Drupal::messenger()->addMessage($this->t('Please enable at least one font before creating/updating a font style.'), 'warning');
       $this->redirect('entity.font.collection')->send();
       exit();
     }
@@ -171,13 +172,13 @@ class FontDisplayForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label Font display.', [
+        Drupal::messenger()->addMessage($this->t('Created the %label Font display.', [
           '%label' => $font_display->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label Font display.', [
+        Drupal::messenger()->addMessage($this->t('Saved the %label Font display.', [
           '%label' => $font_display->label(),
         ]));
     }

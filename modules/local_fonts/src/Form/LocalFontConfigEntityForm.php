@@ -2,6 +2,7 @@
 
 namespace Drupal\local_fonts\Form;
 
+use Drupal;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
@@ -135,13 +136,13 @@ class LocalFontConfigEntityForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label Custom Font.', [
+        Drupal::messenger()->addMessage($this->t('Created the %label Custom Font.', [
           '%label' => $local_font_config_entity->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label Custom Font.', [
+        Drupal::messenger()->addMessage($this->t('Saved the %label Custom Font.', [
           '%label' => $local_font_config_entity->label(),
         ]));
     }

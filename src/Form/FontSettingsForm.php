@@ -2,6 +2,7 @@
 
 namespace Drupal\fontyourface\Form;
 
+use Drupal;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\fontyourface\Entity\Font;
@@ -176,7 +177,7 @@ class FontSettingsForm extends ConfigFormBase {
    *   List of batch operations run.
    */
   public static function importFinished($success, array $results, array $operations) {
-    drupal_set_message(new TranslatableMarkup('Finished importing fonts.'));
+    Drupal::messenger()->addMessage(new TranslatableMarkup('Finished importing fonts.'));
   }
 
 }

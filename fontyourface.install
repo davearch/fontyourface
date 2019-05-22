@@ -16,7 +16,7 @@ use Drupal\fontyourface\Entity\Font;
  */
 function fontyourface_install() {
   module_set_weight('fontyourface', 1);
-  drupal_set_message(t('If you have not yet enabled any @font-your-face provider modules, please do so. If you have already enabled @font-your-face provider modules, please use the font settings page in the appearance section to import fonts from them.'));
+  Drupal::messenger()->addMessage(t('If you have not yet enabled any @font-your-face provider modules, please do so. If you have already enabled @font-your-face provider modules, please use the font settings page in the appearance section to import fonts from them.'));
 }
 
 /**

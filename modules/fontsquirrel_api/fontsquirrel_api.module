@@ -27,7 +27,7 @@ function fontsquirrel_api_fontyourface_api() {
  */
 function fontsquirrel_api_modules_installed($modules) {
   if (in_array('fontsquirrel_api', $modules)) {
-    drupal_set_message(t('Due to the number of fonts, automated import from install for Font Squirrel is disabled. Please use @link to import Font Squirrel Fonts.', ['@link' => Link::createFromRoute('@font-your-face settings', 'font.settings')->toString()]));
+    Drupal::messenger()->addMessage(t('Due to the number of fonts, automated import from install for Font Squirrel is disabled. Please use @link to import Font Squirrel Fonts.', ['@link' => Link::createFromRoute('@font-your-face settings', 'font.settings')->toString()]));
   }
 }
 
@@ -202,7 +202,7 @@ function fontsquirrel_api_fontyourface_import($font_context = []) {
     $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   }
   else {
-    drupal_set_message(t('Imported @count Font Squirrel fonts (and variants).', ['@count' => $context['sandbox']['max']]));
+    Drupal::messenger()->addMessage(t('Imported @count Font Squirrel fonts (and variants).', ['@count' => $context['sandbox']['max']]));
   }
   return $context;
 }
@@ -220,7 +220,7 @@ function _fontsquirrel_api_get_fonts_from_api() {
     $data = json_decode($response->getBody());
   }
   catch (RequestException $e) {
-    drupal_set_message(t('There was an error downloading font list from Font Squirrel.'), 'error');
+    Drupal::messenger()->addMessage(t('There was an error downloading font list from Font Squirrel.'), 'error');
     fontyourface_log('Invalid drupal_http_request response: @response', ['@response' => $e->getMessage()]);
     return FALSE;
   }
@@ -243,7 +243,7 @@ function fontsquirrel_api_get_font_family_info($font_import) {
     $data = json_decode($response->getBody());
   }
   catch (RequestException $e) {
-    drupal_set_message(t('There was an error downloading font list from Font Squirrel.'), 'error');
+    Drupal::messenger()->addMessage(t('There was an error downloading font list from Font Squirrel.'), 'error');
     fontyourface_log('Invalid drupal_http_request response: @response', ['@response' => $e->getMessage()]);
     return FALSE;
   }

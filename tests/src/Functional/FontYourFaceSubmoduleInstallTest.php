@@ -3,14 +3,14 @@
 namespace Drupal\Tests\fontyourface\Functional;
 
 use Drupal\Core\Url;
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests that installing @font-your-face submodules is not broken.
  *
  * @group fontyourface
  */
-class FontYourFaceSubmoduleInstallTest extends WebTestBase {
+class FontYourFaceSubmoduleInstallTest extends BrowserTestBase {
 
   /**
    * Modules to install.

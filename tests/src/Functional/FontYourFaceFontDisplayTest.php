@@ -3,14 +3,14 @@
 namespace Drupal\Tests\fontyourface\Functional;
 
 use Drupal\Core\Url;
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests that font displays show css.
  *
  * @group fontyourface
  */
-class FontYourFaceFontDisplayTest extends WebTestBase {
+class FontYourFaceFontDisplayTest extends BrowserTestBase {
 
   /**
    * Modules to install.

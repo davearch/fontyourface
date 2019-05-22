@@ -3,6 +3,7 @@ type: module
 description: Web font management tools.
 core: 8.x
 package: '@font-your-face'
+configure: font.settings
 dependencies:
   - taxonomy
   - views

@@ -50,7 +50,7 @@ class FontYourFaceInstallTest extends BrowserTestBase {
 
     // Font display page.
     $this->drupalGet(Url::fromRoute('entity.font_display.collection'));
-    $this->assertText(t('There is no Font display yet.'));
+    $this->assertText(t('There are no font display entities yet.'));
 
     // Font display add page.
     $this->drupalGet(Url::fromRoute('entity.font_display.add_form'));

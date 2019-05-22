@@ -108,6 +108,7 @@ function local_fonts_save_and_generate_css(LocalFontConfigEntity $font_entity) {
   $css_file_data .= "font-weight: " . $font_entity->font_weight . ";\n";
   $css_file_data .= "font-style: " . $font_entity->font_style . ";\n";
   $css_file_data .= "src: url('font.woff') format('woff');\n";
+  $css_file_data .= "font-display: auto;\n";
   $css_file_data .= "}\n";
 
   file_unmanaged_save_data(base64_decode($font_entity->getFontWoffData()), $font_file, FILE_EXISTS_REPLACE);

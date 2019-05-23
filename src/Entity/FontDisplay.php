@@ -36,7 +36,6 @@ use Drupal\fontyourface\FontDisplayInterface;
  *     "theme" = "theme"
  *   },
  *   links = {
- *     "canonical" = "/admin/appearance/font/font_display/{font_display}",
  *     "add-form" = "/admin/appearance/font/font_display/add",
  *     "edit-form" = "/admin/appearance/font/font_display/{font_display}/edit",
  *     "delete-form" = "/admin/appearance/font/font_display/{font_display}/delete",

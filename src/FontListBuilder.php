@@ -4,8 +4,8 @@ namespace Drupal\fontyourface;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Routing\LinkGeneratorTrait;
 use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Defines a class to build a listing of Font entities.
@@ -13,7 +13,6 @@ use Drupal\Core\Url;
  * @ingroup fontyourface
  */
 class FontListBuilder extends EntityListBuilder {
-  use LinkGeneratorTrait;
 
   /**
    * {@inheritdoc}
@@ -30,9 +29,9 @@ class FontListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\fontyourface\Entity\Font */
     $row['id'] = $entity->id();
-    $row['name'] = $this->l(
+    $row['name'] = Link::fromTextAndUrl(
       $entity->label(),
-      $entity->urlInfo()
+      $entity->toUrl()
     );
     return $row + parent::buildRow($entity);
   }
@@ -53,7 +52,7 @@ class FontListBuilder extends EntityListBuilder {
       $operations['edit'] = [
         'title' => $this->t('Edit'),
         'weight' => 10,
-        'url' => $entity->urlInfo('edit-form'),
+        'url' => $entity->toUrl('edit-form'),
       ];
     }
     if ($entity->isActivated()) {

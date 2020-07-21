@@ -171,7 +171,7 @@ class FontDisplay extends ConfigEntityBase implements FontDisplayInterface {
    * {@inheritdoc}
    */
   public static function loadByTheme($theme) {
-    return \Drupal::entityManager()->getStorage('font_display')->loadByProperties(['theme' => $theme]);
+    return \Drupal::entityTypeManager()->getStorage('font_display')->loadByProperties(['theme' => $theme]);
   }
 
 }

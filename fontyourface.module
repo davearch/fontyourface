@@ -6,15 +6,16 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\taxonomy\Entity\Term;
-
 use Drupal\fontyourface\FontInterface;
 use Drupal\fontyourface\FontDisplayInterface;
 use Drupal\fontyourface\Entity\Font;
 use Drupal\fontyourface\Entity\FontDisplay;
+use Drupal\Core\Link;
 
 /**
  * Implements hook_module_implements_alter().
@@ -168,7 +169,7 @@ function fontyourface_preprocess_font(array &$variables) {
 
   $variables['font_style'] = fontyourface_font_css($font, NULL, "\n");
   $variables['font_style_inline'] = fontyourface_font_css($font);
-  $variables['font_title'] = \Drupal::l($title, $font->urlInfo());
+  $variables['font_title'] = Link::fromTextAndUrl($title, $font->toUrl());
 
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
@@ -212,7 +213,7 @@ function fontyourface_preprocess_font(array &$variables) {
   }
 
   $url->setOption('destination', Drupal::destination());
-  $variables['operation_links'] = Drupal::l($text, $url);
+  $variables['operation_links'] = Link::fromTextAndUrl($text, $url);
 }
 
 /**
@@ -361,7 +362,7 @@ function fontyourface_delete($provider) {
   // Delete fonts, 50 at a time.
   @set_time_limit(3600);
   while (TRUE) {
-    $storage_handler = \Drupal::entityManager()->getStorage('font');
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('font');
     $fids = \Drupal::entityQuery('font')
       ->condition('pid', $provider)
       ->range(0, 50)
@@ -402,13 +403,16 @@ function fontyourface_log($message, array $arguments) {
  *   TRUE if files save successfully. Throw any errors otherwise.
  */
 function fontyourface_save_and_generate_font_display_css(FontDisplayInterface $style) {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+
   $directory = file_build_uri('fontyourface/font_display');
-  file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+  $file_system->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
   $font = $style->getFont();
   $css_file = $directory . '/' . $style->id() . '.css';
   $css_file_data = $style->getSelectors() . ' { ' . fontyourface_font_css($font, $style) . ' }';
-  file_unmanaged_save_data($css_file_data, $css_file, FILE_EXISTS_REPLACE);
+  $file_system->saveData($css_file_data, $css_file, FileSystemInterface::EXISTS_REPLACE);
 
   return TRUE;
 }

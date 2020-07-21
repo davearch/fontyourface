@@ -9,9 +9,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Link;
 use GuzzleHttp\Psr7;
-
 use Drupal\fontyourface\FontInterface;
 use Drupal\fontyourface\FontDisplayInterface;
 use Drupal\fontyourface\Entity\Font;
@@ -153,11 +153,13 @@ function fontscom_api_page_attachments(&$page) {
     }
   }
   if (!empty($font_css)) {
+    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+    $file_system = \Drupal::service('file_system');
     $hash = hash('sha256', $font_css);
     $directory_location = 'fontyourface/fontscom_api';
-    file_prepare_directory($directory_location, FILE_CREATE_DIRECTORY);
+    $file_system->prepareDirectory($directory_location, FileSystemInterface::CREATE_DIRECTORY);
     if (!file_exists($directory_location . '/fontyourface-stylesheet-' . $hash . '.css')) {
-      file_unmanaged_save_data($font_css, $directory_location . '/fontyourface-stylesheet-' . $hash . '.css', FILE_EXISTS_REPLACE);
+      $file_system->saveData($font_css, $directory_location . '/fontyourface-stylesheet-' . $hash . '.css', FileSystemInterface::EXISTS_REPLACE);
     }
     $page['#attached']['html_head'][] = [
       [

@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\fontyourface\Entity\Font;
+use Drupal\Core\Link;
 
 /**
  * Controller routines for forum routes.
@@ -24,7 +25,7 @@ class FontYourFaceController extends ControllerBase {
         $url = Url::fromRoute('entity.font.deactivate', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
         $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'enabled', 'use-ajax']]]);
         $text = $this->t('Enable');
-        $link = \Drupal::l($text, $url);
+        $link = Link::fromTextAndUrl($text, $url);
 
         $response = new AjaxResponse();
         return $response->addCommand(new ReplaceCommand('#font-status-' . $font->id(), $link));
@@ -59,7 +60,7 @@ class FontYourFaceController extends ControllerBase {
         $url = Url::fromRoute('entity.font.activate', ['js' => 'nojs', 'font' => $font->id()], ['query' => \Drupal::destination()->getAsArray()]);
         $url->setOptions(['attributes' => ['id' => 'font-status-' . $font->id(), 'class' => ['font-status', 'disabled', 'use-ajax']]]);
         $text = $this->t('Enable');
-        $link = \Drupal::l($text, $url);
+        $link = Link::fromTextAndUrl($text, $url);
 
         $response = new AjaxResponse();
         return $response->addCommand(new ReplaceCommand('#font-status-' . $font->id(), $link));

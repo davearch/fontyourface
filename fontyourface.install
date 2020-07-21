@@ -224,7 +224,7 @@ function fontyourface_update_8003() {
 function fontyourface_update_8004() {
   $pager = 0;
   while (TRUE) {
-    $storage_handler = \Drupal::entityManager()->getStorage('font_display');
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('font_display');
     $fdids = \Drupal::entityQuery('font_display')
       ->range($pager, 50)
       ->execute();

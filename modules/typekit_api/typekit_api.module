@@ -246,7 +246,7 @@ function typekit_api_token_headers($token = NULL) {
  *   TRUE if kit is valid against domain. FALSE otherwise.
  */
 function typekit_api_kit_matches_domain($kit, $domain) {
-  $domain = Unicode::strtolower($domain);
+  $domain = strtolower($domain);
   $domains = array_filter($kit->domains, function ($kit_domain) use ($domain) {
     if ($kit_domain == $domain) {
       return TRUE;

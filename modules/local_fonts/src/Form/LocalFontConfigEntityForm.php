@@ -3,6 +3,7 @@
 namespace Drupal\local_fonts\Form;
 
 use Drupal;
+use Drupal\Component\Utility\Environment;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
@@ -98,7 +99,7 @@ class LocalFontConfigEntityForm extends EntityForm {
       '#size' => 50,
       '#upload_validators' => [
         'file_validate_extensions' => ['woff'],
-        'file_validate_size' => [file_upload_max_size()],
+        'file_validate_size' => [Environment::getUploadMaxSize()],
         'file_validate_name_length' => [],
       ],
     ];
@@ -146,7 +147,7 @@ class LocalFontConfigEntityForm extends EntityForm {
           '%label' => $local_font_config_entity->label(),
         ]));
     }
-    $form_state->setRedirectUrl($local_font_config_entity->urlInfo('collection'));
+    $form_state->setRedirectUrl($local_font_config_entity->toUrl('collection'));
   }
 
 }

@@ -87,7 +87,7 @@ class FontYourFaceSubmoduleInstallTest extends BrowserTestBase {
     $this->assertNoRaw('<meta name="Websafe Font" content="Arial" />');
 
     $this->drupalPostForm(Url::fromRoute('font.settings'), ['load_all_enabled_fonts' => 1], t('Import from websafe_fonts_test'));
-    $this->drupalGet(url::fromRoute('entity.font.activate', ['font' => 1, 'js' => 'nojs']));
+    $this->drupalGet(Url::fromRoute('entity.font.activate', ['font' => 1, 'js' => 'nojs']));
     $this->assertText('Font Arial successfully enabled');
 
     // Flush the caches. Not an issue in prod but seems to be in simpletest. Will keep an eye on it.

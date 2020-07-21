@@ -1,5 +1,6 @@
 <?php
 
+use function GuzzleHttp\Psr7\str;
 /**
  * @file
  * Fonts.com API module file.
@@ -482,7 +483,7 @@ function fontscom_api_add_font_to_current_project($fid) {
     return TRUE;
   }
   catch (Exception $e) {
-    Drupal::messenger()->addMessage(t('There was an error adding font to Fonts.com project. Error: %error', ['%error' => Psr7\str($e->getResponse())]), 'error');
+    Drupal::messenger()->addMessage(t('There was an error adding font to Fonts.com project. Error: %error', ['%error' => str($e->getResponse())]), 'error');
     return FALSE;
   }
 }
@@ -507,7 +508,7 @@ function fontscom_api_remove_font_from_current_project($fid) {
     return TRUE;
   }
   catch (Exception $e) {
-    Drupal::messenger()->addMessage(t('There was an error removing font from Fonts.com project. Error: %error', ['%error' => Psr7\str($e->getResponse())]), 'error');
+    Drupal::messenger()->addMessage(t('There was an error removing font from Fonts.com project. Error: %error', ['%error' => str($e->getResponse())]), 'error');
     return FALSE;
   }
 }
@@ -526,7 +527,7 @@ function fontscom_api_publish_updated_project() {
     return TRUE;
   }
   catch (Exception $e) {
-    Drupal::messenger()->addMessage(t('There was an error publishing project on Fonts.com. Error: %error', ['%error' => Psr7\str($e->getResponse())]), 'error');
+    Drupal::messenger()->addMessage(t('There was an error publishing project on Fonts.com. Error: %error', ['%error' => str($e->getResponse())]), 'error');
     return FALSE;
   }
 }

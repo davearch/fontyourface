@@ -1,7 +1,7 @@
 name: '@fontyourface - Fonts.com'
 type: module
 description: '@font-your-face provider with fonts.com fonts.'
-core: 8.x
+core_version_requirement: ^8.7.7 || ^9
 package: '@font-your-face'
 dependencies:
   - fontyourface:fontyourface

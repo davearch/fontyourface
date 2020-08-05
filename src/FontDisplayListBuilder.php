@@ -26,6 +26,9 @@ class FontDisplayListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
+    // if font is NULL this throws a massive error
+    // Query condition cannot be empty in
+    // Drupal\Core\Database\Query\Condition->condition() line 105
     $font = $entity->getFont();
     if (empty($font)) {
       $font = Font::create(['name' => 'Font not supported!']);

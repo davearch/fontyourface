@@ -29,6 +29,11 @@ class FontYourFaceFontDisplayTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'bartik';
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     // Create and log in an administrative user.
@@ -38,33 +43,34 @@ class FontYourFaceFontDisplayTest extends BrowserTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Set up default themes.
-    \Drupal::service('theme_handler')->install(['bartik', 'seven']);
+    \Drupal::service('theme_installer')->install([$this->defaultTheme, 'seven']);
     $this->config('system.theme')
-      ->set('default', 'bartik')
+      ->set('default', $this->defaultTheme)
       ->set('admin', 'seven')
       ->save();
 
     // Enable Arial font.
-    $this->drupalPostForm(Url::fromRoute('font.settings'), ['load_all_enabled_fonts' => FALSE], t('Save configuration'));
-    $this->drupalPostForm(Url::fromRoute('font.settings'), [], t('Import from websafe_fonts_test'));
+    $this->drupalPostForm(Url::fromRoute('font.settings')->toString(), ['load_all_enabled_fonts' => FALSE], 'Save configuration');
+    $this->drupalPostForm(Url::fromRoute('font.settings')->toString(), [], 'Import from websafe_fonts_test');
   }
 
   /**
    * Tests font not displayed even when Arial is loaded.
    */
   public function testFontNotDisplayed() {
-    $this->drupalGet(Url::fromRoute('entity.font.activate', ['font' => 1, 'js' => 'nojs']));
+    $this->drupalGet(Url::fromRoute('entity.font.activate', ['font' => 1, 'js' => 'nojs'])->toString());
     $this->resetAll();
     // Assert no fonts load to start.
     $this->drupalGet('/node');
-    $this->assertNoRaw('<meta name="Websafe Font" content="Arial" />');
+    //$this->assertNoRaw('<meta name="Websafe Font" content="Arial" />');
+    $this->assertSession()->responseNotContains('<meta name="Websafe Font" content="Arial" />');
   }
 
   /**
    * Tests font displayed once added in FontDisplay.
    */
   public function testFontDisplayedViaFontDisplayRule() {
-    $this->drupalGet(Url::fromRoute('entity.font.activate', ['font' => 1, 'js' => 'nojs']));
+    $this->drupalGet(Url::fromRoute('entity.font.activate', ['font' => 1, 'js' => 'nojs'])->toString());
 
     $edit = [
       'label' => 'Headers',
@@ -73,16 +79,21 @@ class FontYourFaceFontDisplayTest extends BrowserTestBase {
       'fallback' => '',
       'preset_selectors' => '.fontyourface h1, .fontyourface h2, .fontyourface h3, .fontyourface h4, .fontyourface h5, .fontyourface h6',
       'selectors' => '.fontyourface h1, .fontyourface h2, .fontyourface h3, .fontyourface h4, .fontyourface h5, .fontyourface h6',
-      'theme' => 'bartik',
+      'theme' => $this->defaultTheme,
     ];
-    $this->drupalPostForm(Url::fromRoute('entity.font_display.add_form'), $edit, 'Save');
-    $this->drupalGet(Url::fromRoute('entity.font_display.collection'));
+    // on save: entityTypeManager->getStorage(id) returns error (schema missing)
+    $this->drupalPostForm(Url::fromRoute('entity.font_display.add_form')->toString(), $edit, 'Save');
+    // throws database error (query condition cannot be empty) when building collection list page
+    $this->drupalGet(Url::fromRoute('entity.font_display.collection')->toString());
     $this->resetAll();
 
     // Assert Arial loads in general bartik section.
     $this->drupalGet('/node');
-    $this->assertRaw('<meta name="Websafe Font" content="Arial" />');
-    $this->assertRaw("fontyourface/font_display/headers.css");
+
+    $this->assertSession()->responseContains('<meta name="Websafe Font" content="Arial" />');
+    $this->assertSession()->responseContains('fontyourface/font_display/headers.css');
+    //$this->assertRaw('<meta name="Websafe Font" content="Arial" />');
+    //$this->assertRaw("fontyourface/font_display/headers.css");
   }
 
 }
